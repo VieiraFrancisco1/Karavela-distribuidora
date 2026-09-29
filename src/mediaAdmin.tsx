@@ -71,7 +71,7 @@ const scenicPreviewCategoryIds = new Set(['whiskys', 'vinhos', 'cachacas', 'vodk
 type PreviewIconName = 'plus' | 'minus' | 'close' | 'cart'
 
 function PreviewIcon({ name }: { name: PreviewIconName }) {
-  const paths: Record<PreviewIconName, JSX.Element> = {
+  const paths = {
     plus: <path d="M12 5v14M5 12h14"/>,
     minus: <path d="M5 12h14"/>,
     close: <><path d="M5 5l14 14M19 5 5 19"/></>,
@@ -159,7 +159,6 @@ function LiveCardPreview({ product, src, settings, onChange }: { product: Produc
       <article
         data-product-id={product.id}
         className={`product-card${isScenicCard ? ' product-card--photo' : ''}`}
-        style={{ pointerEvents: 'none' }}
       >
         <EditableImage
           src={src}
