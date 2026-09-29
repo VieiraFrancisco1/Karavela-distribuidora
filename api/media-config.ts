@@ -1,4 +1,5 @@
 import { list } from '@vercel/blob'
+import { isCloudinaryConfigured, readCloudinaryMediaConfig, writeCloudinaryMediaConfig } from './_cloudinary'
 
 const LIVE_PREFIX = 'karavela-admin/media-config-v35/'
 const CURRENT_CONFIG_PATH = 'karavela-admin/media-config-current.json'
@@ -133,7 +134,16 @@ function applyOperation(config: MediaConfig, operation: MediaPatch) {
   }
 }
 
-async function readConfig(): Promise<MediaConfig> {
+export async function readConfig(): Promise<MediaConfig> {
+  if (isCloudinaryConfigured()) {
+    try {
+      const cloudinaryConfig = await readCloudinaryMediaConfig<MediaConfig>()
+      if (cloudinaryConfig) return cloudinaryConfig
+    } catch (error) {
+      console.error('media-config cloudinary:', error)
+    }
+  }
+
   const config: MediaConfig = structuredClone(await readBaseConfig())
 
   // Cada alteração feita a partir da V50 é imutável e aplicada em ordem.
@@ -153,6 +163,14 @@ async function readConfig(): Promise<MediaConfig> {
     }
   } catch (error) {
     console.error('media-config patches list:', error)
+  }
+
+  if (isCloudinaryConfigured() && Object.keys(config).length > 0) {
+    try {
+      await writeCloudinaryMediaConfig(config)
+    } catch (error) {
+      console.error('media-config migration:', error)
+    }
   }
 
   return config
