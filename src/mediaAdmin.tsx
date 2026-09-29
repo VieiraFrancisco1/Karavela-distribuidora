@@ -155,27 +155,33 @@ function LiveCardPreview({ product, src, settings, onChange }: { product: Produc
   const isScenicCard = scenicPreviewCategoryIds.has(product.categoryId)
 
   return <div className="admin-real-preview-wrap admin-real-preview-wrap--card">
-    <div className="product-strip" style={{ width: 'min(100%, 430px)', padding: '2px 20px 9px 1px' }}>
-      <article
-        data-product-id={product.id}
-        className={`product-card${isScenicCard ? ' product-card--photo' : ''}`}
-      >
-        <EditableImage
-          src={src}
-          settings={settings}
-          slot="card"
-          onChange={onChange}
-          frameClassName="product-image-wrap admin-card-editable-frame"
-          imageClassName="admin-card-editable-image"
-        />
-        <div className="product-copy">
-          <strong>{product.name}{product.size && <span className="inline-size"> {product.size}</span>}</strong>
-        </div>
-        <div className="product-bottom">
-          <b>{money(product.price)}</b>
-          <span className="round-plus" aria-hidden="true"><PreviewIcon name="plus"/></span>
-        </div>
-      </article>
+    <div className="app-shell admin-card-preview-shell">
+      <main>
+        <section className="section product-section">
+          <div className="product-strip">
+            <article
+              data-product-id={product.id}
+              className={`product-card${isScenicCard ? ' product-card--photo' : ''}`}
+            >
+              <EditableImage
+                src={src}
+                settings={settings}
+                slot="card"
+                onChange={onChange}
+                frameClassName="product-image-wrap admin-card-editable-frame"
+                imageClassName="admin-card-editable-image"
+              />
+              <div className="product-copy">
+                <strong>{product.name}{product.size && <span className="inline-size"> {product.size}</span>}</strong>
+              </div>
+              <div className="product-bottom">
+                <b>{money(product.price)}</b>
+                <span className="round-plus" aria-hidden="true"><PreviewIcon name="plus"/></span>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
     </div>
   </div>
 }
