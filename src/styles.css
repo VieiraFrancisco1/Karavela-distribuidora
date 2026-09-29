@@ -5095,3 +5095,87 @@ html body .product-card[data-product-id] .product-image-wrap > img.media-managed
   transform:translate(var(--media-x,0%), var(--media-y,0%)) scale(var(--media-scale,1))!important;
   transform-origin:center center!important;
 }
+
+
+/* PREVIEW FIEL V2 — mesmas dimensões reais da Home e do modal */
+
+/* O card da Home usa 43,5% da área útil do trilho.
+   Área útil = largura real do app (máx. 680px) - 48px
+   (24px da seção + 24px do padding interno do trilho). */
+.admin-card-preview-shell{
+  width:100%!important;
+  max-width:none!important;
+  min-height:0!important;
+  margin:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+}
+.admin-card-preview-shell > main{
+  min-height:0!important;
+  padding:0!important;
+}
+.admin-card-preview-shell > main > .section.product-section{
+  width:100%!important;
+  padding-top:0!important;
+  padding-bottom:0!important;
+}
+.admin-card-preview-shell .product-strip{
+  width:100%!important;
+  overflow:visible!important;
+}
+.admin-card-preview-shell .product-strip > .product-card,
+.admin-card-preview-shell .product-strip > .product-card.product-card--photo{
+  flex:0 0 calc(min(43.5vw, 295.8px) - 20.88px)!important;
+  width:calc(min(43.5vw, 295.8px) - 20.88px)!important;
+  min-width:calc(min(43.5vw, 295.8px) - 20.88px)!important;
+  max-width:calc(min(43.5vw, 295.8px) - 20.88px)!important;
+}
+
+/* A prévia "após o clique" usa exatamente as larguras reais do site.
+   Simples: até 520px com 12px de margem em cada lado.
+   Cervejas/packs: até 680px, igual ao sheet publicado. */
+.admin-detail-preview-stage{
+  width:100%!important;
+  display:flex!important;
+  justify-content:center!important;
+  align-items:flex-start!important;
+  overflow:visible!important;
+}
+.admin-detail-preview-stage > .product-sheet.simple-sheet{
+  width:min(calc(100vw - 24px), 520px)!important;
+  max-width:none!important;
+  flex:0 0 auto!important;
+}
+.admin-detail-preview-stage > .product-sheet.beer-sheet,
+.admin-detail-preview-stage > .product-sheet:not(.simple-sheet):not(.beer-sheet){
+  width:min(100vw, 680px)!important;
+  max-width:none!important;
+  flex:0 0 auto!important;
+}
+
+/* Não deixa o editor alterar o enquadramento de forma diferente do publicado.
+   A mesma regra abaixo vale para a imagem editável e para a imagem da Home. */
+.admin-card-preview-shell .product-image-wrap > img.media-managed,
+html body .app-shell main > .section .product-strip > .product-card .product-image-wrap > img.media-managed{
+  object-position:center center!important;
+  transform:translate(var(--media-x,0%), var(--media-y,0%)) scale(var(--media-scale,1))!important;
+  transform-origin:center center!important;
+}
+
+/* Mesma regra para a tela após o clique. */
+.admin-detail-preview-stage .product-sheet .media-managed,
+html body .product-sheet .media-managed{
+  object-position:center center!important;
+  transform:translate(var(--media-x,0%), var(--media-y,0%)) scale(var(--media-scale,1))!important;
+  transform-origin:center center!important;
+}
+
+@media(max-width:760px){
+  .admin-real-preview-wrap--card{
+    padding-left:0!important;
+    padding-right:0!important;
+  }
+  .admin-real-preview-wrap--detail{
+    overflow:visible!important;
+  }
+}
