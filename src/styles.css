@@ -4755,9 +4755,8 @@ html body .simple-sheet[data-product-id][data-category-id] .simple-image--scenic
 .category-product-grid .product-card[data-product-id^="cachacas-"] .product-image-wrap img.media-managed,
 .beer-product-grid .product-card[data-product-id^="gins-"] .product-image-wrap img.media-managed,
 .beer-product-grid .product-card[data-product-id^="cachacas-"] .product-image-wrap img.media-managed{
-  --media-scale: 1!important;
-  --media-x: 0%!important;
-  --media-y: 0%!important;
+  transform:translate(var(--media-x,0%), var(--media-y,0%)) scale(var(--media-scale,1))!important;
+  transform-origin:center center!important;
 }
 
 html body .simple-sheet[data-product-id^="gins-"] .simple-image-main,
@@ -5062,4 +5061,37 @@ html body .product-sheet.beer-sheet[data-product-id] .beer-sheet-main.media-mana
   transform:translate(var(--media-x,0%), var(--media-y,0%)) scale(var(--media-scale,1))!important;
   transform-origin:center center!important;
   transition:none!important;
+}
+
+
+/* Prévia do editor = o mesmo card real da Home.
+   O editor reproduz a mesma hierarquia usada na tela inicial, para que
+   as próprias regras finais do site definam tamanho, foto, nome, preço e botão. */
+.admin-card-preview-shell{
+  width:min(100%,680px)!important;
+  min-height:0!important;
+  margin:0 auto!important;
+  box-shadow:none!important;
+  background:transparent!important;
+}
+.admin-card-preview-shell > main{
+  min-height:0!important;
+}
+.admin-card-preview-shell > main > .section.product-section{
+  width:100%!important;
+}
+.admin-card-preview-shell .product-strip{
+  overflow:visible!important;
+}
+
+/* Foto ajustada no painel: o mesmo enquadramento vale no editor e no card publicado. */
+html body .product-card[data-product-id] .product-image-wrap > img.media-managed{
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  transform:translate(var(--media-x,0%), var(--media-y,0%)) scale(var(--media-scale,1))!important;
+  transform-origin:center center!important;
 }
