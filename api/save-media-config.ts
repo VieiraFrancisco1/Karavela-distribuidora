@@ -1,6 +1,4 @@
-import { put } from '@vercel/blob'
-
-const CONFIG_PREFIX = 'karavela-admin/media-config/'
+import { writeCloudinaryMediaConfig } from './_cloudinary'
 
 export async function POST(request: Request) {
   try {
@@ -9,15 +7,9 @@ export async function POST(request: Request) {
       return Response.json({ message: 'Configuração de fotos inválida.' }, { status: 400 })
     }
 
-    const pathname = `${CONFIG_PREFIX}media-${Date.now()}.json`
-    const blob = await put(pathname, JSON.stringify(config), {
-      access: 'public',
-      addRandomSuffix: true,
-      contentType: 'application/json; charset=utf-8',
-      cacheControlMaxAge: 60,
-    })
+    const saved = await writeCloudinaryMediaConfig(config)
 
-    return Response.json({ ok: true, url: blob.url, config }, {
+    return Response.json({ ok: true, url: saved.secure_url, config }, {
       headers: { 'cache-control': 'no-store, max-age=0, must-revalidate' },
     })
   } catch (error) {
