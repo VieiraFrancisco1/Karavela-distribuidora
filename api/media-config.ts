@@ -1,5 +1,5 @@
 import { list } from '@vercel/blob'
-import { isCloudinaryConfigured, readCloudinaryMediaConfig, writeCloudinaryMediaConfig } from './_cloudinary'
+import { isCloudinaryConfigured, readCloudinaryMediaConfig, writeCloudinaryMediaConfig } from './_cloudinary.js'
 
 const LIVE_PREFIX = 'karavela-admin/media-config-v35/'
 const CURRENT_CONFIG_PATH = 'karavela-admin/media-config-current.json'
