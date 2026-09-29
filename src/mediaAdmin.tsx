@@ -334,7 +334,7 @@ function LiveDetailPreview({ product, src, settings, onChange }: { product: Prod
   const isBeer = beerCategoryIds.has(product.categoryId) && product.kind !== 'pack'
 
   return <div className="admin-real-preview-wrap admin-real-preview-wrap--detail">
-    <div style={{ width: 'min(100%, 430px)' }}>
+    <div className="admin-detail-preview-stage">
       {product.kind === 'pack'
         ? <PreviewPackDetail product={product} src={src} settings={settings} onChange={onChange}/>
         : isBeer
