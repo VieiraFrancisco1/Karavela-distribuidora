@@ -1,22 +1,15 @@
-import { put } from '@vercel/blob'
+import { uploadProductImageToCloudinary, writeCloudinaryMediaConfig } from './_cloudinary'
+import { readConfig } from './media-config'
 
 function safeProductId(value: string) {
   return value.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 100)
 }
 
-const PATCH_PREFIX = 'karavela-admin/media-patches-v50/'
 const MAX_PATCH_BYTES = 180_000
 
 type MediaSlot = 'card' | 'detail'
 type MediaViewSettings = { url?: string; scale?: number; x?: number; y?: number }
 type MediaPatch = { productId: string; slot: MediaSlot; value: MediaViewSettings | null }
-
-const extensionForType = (type: string) => {
-  if (type === 'image/png') return 'png'
-  if (type === 'image/webp') return 'webp'
-  if (type === 'image/avif') return 'avif'
-  return 'jpg'
-}
 
 function sanitizeSettings(value: unknown): MediaViewSettings | null {
   if (value === null) return null
@@ -74,8 +67,8 @@ export async function POST(request: Request) {
       })
     }
 
-    // V50: cada salvamento vira um registro imutável contendo SOMENTE os
-    // produtos/slots realmente alterados. Não existe sobrescrita do catálogo inteiro.
+    // Mantém o mesmo contrato do editor, mas grava a configuração consolidada
+    // no Cloudinary em vez de criar patches no Vercel Blob.
     if (action === 'save-media-patches-v50') {
       const patchFile = form.get('file')
       if (!(patchFile instanceof File) || patchFile.size <= 0 || patchFile.size > MAX_PATCH_BYTES) {
@@ -103,27 +96,32 @@ export async function POST(request: Request) {
       }
 
       const operations = rawOperations.map(sanitizePatch)
-      const now = Date.now()
-      const persisted = JSON.stringify({
-        version: 1,
-        createdAt: now,
-        operations,
-      })
+      const config = structuredClone(await readConfig()) as Record<string, {
+        card?: MediaViewSettings
+        detail?: MediaViewSettings
+      }>
 
-      const blob = await put(
-        `${PATCH_PREFIX}patch-${now}.json`,
-        new File([persisted], `patch-${now}.json`, { type: 'application/json' }),
-        {
-          access: 'public',
-          addRandomSuffix: true,
-        },
-      )
+      for (const operation of operations) {
+        if (operation.value === null) {
+          const product = { ...(config[operation.productId] ?? {}) }
+          delete product[operation.slot]
+          if (!product.card && !product.detail) delete config[operation.productId]
+          else config[operation.productId] = product
+          continue
+        }
+
+        config[operation.productId] = {
+          ...(config[operation.productId] ?? {}),
+          [operation.slot]: operation.value,
+        }
+      }
+
+      const saved = await writeCloudinaryMediaConfig(config)
 
       return Response.json({
         ok: true,
         patched: operations.length,
-        pathname: blob.pathname,
-        url: blob.url,
+        url: saved.secure_url,
       }, {
         headers: { 'cache-control': 'no-store, max-age=0, must-revalidate' },
       })
@@ -143,16 +141,13 @@ export async function POST(request: Request) {
       return Response.json({ message: 'A imagem ficou grande demais para o envio. Tente outra foto ou reduza o arquivo.' }, { status: 413 })
     }
 
-    const ext = extensionForType(file.type)
-    const pathname = `karavela-admin/products/${productId}/${slot}-${Date.now()}.${ext}`
-    const blob = await put(pathname, file, {
-      access: 'public',
-      addRandomSuffix: true,
-      contentType: file.type || `image/${ext}`,
-      cacheControlMaxAge: 31536000,
-    })
+    const uploaded = await uploadProductImageToCloudinary(file, productId, slot)
 
-    return Response.json({ url: blob.url, pathname: blob.pathname, uploadedAt: Date.now() }, {
+    return Response.json({
+      url: uploaded.url,
+      publicId: uploaded.publicId,
+      uploadedAt: Date.now(),
+    }, {
       headers: { 'cache-control': 'no-store, max-age=0, must-revalidate' },
     })
   } catch (error) {
