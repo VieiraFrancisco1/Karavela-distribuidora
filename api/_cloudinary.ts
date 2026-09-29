@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto'
+
 const CONFIG_PUBLIC_ID = 'karavela-distribuidora/config/media-config.json'
 
 type CloudinaryEnv = {
@@ -30,8 +32,15 @@ function getEnv(): CloudinaryEnv {
   return { cloudName, apiKey, apiSecret }
 }
 
-function authorization({ apiKey, apiSecret }: CloudinaryEnv) {
-  return `Basic ${btoa(`${apiKey}:${apiSecret}`)}`
+function signUpload(parameters: Record<string, string>, apiSecret: string) {
+  const serialized = Object.entries(parameters)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&')
+
+  return createHash('sha1')
+    .update(`${serialized}${apiSecret}`)
+    .digest('hex')
 }
 
 async function cloudinaryError(response: Response) {
@@ -43,36 +52,55 @@ async function cloudinaryError(response: Response) {
   }
 }
 
-export async function uploadProductImageToCloudinary(
+async function signedUpload(
+  resourceType: 'image' | 'raw',
   file: File,
-  productId: string,
-  slot: 'card' | 'detail',
+  publicId: string,
 ) {
   const env = getEnv()
-  const publicId = `karavela-distribuidora/products/${productId}/${slot}`
+  const timestamp = String(Math.floor(Date.now() / 1000))
+  const signedParameters = {
+    invalidate: 'true',
+    overwrite: 'true',
+    public_id: publicId,
+    timestamp,
+  }
+  const signature = signUpload(signedParameters, env.apiSecret)
+
   const form = new FormData()
-  form.append('file', file, file.name || `${slot}.jpg`)
+  form.append('file', file, file.name)
+  form.append('api_key', env.apiKey)
+  form.append('timestamp', timestamp)
   form.append('public_id', publicId)
   form.append('overwrite', 'true')
   form.append('invalidate', 'true')
+  form.append('signature', signature)
 
   const response = await fetch(
-    `https://api.cloudinary.com/v1_1/${encodeURIComponent(env.cloudName)}/image/upload`,
+    `https://api.cloudinary.com/v1_1/${encodeURIComponent(env.cloudName)}/${resourceType}/upload`,
     {
       method: 'POST',
-      headers: { Authorization: authorization(env) },
       body: form,
     },
   )
 
   if (!response.ok) throw new Error(await cloudinaryError(response))
 
-  const data = await response.json() as {
+  return await response.json() as {
     secure_url?: string
     public_id?: string
     version?: number
     resource_type?: string
   }
+}
+
+export async function uploadProductImageToCloudinary(
+  file: File,
+  productId: string,
+  slot: 'card' | 'detail',
+) {
+  const publicId = `karavela-distribuidora/products/${productId}/${slot}`
+  const data = await signedUpload('image', file, publicId)
 
   if (!data.secure_url) throw new Error('O Cloudinary não retornou a URL da imagem.')
 
@@ -99,31 +127,13 @@ export async function readCloudinaryMediaConfig<T extends object>(): Promise<T |
 }
 
 export async function writeCloudinaryMediaConfig(config: object) {
-  const env = getEnv()
   const file = new File(
     [JSON.stringify(config)],
     'media-config.json',
     { type: 'application/json' },
   )
 
-  const form = new FormData()
-  form.append('file', file, 'media-config.json')
-  form.append('public_id', CONFIG_PUBLIC_ID)
-  form.append('overwrite', 'true')
-  form.append('invalidate', 'true')
-
-  const response = await fetch(
-    `https://api.cloudinary.com/v1_1/${encodeURIComponent(env.cloudName)}/raw/upload`,
-    {
-      method: 'POST',
-      headers: { Authorization: authorization(env) },
-      body: form,
-    },
-  )
-
-  if (!response.ok) throw new Error(await cloudinaryError(response))
-
-  const data = await response.json() as { secure_url?: string; public_id?: string; version?: number }
+  const data = await signedUpload('raw', file, CONFIG_PUBLIC_ID)
   if (!data.secure_url) throw new Error('O Cloudinary não confirmou o salvamento das configurações.')
 
   return data
