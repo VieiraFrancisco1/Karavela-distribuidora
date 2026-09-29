@@ -5034,3 +5034,32 @@ html body .product-sheet.beer-sheet[data-product-id] .beer-sheet-main.media-mana
 .product-sheet::after{
   overscroll-behavior:contain!important;
 }
+
+
+/* Correção: o card da tela inicial continua visualmente igual ao card real,
+   mas a imagem do preview administrativo volta a aceitar arraste/zoom.
+   As regras abaixo valem somente dentro do editor. */
+.admin-media-panel .product-card .admin-card-editable-frame{
+  touch-action:none!important;
+  cursor:grab!important;
+  user-select:none!important;
+}
+.admin-media-panel .product-card .admin-card-editable-frame:active{
+  cursor:grabbing!important;
+}
+.admin-media-panel .product-card .admin-card-editable-frame > img.admin-card-editable-image{
+  pointer-events:none!important;
+  -webkit-user-drag:none!important;
+  user-select:none!important;
+}
+.admin-media-panel .product-card .admin-card-editable-frame > img.admin-card-editable-image.media-managed{
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  transform:translate(var(--media-x,0%), var(--media-y,0%)) scale(var(--media-scale,1))!important;
+  transform-origin:center center!important;
+  transition:none!important;
+}
