@@ -1,4 +1,4 @@
-import { writeCloudinaryMediaConfig } from './_cloudinary'
+import { writeCloudinaryMediaConfig } from './_cloudinary.js'
 
 export async function POST(request: Request) {
   try {
