@@ -1,5 +1,5 @@
-import { uploadProductImageToCloudinary, writeCloudinaryMediaConfig } from './_cloudinary'
-import { readConfig } from './media-config'
+import { uploadProductImageToCloudinary, writeCloudinaryMediaConfig } from './_cloudinary.js'
+import { readConfig } from './media-config.js'
 
 function safeProductId(value: string) {
   return value.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 100)
