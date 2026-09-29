@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280">
+  <rect width="280" height="280" rx="32" fill="#f5fbff"/>
+  <path d="M118 44h44v34c0 10 17 21 17 43v87c0 18-14 32-32 32h-14c-18 0-32-14-32-32v-87c0-22 17-33 17-43V44Z" fill="#e8f4fb" stroke="#0b5f9c" stroke-width="5"/>
+  <path d="M122 67h36" stroke="#d5a22a" stroke-width="5" stroke-linecap="round"/>
+  <rect x="111" y="130" width="58" height="52" rx="10" fill="#ffffff" stroke="#18b7ff" stroke-width="3"/>
+  <text x="140" y="154" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#062d59">KARAVELA</text>
+  <text x="140" y="171" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#5e7489">foto em breve</text>
+</svg>
