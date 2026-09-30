@@ -27,3 +27,24 @@ export type CartLine = {
   qty: number
   unitPrice: number
 }
+
+
+export type CatalogBrand = {
+  id: string
+  name: string
+  image?: string | null
+  accent?: string
+}
+
+export type CatalogCategory = {
+  id: string
+  label: string
+  icon: string
+  image?: string | null
+}
+
+export type CatalogConfig = {
+  hiddenProductIds?: string[]
+  brands?: CatalogBrand[]
+  categories?: CatalogCategory[]
+}
