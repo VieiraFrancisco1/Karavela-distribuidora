@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react'
-import type { Product } from './types'
+import type { CatalogBrand, CatalogCategory, CatalogConfig, Product } from './types'
+import { CatalogManager } from './catalogAdmin'
 
 export type MediaSlot = 'card' | 'detail'
 
@@ -50,10 +51,14 @@ export const mediaImageStyle = (settings?: MediaViewSettings): CSSProperties => 
 
 type AdminMediaProps = {
   products: Product[]
+  brands: CatalogBrand[]
+  categories: CatalogCategory[]
+  catalogConfig: CatalogConfig
   config: MediaConfig
   detailImageForProduct: (product: Product) => string
   onClose: () => void
   onSaved: (config: MediaConfig) => void
+  onCatalogSaved: (config: CatalogConfig) => void
 }
 
 type EditableImageProps = {
@@ -406,7 +411,8 @@ async function prepareImage(file: File): Promise<{ blob: Blob; name: string }> {
   }
 }
 
-export function AdminMedia({ products, config, detailImageForProduct, onClose, onSaved }: AdminMediaProps) {
+export function AdminMedia({ products, brands, categories, catalogConfig, config, detailImageForProduct, onClose, onSaved, onCatalogSaved }: AdminMediaProps) {
+  const [adminSection, setAdminSection] = useState<'photos' | 'products' | 'brands' | 'categories'>('photos')
   const [query, setQuery] = useState('')
   const [selectedId, setSelectedId] = useState(products[0]?.id ?? '')
   const [slot, setSlot] = useState<MediaSlot>('card')
@@ -603,11 +609,18 @@ export function AdminMedia({ products, config, detailImageForProduct, onClose, o
   return <div className="admin-media-overlay admin-media-overlay--panel">
     <section className="admin-media-panel">
       <header className="admin-media-header">
-        <div><small>Karavela Distribuidora</small><h2>Editor de fotos</h2></div>
+        <div><small>Karavela Distribuidora</small><h2>Área administrativa</h2></div>
         <button onClick={requestClose} aria-label="Fechar">×</button>
       </header>
 
-      <div className="admin-media-layout">
+      <div className="admin-section-tabs" role="tablist" aria-label="Seções administrativas">
+        <button className={adminSection === 'photos' ? 'active' : ''} onClick={() => setAdminSection('photos')}>Fotos</button>
+        <button className={adminSection === 'products' ? 'active' : ''} onClick={() => setAdminSection('products')}>Itens</button>
+        <button className={adminSection === 'brands' ? 'active' : ''} onClick={() => setAdminSection('brands')}>Marcas</button>
+        <button className={adminSection === 'categories' ? 'active' : ''} onClick={() => setAdminSection('categories')}>Categorias</button>
+      </div>
+
+      {adminSection === 'photos' ? <div className="admin-media-layout">
         <aside className="admin-product-sidebar">
           <div className="admin-search"><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Buscar produto..."/></div>
           <div className="admin-product-list">
@@ -683,7 +696,14 @@ export function AdminMedia({ products, config, detailImageForProduct, onClose, o
             <button className="admin-save" onClick={() => void save()} disabled={saving || uploading || !dirty}>{saving ? 'Salvando...' : dirty ? 'Salvar alterações' : 'Alterações salvas'}</button>
           </>}
         </main>
-      </div>
+      </div> : <CatalogManager
+        section={adminSection}
+        products={products}
+        brands={brands}
+        categories={categories}
+        config={catalogConfig}
+        onSaved={onCatalogSaved}
+      />}
     </section>
   </div>
 }
