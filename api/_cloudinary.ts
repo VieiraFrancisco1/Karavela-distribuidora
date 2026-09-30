@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto'
 
 const CONFIG_PUBLIC_ID = 'karavela-distribuidora/config/media-config.json'
+const CATALOG_CONFIG_PUBLIC_ID = 'karavela-distribuidora/config/catalog-config.json'
 
 type CloudinaryEnv = {
   cloudName: string
@@ -111,11 +112,32 @@ export async function uploadProductImageToCloudinary(
   }
 }
 
-export async function readCloudinaryMediaConfig<T extends object>(): Promise<T | null> {
+export async function uploadCatalogImageToCloudinary(
+  file: File,
+  kind: 'brand' | 'category',
+  id: string,
+) {
+  const safeId = id.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 120)
+  if (!safeId) throw new Error('Identificador inválido para a imagem.')
+
+  const folder = kind === 'brand' ? 'brands' : 'categories'
+  const publicId = `karavela-distribuidora/${folder}/${safeId}`
+  const data = await signedUpload('image', file, publicId)
+
+  if (!data.secure_url) throw new Error('O Cloudinary não retornou a URL da imagem.')
+
+  return {
+    url: data.secure_url,
+    publicId: data.public_id || publicId,
+    version: data.version,
+  }
+}
+
+async function readCloudinaryJson<T extends object>(publicId: string): Promise<T | null> {
   if (!isCloudinaryConfigured()) return null
 
   const { cloudName } = getEnv()
-  const url = `https://res.cloudinary.com/${encodeURIComponent(cloudName)}/raw/upload/${CONFIG_PUBLIC_ID}?v=${Date.now()}`
+  const url = `https://res.cloudinary.com/${encodeURIComponent(cloudName)}/raw/upload/${publicId}?v=${Date.now()}`
 
   const response = await fetch(url, { cache: 'no-store' })
   if (response.status === 404) return null
@@ -126,15 +148,31 @@ export async function readCloudinaryMediaConfig<T extends object>(): Promise<T |
   return data as T
 }
 
-export async function writeCloudinaryMediaConfig(config: object) {
+export async function readCloudinaryMediaConfig<T extends object>(): Promise<T | null> {
+  return readCloudinaryJson<T>(CONFIG_PUBLIC_ID)
+}
+
+export async function readCloudinaryCatalogConfig<T extends object>(): Promise<T | null> {
+  return readCloudinaryJson<T>(CATALOG_CONFIG_PUBLIC_ID)
+}
+
+async function writeCloudinaryJson(config: object, publicId: string, filename: string) {
   const file = new File(
     [JSON.stringify(config)],
-    'media-config.json',
+    filename,
     { type: 'application/json' },
   )
 
-  const data = await signedUpload('raw', file, CONFIG_PUBLIC_ID)
+  const data = await signedUpload('raw', file, publicId)
   if (!data.secure_url) throw new Error('O Cloudinary não confirmou o salvamento das configurações.')
 
   return data
+}
+
+export async function writeCloudinaryMediaConfig(config: object) {
+  return writeCloudinaryJson(config, CONFIG_PUBLIC_ID, 'media-config.json')
+}
+
+export async function writeCloudinaryCatalogConfig(config: object) {
+  return writeCloudinaryJson(config, CATALOG_CONFIG_PUBLIC_ID, 'catalog-config.json')
 }
