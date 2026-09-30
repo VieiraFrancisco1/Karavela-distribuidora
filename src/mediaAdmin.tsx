@@ -173,8 +173,9 @@ function LiveCardPreview({ product, src, settings, onChange }: { product: Produc
                 settings={settings}
                 slot="card"
                 onChange={onChange}
-                frameClassName="product-image-wrap admin-card-editable-frame"
+                frameClassName="product-image-wrap admin-card-editable-frame product-focus-blur"
                 imageClassName="admin-card-editable-image"
+                backdropClassName="product-image-backdrop"
               />
               <div className="product-copy">
                 <strong>{product.name}{product.size && <span className="inline-size"> {product.size}</span>}</strong>
