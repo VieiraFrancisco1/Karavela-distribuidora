@@ -5179,3 +5179,125 @@ html body .product-sheet .media-managed{
     overflow:visible!important;
   }
 }
+
+
+/* V59 — editor de fotos mais compacto e rolável no celular
+   Mantém exatamente o quadro de imagem usado no site, mas esconde as
+   informações de produto dentro da prévia administrativa. */
+.admin-card-preview-shell .product-strip > .product-card.admin-photo-only-card,
+.admin-card-preview-shell .product-strip > .product-card.admin-photo-only-card.product-card--photo{
+  min-height:0!important;
+  height:auto!important;
+}
+.admin-photo-only-card .product-copy,
+.admin-photo-only-card .product-bottom{
+  display:none!important;
+}
+
+/* Na prévia "após o clique", deixa visível somente a área real da foto. */
+.admin-photo-only-sheet{
+  min-height:0!important;
+  height:auto!important;
+  max-height:none!important;
+}
+.admin-photo-only-sheet .sheet-grabber,
+.admin-photo-only-sheet .sheet-close,
+.admin-photo-only-sheet .simple-summary,
+.admin-photo-only-sheet .note-label,
+.admin-photo-only-sheet .simple-tier-row,
+.admin-photo-only-sheet .simple-qty-row,
+.admin-photo-only-sheet .simple-add,
+.admin-photo-only-sheet .beer-sheet-copy,
+.admin-photo-only-sheet .return-exact,
+.admin-photo-only-sheet .beer-buy-panel,
+.admin-photo-only-sheet .sheet-title,
+.admin-photo-only-sheet .pack-info,
+.admin-photo-only-sheet .sheet-footer{
+  display:none!important;
+}
+
+/* Tira o espaço morto das prévias sem alterar o tamanho do quadro da foto. */
+.admin-real-preview-wrap{
+  min-height:0!important;
+  margin-bottom:7px!important;
+  touch-action:pan-y!important;
+}
+.admin-real-preview-wrap--card{
+  min-height:0!important;
+  padding:7px!important;
+}
+.admin-real-preview-wrap--detail{
+  padding-top:0!important;
+  padding-bottom:7px!important;
+}
+
+/* Controles imediatamente abaixo da foto. */
+.admin-adjustments{
+  margin-top:0!important;
+  padding:10px!important;
+  gap:8px!important;
+}
+.admin-adjustments label{
+  gap:3px!important;
+}
+.admin-nudge-row button{
+  height:32px!important;
+}
+
+/* Botões de foto menores para ocupar menos espaço vertical. */
+.admin-upload-row{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  flex-wrap:wrap!important;
+  gap:7px!important;
+  margin:8px 0!important;
+}
+.admin-upload-button,
+.admin-secondary{
+  width:auto!important;
+  min-width:0!important;
+  height:36px!important;
+  padding:0 13px!important;
+  border-radius:10px!important;
+  font-size:10.5px!important;
+}
+
+/* A rolagem funciona ao iniciar o gesto em qualquer área livre do editor.
+   Somente o quadro da foto continua capturando o gesto para reposicioná-la. */
+.admin-media-panel,
+.admin-media-layout,
+.admin-editor-main,
+.admin-preview-label,
+.admin-adjustments,
+.admin-upload-row,
+.admin-help,
+.admin-status{
+  touch-action:pan-y!important;
+}
+.admin-media-layout{
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+}
+
+@media(max-width:760px){
+  .admin-real-preview-wrap--card{
+    padding:5px 0!important;
+  }
+  .admin-real-preview-wrap--detail{
+    padding-bottom:5px!important;
+  }
+  .admin-adjustments{
+    padding:9px!important;
+    gap:7px!important;
+  }
+  .admin-upload-row{
+    margin:7px 0!important;
+  }
+  .admin-upload-button,
+  .admin-secondary{
+    height:34px!important;
+    padding-inline:11px!important;
+    font-size:10px!important;
+  }
+}
