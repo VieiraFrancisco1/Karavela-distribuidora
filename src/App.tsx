@@ -976,7 +976,10 @@ export default function App() {
     const visibleIds = new Set(catalogProducts.map(product => product.id))
     setCart(previous => previous.filter(line => visibleIds.has(line.product.id)))
     if (selected && !visibleIds.has(selected.id)) setSelected(null)
-  }, [catalogProducts, catalogReady, selected])
+    if (activeCategoryId && !catalogCategories.some(category => category.id === activeCategoryId)) {
+      setActiveCategoryId(null)
+    }
+  }, [catalogProducts, catalogCategories, catalogReady, selected, activeCategoryId])
 
   const filtered = useMemo(() => {
     const q = query.trim().toLocaleLowerCase('pt-BR')
