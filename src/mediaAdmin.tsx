@@ -161,7 +161,7 @@ function LiveCardPreview({ product, src, settings, onChange }: { product: Produc
           <div className="product-strip">
             <article
               data-product-id={product.id}
-              className={`product-card${isScenicCard ? ' product-card--photo' : ''}`}
+              className={`product-card admin-photo-only-card${isScenicCard ? ' product-card--photo' : ''}`}
             >
               <EditableImage
                 src={src}
@@ -198,7 +198,7 @@ function PreviewSimpleDetail({ product, src, settings, onChange }: { product: Pr
 
   const imageFrameClass = `simple-image${isScenicSheet ? ' simple-image--scenic' : ''}${reduceModal15 ? ' detail-image--minus15' : ''}${reduceModal17 ? ' detail-image--minus17' : ''}${slovaLimao ? ' detail-image--slova-limao' : ''}`
 
-  return <section className="product-sheet simple-sheet" data-category-id={product.categoryId} data-product-id={product.id}>
+  return <section className="product-sheet simple-sheet admin-photo-only-sheet" data-category-id={product.categoryId} data-product-id={product.id}>
     <div className="sheet-grabber"/>
     <span className="sheet-close" aria-hidden="true"><PreviewIcon name="close"/></span>
     <EditableImage
@@ -236,7 +236,7 @@ function PreviewBeerDetail({ product, src, settings, onChange }: { product: Prod
   const discountPercent = offerTier ? Math.max(0, Math.round((1 - (offerTier.unitPrice / product.price)) * 100)) : 0
   const offerTotal = offerTier ? offerTier.qty * offerTier.unitPrice : 0
 
-  return <section className="product-sheet beer-sheet" data-product-id={product.id}>
+  return <section className="product-sheet beer-sheet admin-photo-only-sheet" data-product-id={product.id}>
     <div className="sheet-grabber"/>
     <span className="sheet-close" aria-hidden="true"><PreviewIcon name="close"/></span>
     <div className="beer-sheet-head">
@@ -298,7 +298,7 @@ function PreviewBeerDetail({ product, src, settings, onChange }: { product: Prod
 }
 
 function PreviewPackDetail({ product, src, settings, onChange }: { product: Product; src: string; settings: MediaViewSettings; onChange: (next: MediaViewSettings) => void }) {
-  return <section className="product-sheet">
+  return <section className="product-sheet admin-photo-only-sheet">
     <div className="sheet-grabber"/>
     <span className="sheet-close" aria-hidden="true"><PreviewIcon name="close"/></span>
     <div className="sheet-head">
@@ -636,6 +636,22 @@ export function AdminMedia({ products, config, detailImageForProduct, onClose, o
               : <LiveDetailPreview product={selected} src={previewSrc} settings={currentSettings} onChange={updateCurrent}/>
             }
 
+            <div className="admin-adjustments">
+              <label><span>Zoom <b>{Math.round(normalizedCurrent.scale * 100)}%</b></span><input type="range" min={MIN_SCALE} max={MAX_SCALE} step="0.01" value={normalizedCurrent.scale} onChange={event => updateCurrent({ ...currentSettings, scale: Number(event.target.value) })}/></label>
+              <label><span>Horizontal <b>{Math.round(normalizedCurrent.x)}%</b></span><input type="range" min={-PAN_LIMIT} max={PAN_LIMIT} step="1" value={normalizedCurrent.x} onChange={event => updateCurrent({ ...currentSettings, x: Number(event.target.value) })}/></label>
+              <label><span>Vertical <b>{Math.round(normalizedCurrent.y)}%</b></span><input type="range" min={-PAN_LIMIT} max={PAN_LIMIT} step="1" value={normalizedCurrent.y} onChange={event => updateCurrent({ ...currentSettings, y: Number(event.target.value) })}/></label>
+              <div className="admin-nudge-row admin-nudge-row--four">
+                <button onClick={() => updateCurrent({ ...currentSettings, x: clamp(normalizedCurrent.x - 2, -PAN_LIMIT, PAN_LIMIT) })}>←</button>
+                <button onClick={() => updateCurrent({ ...currentSettings, y: clamp(normalizedCurrent.y - 2, -PAN_LIMIT, PAN_LIMIT) })}>↑</button>
+                <button onClick={() => updateCurrent({ ...currentSettings, y: clamp(normalizedCurrent.y + 2, -PAN_LIMIT, PAN_LIMIT) })}>↓</button>
+                <button onClick={() => updateCurrent({ ...currentSettings, x: clamp(normalizedCurrent.x + 2, -PAN_LIMIT, PAN_LIMIT) })}>→</button>
+              </div>
+              <div className="admin-nudge-row">
+                <button onClick={() => updateCurrent({ ...currentSettings, x: 0, y: 0 })}>Centralizar</button>
+                <button onClick={() => updateCurrent({ ...currentSettings, scale: 1, x: 0, y: 0 })}>Encaixe padrão</button>
+              </div>
+            </div>
+
             <div className="admin-upload-row">
               <input
                 ref={fileInput}
@@ -657,26 +673,9 @@ export function AdminMedia({ products, config, detailImageForProduct, onClose, o
                 }}
                 disabled={uploading}
               >
-                {uploading ? 'Enviando...' : 'Escolher da galeria'}
+                {uploading ? 'Enviando...' : 'Adicionar foto'}
               </button>
               <button className="admin-secondary" onClick={resetCurrent}>Voltar ao padrão</button>
-            </div>
-            <div className="admin-help">Você pode escolher uma foto diretamente da galeria do celular ou do computador. Depois, ajuste o enquadramento na prévia em tempo real e salve.</div>
-
-            <div className="admin-adjustments">
-              <label><span>Zoom <b>{Math.round(normalizedCurrent.scale * 100)}%</b></span><input type="range" min={MIN_SCALE} max={MAX_SCALE} step="0.01" value={normalizedCurrent.scale} onChange={event => updateCurrent({ ...currentSettings, scale: Number(event.target.value) })}/></label>
-              <label><span>Horizontal <b>{Math.round(normalizedCurrent.x)}%</b></span><input type="range" min={-PAN_LIMIT} max={PAN_LIMIT} step="1" value={normalizedCurrent.x} onChange={event => updateCurrent({ ...currentSettings, x: Number(event.target.value) })}/></label>
-              <label><span>Vertical <b>{Math.round(normalizedCurrent.y)}%</b></span><input type="range" min={-PAN_LIMIT} max={PAN_LIMIT} step="1" value={normalizedCurrent.y} onChange={event => updateCurrent({ ...currentSettings, y: Number(event.target.value) })}/></label>
-              <div className="admin-nudge-row admin-nudge-row--four">
-                <button onClick={() => updateCurrent({ ...currentSettings, x: clamp(normalizedCurrent.x - 2, -PAN_LIMIT, PAN_LIMIT) })}>←</button>
-                <button onClick={() => updateCurrent({ ...currentSettings, y: clamp(normalizedCurrent.y - 2, -PAN_LIMIT, PAN_LIMIT) })}>↑</button>
-                <button onClick={() => updateCurrent({ ...currentSettings, y: clamp(normalizedCurrent.y + 2, -PAN_LIMIT, PAN_LIMIT) })}>↓</button>
-                <button onClick={() => updateCurrent({ ...currentSettings, x: clamp(normalizedCurrent.x + 2, -PAN_LIMIT, PAN_LIMIT) })}>→</button>
-              </div>
-              <div className="admin-nudge-row">
-                <button onClick={() => updateCurrent({ ...currentSettings, x: 0, y: 0 })}>Centralizar</button>
-                <button onClick={() => updateCurrent({ ...currentSettings, scale: 1, x: 0, y: 0 })}>Encaixe padrão</button>
-              </div>
             </div>
 
             <div className="admin-help">A prévia acima reproduz o enquadramento final. Você pode arrastar a foto mesmo com zoom em 100%, usar os controles de posição e reduzir o zoom até 50%.</div>
