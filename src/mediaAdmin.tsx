@@ -525,14 +525,38 @@ export function AdminMedia({ products, brands, categories, catalogConfig, config
         image.src = data.url!
       })
 
-      setDraft(previous => ({
-        ...previous,
-        [productId]: {
-          ...previous[productId],
-          [targetSlot]: { url: data.url, scale: 1, x: 0, y: 0 },
-        },
-      }))
+      setDraft(previous => {
+        const currentProduct = previous[productId] ?? {}
+        const uploadedCard = { url: data.url, scale: 1, x: 0, y: 0 }
+
+        if (targetSlot === 'card') {
+          const currentDetail = normalizedMediaSettings(currentProduct.detail)
+          return {
+            ...previous,
+            [productId]: {
+              ...currentProduct,
+              card: uploadedCard,
+              detail: {
+                ...currentProduct.detail,
+                url: data.url,
+                scale: currentDetail.scale,
+                x: currentDetail.x,
+                y: currentDetail.y,
+              },
+            },
+          }
+        }
+
+        return {
+          ...previous,
+          [productId]: {
+            ...currentProduct,
+            detail: { url: data.url, scale: 1, x: 0, y: 0 },
+          },
+        }
+      })
       markTouched(productId, targetSlot)
+      if (targetSlot === 'card') markTouched(productId, 'detail')
       setDirty(true)
 
       if (previewObjectUrl.current === localUrl) {
@@ -540,7 +564,12 @@ export function AdminMedia({ products, brands, categories, catalogConfig, config
         previewObjectUrl.current = null
         setLocalPreview(null)
       }
-      setMessage('Foto carregada. Posicione exatamente como quiser e salve quando terminar.', 'success')
+      setMessage(
+        targetSlot === 'card'
+          ? 'Foto carregada no card e também aplicada automaticamente após o clique. Ajuste como quiser e salve.'
+          : 'Foto carregada. Posicione exatamente como quiser e salve quando terminar.',
+        'success',
+      )
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Não foi possível enviar a foto.', 'error')
     } finally {
