@@ -5822,8 +5822,10 @@ html body .product-sheet .media-managed{
   }
 }
 
-/* V62 — rodapé encostado no fundo e conteúdo centralizado */
-.app-shell > main{
+/* V62 — rodapé encostado no fundo e conteúdo centralizado
+   Aplica somente ao app principal. A prévia do editor também usa .app-shell,
+   por isso não pode receber a altura da tela inteira. */
+#root > .app-shell > main{
   min-height:calc(100dvh - 68px)!important;
   display:flex!important;
   flex-direction:column!important;
@@ -5883,5 +5885,62 @@ html body .product-sheet .media-managed{
     justify-content:center!important;
     justify-items:center!important;
     text-align:center!important;
+  }
+}
+
+
+/* V63 — editor de fotos compacto no celular.
+   Remove a altura de viewport herdada pela prévia e aproxima os controles
+   do card sem mudar o tamanho real do quadro da foto. */
+.admin-card-preview-shell{
+  min-height:0!important;
+  height:auto!important;
+}
+.admin-card-preview-shell > main{
+  min-height:0!important;
+  height:auto!important;
+  display:block!important;
+}
+.admin-card-preview-shell > main > .section.product-section{
+  min-height:0!important;
+  height:auto!important;
+  margin-bottom:0!important;
+}
+.admin-card-preview-shell .product-strip{
+  min-height:0!important;
+  height:auto!important;
+  padding-bottom:0!important;
+}
+.admin-real-preview-wrap--card{
+  height:auto!important;
+  min-height:0!important;
+  margin-bottom:4px!important;
+}
+.admin-real-preview-wrap--card .admin-card-preview-shell{
+  height:auto!important;
+  min-height:0!important;
+}
+.admin-editor-main .admin-adjustments{
+  margin-top:0!important;
+}
+
+@media(max-width:760px){
+  .admin-editor-main{
+    padding-top:8px!important;
+  }
+  .admin-preview-label{
+    margin-bottom:3px!important;
+  }
+  .admin-real-preview-wrap--card{
+    padding-top:2px!important;
+    padding-bottom:2px!important;
+    margin-bottom:2px!important;
+  }
+  .admin-card-preview-shell > main > .section.product-section{
+    padding-top:0!important;
+    padding-bottom:0!important;
+  }
+  .admin-editor-main .admin-adjustments{
+    margin-top:0!important;
   }
 }
