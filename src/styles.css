@@ -5937,3 +5937,68 @@ html body .product-sheet .sheet-image > .sheet-image-main{
     filter:blur(12px) brightness(.83) saturate(1.05)!important;
   }
 }
+
+
+/* V62 — rodapé encostado no fundo e conteúdo centralizado */
+.app-shell > main{
+  min-height:calc(100dvh - 68px)!important;
+  display:flex!important;
+  flex-direction:column!important;
+}
+
+.site-footer{
+  width:100%!important;
+  margin-top:auto!important;
+  margin-bottom:0!important;
+  justify-items:center!important;
+  text-align:center!important;
+}
+
+.site-footer-brand{
+  width:100%!important;
+  justify-content:center!important;
+  align-items:center!important;
+}
+
+.site-footer-brand img{
+  object-position:center center!important;
+  margin-inline:auto!important;
+}
+
+.site-footer-block{
+  width:100%!important;
+  justify-items:center!important;
+  text-align:center!important;
+}
+
+.site-footer-block h3{
+  width:100%!important;
+  text-align:center!important;
+}
+
+.site-footer-block a,
+.site-footer-line{
+  width:100%!important;
+  justify-content:center!important;
+  text-align:center!important;
+}
+
+@media(max-width:760px){
+  .site-footer{
+    width:100%!important;
+    margin-top:auto!important;
+    margin-bottom:0!important;
+    padding:18px 16px max(20px, env(safe-area-inset-bottom))!important;
+    place-items:center!important;
+  }
+
+  .site-footer-brand,
+  .site-footer-block,
+  .site-footer-block h3,
+  .site-footer-block a,
+  .site-footer-line{
+    justify-content:center!important;
+    justify-items:center!important;
+    text-align:center!important;
+  }
+}
