@@ -214,7 +214,10 @@ function ProductCard({ product, onOpen, media }: { product: Product; onOpen: (p:
 
   return (
     <article data-product-id={product.id} className={`product-card${isScenicCard ? ' product-card--photo' : ''}`} onClick={() => onOpen(product)}>
-      <div className="product-image-wrap"><ManagedProductImage src={product.image} alt={product.name} settings={media?.card} /></div>
+      <div className="product-image-wrap product-focus-blur">
+        <img className="product-image-backdrop" src={media?.card?.url || product.image} alt="" aria-hidden="true"/>
+        <ManagedProductImage src={product.image} alt={product.name} settings={media?.card} />
+      </div>
       <div className="product-copy">
         <strong>{product.name}{product.size && <span className="inline-size"> {product.size}</span>}</strong>
       </div>
