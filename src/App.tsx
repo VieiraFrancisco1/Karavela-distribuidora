@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
-import { brands, categories, products, productsByCategory } from './data'
-import type { CartLine, Product, Tier } from './types'
+import { brands as baseBrands, categories as baseCategories, products as baseProducts } from './data'
+import type { CartLine, CatalogBrand, CatalogCategory, CatalogConfig, Product, Tier } from './types'
 import { AdminMedia, hasMediaOverride, mediaImageStyle } from './mediaAdmin'
 import type { MediaConfig, MediaViewSettings, ProductMediaOverride } from './mediaAdmin'
 
@@ -99,6 +99,28 @@ const PICKUP_ADDRESS = 'Rua 26 de Junho, nº 920 · Boaviaginha · Boa Viagem, C
 const PIX_RECEIVER = 'Deivid dos Santos Cavalcante'
 const PIX_KEY = '08853052309'
 const WHATSAPP_ORDER_NUMBER = '5588982261291'
+const INSTAGRAM_HANDLE = 'karavelabistroedistribuidora'
+
+const simpleSlug = (value: string) => value
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .toLocaleLowerCase('pt-BR')
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-+|-+$/g, '')
+
+const defaultBrands: CatalogBrand[] = baseBrands.map((brand, index) => ({
+  id: simpleSlug(brand.name) || `marca-${index + 1}`,
+  name: brand.name,
+  image: brand.image,
+  accent: brand.accent,
+}))
+
+const defaultCategories: CatalogCategory[] = baseCategories.map(category => ({
+  id: category.id,
+  label: category.label,
+  icon: category.icon,
+  image: null,
+}))
 const scenicCardCategoryIds = new Set(['whiskys', 'vinhos', 'cachacas', 'vodkas', 'gins', 'licores'])
 const scenicSheetCategoryIds = new Set(['whiskys', 'vinhos', 'cachacas', 'vodkas', 'gins', 'licores'])
 const detailImageByProductId: Record<string, string> = {
@@ -363,15 +385,53 @@ function ProductSheet({ product, onClose, onAdd, media }: { product: Product; on
   </div>
 }
 
-function SideMenu({ onClose, onCart, onHome, onCategory, onAdmin }: { onClose: () => void; onCart: () => void; onHome: () => void; onCategory: (id: string) => void; onAdmin: () => void }) {
+function SideMenu({ categories, onClose, onCart, onHome, onCategory, onAdmin }: { categories: CatalogCategory[]; onClose: () => void; onCart: () => void; onHome: () => void; onCategory: (id: string) => void; onAdmin: () => void }) {
   return <div className="overlay menu-overlay" onMouseDown={onClose}>
     <aside className="side-menu" onMouseDown={e => e.stopPropagation()}>
       <div className="menu-top"><img src="/assets/logo-karavela.png" alt="Karavela Bistrô & Distribuidora"/><button onClick={onClose}><Icon name="close"/></button></div>
       <nav><button onClick={onHome}><Icon name="home"/> Início</button><button onClick={onCart}><Icon name="cart"/> Meu carrinho</button><button><Icon name="orders"/> Pedidos</button><button><Icon name="chat"/> Falar com atendente</button><button className="admin-menu-entry" onClick={onAdmin}><Icon name="orders"/> Área administrativa</button></nav>
       <div className="menu-sep"/><h3>Categorias</h3>
-      <div className="menu-cats">{categories.map(category => <button key={category.id} onClick={() => onCategory(category.id)}><CategoryIcon name={category.icon}/><span>{category.label}</span><Icon name="arrow"/></button>)}</div>
+      <div className="menu-cats">{categories.map(category => <button key={category.id} onClick={() => onCategory(category.id)}>{category.image ? <img className="menu-category-image" src={category.image} alt=""/> : <CategoryIcon name={category.icon}/>}<span>{category.label}</span><Icon name="arrow"/></button>)}</div>
     </aside>
   </div>
+}
+
+function SiteFooter() {
+  return <footer className="site-footer">
+    <div className="site-footer-brand">
+      <img src="/assets/logo-karavela.png" alt="Karavela Bistrô & Distribuidora"/>
+    </div>
+    <div className="site-footer-block">
+      <h3>Contato</h3>
+      <a href={`https://wa.me/${WHATSAPP_ORDER_NUMBER}`} target="_blank" rel="noreferrer">
+        <span className="site-footer-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M21 15.5a3 3 0 0 1-3 3h-1.2c-6.3 0-11.3-5-11.3-11.3V6a3 3 0 0 1 3-3h1.6l1.3 4-2 1.6a12.3 12.3 0 0 0 6 6l1.6-2 4 1.3z"/></svg>
+        </span>
+        <span>Falar com atendente</span>
+      </a>
+      <a href={`https://instagram.com/${INSTAGRAM_HANDLE}`} target="_blank" rel="noreferrer">
+        <span className="site-footer-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/></svg>
+        </span>
+        <span>@{INSTAGRAM_HANDLE}</span>
+      </a>
+    </div>
+    <div className="site-footer-block">
+      <h3>Funcionamento</h3>
+      <div className="site-footer-line">
+        <span className="site-footer-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        </span>
+        <span>Seg a Sáb: 09:00 às 23:00</span>
+      </div>
+      <div className="site-footer-line">
+        <span className="site-footer-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        </span>
+        <span>Domingo: Fechado</span>
+      </div>
+    </div>
+  </footer>
 }
 
 function CartDrawer({ lines, onClose, onQty, onRemove, onCheckout, minimumNotice, onCloseMinimumNotice, mediaConfig }: { lines: CartLine[]; onClose: () => void; onQty: (id: string, q: number) => void; onRemove: (id: string) => void; onCheckout: (total: number) => void; minimumNotice: { total: number } | null; onCloseMinimumNotice: () => void; mediaConfig: MediaConfig }) {
@@ -740,9 +800,9 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
   </section>
 }
 
-function ProductRail({ categoryId, onOpen, onAll, mediaConfig }: { categoryId: string; onOpen: (p: Product) => void; onAll: (id: string) => void; mediaConfig: MediaConfig }) {
+function ProductRail({ categoryId, categories, products, onOpen, onAll, mediaConfig }: { categoryId: string; categories: CatalogCategory[]; products: Product[]; onOpen: (p: Product) => void; onAll: (id: string) => void; mediaConfig: MediaConfig }) {
   const category = categories.find(c => c.id === categoryId)
-  const rawItems = productsByCategory(categoryId)
+  const rawItems = products.filter(product => product.categoryId === categoryId)
   const items = categoryId === 'cervejas' ? sortBeerProducts(rawItems) : rawItems
   if (!category || !items.length) return null
   return <section className="section product-section">
@@ -830,6 +890,8 @@ export default function App() {
   const [energyFilter, setEnergyFilter] = useState<EnergyFilterId>('all')
   const [adminOpen, setAdminOpen] = useState(false)
   const [mediaConfig, setMediaConfig] = useState<MediaConfig>({})
+  const [catalogConfig, setCatalogConfig] = useState<CatalogConfig>({})
+  const [catalogReady, setCatalogReady] = useState(false)
   // Mantém a Home parada enquanto o produto está aberto,
   // sem usar position: fixed e sem executar scrollTo ao fechar.
   // Assim a página de trás não "salta" depois que o modal é fechado.
@@ -861,7 +923,7 @@ export default function App() {
     try {
       const saved = JSON.parse(localStorage.getItem('karavela-distribuidora-cart') || '[]') as CartLine[]
       return saved.flatMap(line => {
-        const currentProduct = products.find(product => product.id === line.product.id)
+        const currentProduct = baseProducts.find(product => product.id === line.product.id)
         if (!currentProduct) return []
         return [{ product: currentProduct, qty: line.qty, unitPrice: productPricing(currentProduct, line.qty).effectiveUnitPrice }]
       })
@@ -879,6 +941,18 @@ export default function App() {
     return () => { active = false }
   }, [])
   useEffect(() => {
+    let active = true
+    fetch(`/api/catalog-config?v=${Date.now()}`, { cache: 'no-store' })
+      .then(response => response.ok ? response.json() : {})
+      .then((config: CatalogConfig) => {
+        if (!active) return
+        if (config && typeof config === 'object' && !Array.isArray(config)) setCatalogConfig(config)
+        setCatalogReady(true)
+      })
+      .catch(() => { if (active) setCatalogReady(true) })
+    return () => { active = false }
+  }, [])
+  useEffect(() => {
     if (!addedNotice) return
     const timer = window.setTimeout(() => setAddedNotice(null), 4200)
     return () => window.clearTimeout(timer)
@@ -889,17 +963,32 @@ export default function App() {
     return () => window.clearTimeout(timer)
   }, [minimumNotice])
 
+  const catalogBrands = catalogConfig.brands ?? defaultBrands
+  const catalogCategories = catalogConfig.categories ?? defaultCategories
+  const catalogProducts = useMemo(() => {
+    const hidden = new Set(catalogConfig.hiddenProductIds ?? [])
+    const allowedCategories = new Set(catalogCategories.map(category => category.id))
+    return baseProducts.filter(product => !hidden.has(product.id) && allowedCategories.has(product.categoryId))
+  }, [catalogConfig.hiddenProductIds, catalogCategories])
+
+  useEffect(() => {
+    if (!catalogReady) return
+    const visibleIds = new Set(catalogProducts.map(product => product.id))
+    setCart(previous => previous.filter(line => visibleIds.has(line.product.id)))
+    if (selected && !visibleIds.has(selected.id)) setSelected(null)
+  }, [catalogProducts, catalogReady, selected])
+
   const filtered = useMemo(() => {
     const q = query.trim().toLocaleLowerCase('pt-BR')
     if (!q) return []
-    return products.filter(p => `${p.name} ${p.category} ${p.size}`.toLocaleLowerCase('pt-BR').includes(q))
-  }, [query])
+    return catalogProducts.filter(p => `${p.name} ${p.category} ${p.size}`.toLocaleLowerCase('pt-BR').includes(q))
+  }, [query, catalogProducts])
 
   const count = cart.reduce((s, l) => s + l.qty, 0)
-  const activeCategory = categories.find(c => c.id === activeCategoryId)
-  const activeProducts = activeCategoryId ? productsByCategory(activeCategoryId) : []
-  const allBeerProducts = productsByCategory('cervejas')
-  const allEnergyProducts = productsByCategory('energeticos')
+  const activeCategory = catalogCategories.find(c => c.id === activeCategoryId)
+  const activeProducts = activeCategoryId ? catalogProducts.filter(product => product.categoryId === activeCategoryId) : []
+  const allBeerProducts = catalogProducts.filter(product => beerCategoryIds.includes(product.categoryId))
+  const allEnergyProducts = catalogProducts.filter(product => product.categoryId === 'energeticos')
 
   function closeSearch() { setSearchOpen(false); setQuery('') }
   function goHome() { setActiveCategoryId(null); setMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }) }
@@ -964,15 +1053,16 @@ export default function App() {
 
     <main>
       {checkoutOpen ? <CheckoutScreen lines={cart} onBack={() => { setCheckoutOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }) }} /> : !activeCategory ? <>
-        <section className="section brand-section"><div className="section-title"><h2>Principais marcas</h2></div><div className="rail-wrap"><div className="brand-strip">{brands.map((brand, index) => <div className={`brand ${!brand.image ? 'brand-text' : ''}`} key={`${brand.name}-${index}`}>{brand.image ? <img src={brand.image} alt={brand.name}/> : <div className="brand-fallback" style={{ color: brand.accent, borderColor: brand.accent }}>{brand.name}</div>}<span>{brand.name}</span></div>)}</div><div className="rail-arrow brand-arrow"><Icon name="arrow"/></div></div></section>
-        <section className="section category-section"><div className="section-title"><h2>Categorias</h2></div><div className="rail-wrap"><div className="category-strip">{categories.map(category => <button className="category-card" key={category.id} onClick={() => openCategory(category.id)}><CategoryIcon name={category.icon}/><span>{category.label}</span></button>)}</div><div className="rail-arrow category-arrow"><Icon name="arrow"/></div></div></section>
-        {categories.map(category => <ProductRail key={category.id} categoryId={category.id} onOpen={openProduct} onAll={openCategory} mediaConfig={mediaConfig}/>)}
-      </> : activeCategoryId === 'cervejas' ? <BeerCategoryPage products={allBeerProducts} filter={beerFilter} onFilter={setBeerFilter} onHome={goHome} onOpen={openProduct} mediaConfig={mediaConfig} /> : activeCategoryId === 'energeticos' ? <EnergyCategoryPage products={allEnergyProducts} filter={energyFilter} onFilter={setEnergyFilter} onHome={goHome} onOpen={openProduct} mediaConfig={mediaConfig} /> : <section className="category-page"><div className="category-page-head"><button className="back-btn" onClick={goHome} aria-label="Voltar"><Icon name="back"/></button><h1>{activeCategory.label}</h1></div><div className="category-product-grid">{activeProducts.map(product => <ProductCard key={product.id} product={product} onOpen={openProduct} media={mediaConfig[product.id]}/>)}</div></section>}
+        <section className="section brand-section"><div className="section-title"><h2>Principais marcas</h2></div><div className="rail-wrap"><div className="brand-strip">{catalogBrands.map(brand => <div className={`brand ${!brand.image ? 'brand-text' : ''}`} key={brand.id}>{brand.image ? <img src={brand.image} alt={brand.name}/> : <div className="brand-fallback" style={{ color: brand.accent, borderColor: brand.accent }}>{brand.name}</div>}<span>{brand.name}</span></div>)}</div><div className="rail-arrow brand-arrow"><Icon name="arrow"/></div></div></section>
+        <section className="section category-section"><div className="section-title"><h2>Categorias</h2></div><div className="rail-wrap"><div className="category-strip">{catalogCategories.map(category => <button className="category-card" key={category.id} onClick={() => openCategory(category.id)}>{category.image ? <img className="category-card-image" src={category.image} alt=""/> : <CategoryIcon name={category.icon}/>}<span>{category.label}</span></button>)}</div><div className="rail-arrow category-arrow"><Icon name="arrow"/></div></div></section>
+        {catalogCategories.map(category => <ProductRail key={category.id} categoryId={category.id} categories={catalogCategories} products={catalogProducts} onOpen={openProduct} onAll={openCategory} mediaConfig={mediaConfig}/>)}
+        <SiteFooter/>
+      </> : activeCategoryId === 'cervejas' ? <BeerCategoryPage products={allBeerProducts} filter={beerFilter} onFilter={setBeerFilter} onHome={goHome} onOpen={openProduct} mediaConfig={mediaConfig} /> : activeCategoryId === 'energeticos' ? <EnergyCategoryPage products={allEnergyProducts} filter={energyFilter} onFilter={setEnergyFilter} onHome={goHome} onOpen={openProduct} mediaConfig={mediaConfig} /> : activeCategory ? <section className="category-page"><div className="category-page-head"><button className="back-btn" onClick={goHome} aria-label="Voltar"><Icon name="back"/></button><h1>{activeCategory.label}</h1></div><div className="category-product-grid">{activeProducts.map(product => <ProductCard key={product.id} product={product} onOpen={openProduct} media={mediaConfig[product.id]}/>)}</div></section> : null}
     </main>
 
-    {menuOpen && <SideMenu onClose={() => setMenuOpen(false)} onCart={() => { setMenuOpen(false); setCartOpen(true) }} onHome={goHome} onCategory={openCategory} onAdmin={() => { setMenuOpen(false); setAdminOpen(true) }}/>} 
+    {menuOpen && <SideMenu categories={catalogCategories} onClose={() => setMenuOpen(false)} onCart={() => { setMenuOpen(false); setCartOpen(true) }} onHome={goHome} onCategory={openCategory} onAdmin={() => { setMenuOpen(false); setAdminOpen(true) }}/>} 
     {cartOpen && <CartDrawer lines={cart} onClose={() => { setCartOpen(false); setMinimumNotice(null) }} onQty={(id, q) => setCart(prev => prev.map(x => x.product.id === id ? { ...x, qty: q, unitPrice: productPricing(x.product, q).effectiveUnitPrice } : x))} onRemove={id => setCart(prev => prev.filter(x => x.product.id !== id))} onCheckout={checkout} minimumNotice={minimumNotice} onCloseMinimumNotice={() => setMinimumNotice(null)} mediaConfig={mediaConfig}/>}    
     {selected && <ProductSheet product={selected} onClose={() => setSelected(null)} onAdd={add} media={mediaConfig[selected.id]}/>}
-    {adminOpen && <AdminMedia products={products} config={mediaConfig} detailImageForProduct={(product) => detailImageByProductId[product.id] ?? product.image} onClose={() => setAdminOpen(false)} onSaved={setMediaConfig}/>}    
+    {adminOpen && <AdminMedia products={catalogProducts} brands={catalogBrands} categories={catalogCategories} catalogConfig={catalogConfig} config={mediaConfig} detailImageForProduct={(product) => detailImageByProductId[product.id] ?? product.image} onClose={() => setAdminOpen(false)} onSaved={setMediaConfig} onCatalogSaved={setCatalogConfig}/>}    
   </div>
 }
