@@ -184,7 +184,10 @@ export function CatalogManager({ section, products, brands, categories, config, 
       return
     }
     const isNew = selectedBrandId.startsWith('new-brand-')
-    const id = isNew ? (slugify(name) || `marca-${Date.now()}`) : brandDraft.id
+    const baseId = slugify(name) || `marca-${Date.now()}`
+    const id = isNew
+      ? (brands.some(item => item.id === baseId) ? `${baseId}-${Date.now()}` : baseId)
+      : brandDraft.id
     const row = { ...brandDraft, id, name }
     const nextBrands = isNew
       ? [...brands, row]
@@ -233,7 +236,10 @@ export function CatalogManager({ section, products, brands, categories, config, 
       return
     }
     const isNew = selectedCategoryId.startsWith('new-category-')
-    const id = isNew ? (slugify(label) || `categoria-${Date.now()}`) : categoryDraft.id
+    const baseId = slugify(label) || `categoria-${Date.now()}`
+    const id = isNew
+      ? (categories.some(item => item.id === baseId) ? `${baseId}-${Date.now()}` : baseId)
+      : categoryDraft.id
     const row = { ...categoryDraft, id, label }
     const nextCategories = isNew
       ? [...categories, row]
