@@ -41,9 +41,52 @@ async function saveCatalog(next: CatalogConfig) {
   return data.config
 }
 
+async function prepareCatalogImage(file: File): Promise<File> {
+  if (!file.type.startsWith('image/')) throw new Error('Escolha uma imagem válida.')
+  if (file.size <= 3_600_000) return file
+
+  const objectUrl = URL.createObjectURL(file)
+  try {
+    const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const img = new Image()
+      img.onload = () => resolve(img)
+      img.onerror = () => reject(new Error('Não foi possível abrir esta imagem.'))
+      img.src = objectUrl
+    })
+
+    let maxSide = 2600
+    let quality = 0.92
+    let blob: Blob | null = null
+
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      const ratio = Math.min(1, maxSide / Math.max(image.naturalWidth, image.naturalHeight))
+      const width = Math.max(1, Math.round(image.naturalWidth * ratio))
+      const height = Math.max(1, Math.round(image.naturalHeight * ratio))
+      const canvas = document.createElement('canvas')
+      canvas.width = width
+      canvas.height = height
+      const context = canvas.getContext('2d')
+      if (!context) throw new Error('Não foi possível preparar esta imagem.')
+      context.imageSmoothingEnabled = true
+      context.imageSmoothingQuality = 'high'
+      context.drawImage(image, 0, 0, width, height)
+      blob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/webp', quality))
+      if (blob && blob.size <= 3_600_000) break
+      maxSide = Math.round(maxSide * 0.84)
+      quality = Math.max(0.78, quality - 0.04)
+    }
+
+    if (!blob || blob.size > 3_600_000) throw new Error('A imagem é muito grande. Escolha uma foto menor.')
+    return new File([blob], 'catalogo.webp', { type: 'image/webp' })
+  } finally {
+    URL.revokeObjectURL(objectUrl)
+  }
+}
+
 async function uploadCatalogImage(file: File, kind: 'brand' | 'category', id: string) {
+  const prepared = await prepareCatalogImage(file)
   const form = new FormData()
-  form.append('file', file)
+  form.append('file', prepared, prepared.name)
   form.append('kind', kind)
   form.append('id', id)
   const response = await fetch('/api/upload-catalog-image', { method: 'POST', body: form })
