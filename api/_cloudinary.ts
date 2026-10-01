@@ -126,8 +126,11 @@ export async function uploadCatalogImageToCloudinary(
 
   if (!data.secure_url) throw new Error('O Cloudinary não retornou a URL da imagem.')
 
+  const cacheBuster = data.version ?? Date.now()
+  const separator = data.secure_url.includes('?') ? '&' : '?'
+
   return {
-    url: data.secure_url,
+    url: `${data.secure_url}${separator}cb=${cacheBuster}`,
     publicId: data.public_id || publicId,
     version: data.version,
   }
