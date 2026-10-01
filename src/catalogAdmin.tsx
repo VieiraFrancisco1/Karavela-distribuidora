@@ -436,6 +436,7 @@ export function CatalogManager({ section, products, brands, categories, config, 
     {section === 'brands' && <div className="catalog-split">
       <aside className="catalog-entity-list">
         <div className="catalog-entity-list-head"><h3>Principais marcas</h3><button onClick={addBrand}>+ Adicionar marca</button></div>
+        <div className="catalog-entity-help">Toque em uma marca para editar nome, imagem e enquadramento.</div>
         {brands.map(brand => <button key={brand.id} className={selectedBrandId === brand.id ? 'active' : ''} onClick={() => selectBrand(brand)}>
           {brand.image ? <span className="catalog-list-image-frame"><img src={freshCatalogEditorImageUrl(brand.image)} alt="" style={catalogImageStyle(brand)}/></span> : <span className="catalog-placeholder">{brand.name.slice(0, 1)}</span>}
           <strong>{brand.name}</strong>
@@ -466,6 +467,7 @@ export function CatalogManager({ section, products, brands, categories, config, 
     {section === 'categories' && <div className="catalog-split">
       <aside className="catalog-entity-list">
         <div className="catalog-entity-list-head"><h3>Categorias</h3><button onClick={addCategory}>+ Adicionar categoria</button></div>
+        <div className="catalog-entity-help">Toque em uma categoria para editar nome, imagem e enquadramento.</div>
         {categories.map(category => <button key={category.id} className={selectedCategoryId === category.id ? 'active' : ''} onClick={() => selectCategory(category)}>
           {category.image ? <span className="catalog-list-image-frame"><img src={freshCatalogEditorImageUrl(category.image)} alt="" style={catalogImageStyle(category)}/></span> : <span className="catalog-placeholder">◻</span>}
           <strong>{category.label}</strong>
