@@ -96,7 +96,14 @@ export async function POST(request: Request) {
     const payload = await request.json()
     const config = sanitizeConfig(payload)
     await writeCloudinaryCatalogConfig(config)
-    return Response.json({ ok: true, config }, {
+
+    // Só confirma o salvamento depois de reler a versão atual do Cloudinary.
+    // Assim o painel nunca mostra "salvo" se a configuração persistida ainda
+    // estiver apontando para uma imagem antiga.
+    const persisted = await readCloudinaryCatalogConfig<CatalogConfig>()
+    const confirmed = sanitizeConfig(persisted ?? config)
+
+    return Response.json({ ok: true, config: confirmed }, {
       headers: { 'cache-control': 'no-store, max-age=0, must-revalidate' },
     })
   } catch (error) {
