@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import type { PointerEvent as ReactPointerEvent } from 'react'
 import type { CatalogBrand, CatalogCategory, CatalogConfig, Product } from './types'
 
 type CatalogSection = 'products' | 'brands' | 'categories'
@@ -101,6 +102,95 @@ async function uploadCatalogImage(file: File, kind: 'brand' | 'category', id: st
   const data = await response.json() as { ok?: boolean; url?: string }
   if (!data.ok || !data.url) throw new Error('O servidor não retornou a nova imagem.')
   return data.url
+}
+
+
+const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
+
+const catalogImageStyle = (item: { imageScale?: number; imageX?: number; imageY?: number }) => ({
+  transform: `translate(${item.imageX ?? 0}%, ${item.imageY ?? 0}%) scale(${item.imageScale ?? 1})`,
+  transformOrigin: 'center center',
+})
+
+function CatalogImageEditor({
+  src,
+  scale = 1,
+  x = 0,
+  y = 0,
+  onChange,
+}: {
+  src: string
+  scale?: number
+  x?: number
+  y?: number
+  onChange: (next: { imageScale: number; imageX: number; imageY: number }) => void
+}) {
+  const drag = useRef<{ pointerId: number; startX: number; startY: number; x: number; y: number } | null>(null)
+  const frame = useRef<HTMLDivElement>(null)
+
+  const update = (next: Partial<{ imageScale: number; imageX: number; imageY: number }>) => {
+    onChange({
+      imageScale: clamp(next.imageScale ?? scale, 1, 2.5),
+      imageX: clamp(next.imageX ?? x, -45, 45),
+      imageY: clamp(next.imageY ?? y, -45, 45),
+    })
+  }
+
+  const startDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    drag.current = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, x, y }
+    event.currentTarget.setPointerCapture(event.pointerId)
+    event.preventDefault()
+  }
+
+  const moveDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const current = drag.current
+    const rect = frame.current?.getBoundingClientRect()
+    if (!current || current.pointerId !== event.pointerId || !rect) return
+    update({
+      imageX: current.x + ((event.clientX - current.startX) / Math.max(1, rect.width)) * 100,
+      imageY: current.y + ((event.clientY - current.startY) / Math.max(1, rect.height)) * 100,
+    })
+    event.preventDefault()
+  }
+
+  const stopDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (drag.current?.pointerId === event.pointerId) drag.current = null
+  }
+
+  return <div className="catalog-image-editor">
+    <div
+      ref={frame}
+      className="catalog-image-edit-frame"
+      onPointerDown={startDrag}
+      onPointerMove={moveDrag}
+      onPointerUp={stopDrag}
+      onPointerCancel={stopDrag}
+    >
+      <img
+        src={freshCatalogEditorImageUrl(src)}
+        alt=""
+        draggable={false}
+        style={catalogImageStyle({ imageScale: scale, imageX: x, imageY: y })}
+      />
+      <span>Arraste a imagem para posicionar</span>
+    </div>
+
+    <div className="catalog-image-adjustments">
+      <label>
+        <span>Zoom <b>{Math.round(scale * 100)}%</b></span>
+        <input type="range" min="100" max="250" value={Math.round(scale * 100)} onChange={event => update({ imageScale: Number(event.target.value) / 100 })}/>
+      </label>
+      <label>
+        <span>Horizontal <b>{Math.round(x)}%</b></span>
+        <input type="range" min="-45" max="45" value={Math.round(x)} onChange={event => update({ imageX: Number(event.target.value) })}/>
+      </label>
+      <label>
+        <span>Vertical <b>{Math.round(y)}%</b></span>
+        <input type="range" min="-45" max="45" value={Math.round(y)} onChange={event => update({ imageY: Number(event.target.value) })}/>
+      </label>
+      <button type="button" className="catalog-reset-image" onClick={() => onChange({ imageScale: 1, imageX: 0, imageY: 0 })}>Centralizar imagem</button>
+    </div>
+  </div>
 }
 
 export function CatalogManager({ section, products, brands, categories, config, onSaved }: Props) {
@@ -290,9 +380,12 @@ export function CatalogManager({ section, products, brands, categories, config, 
     setMessage('Enviando imagem...')
     try {
       const url = await uploadCatalogImage(file, imageTarget, target.id)
-      if (imageTarget === 'brand') setBrandDraft(previous => previous ? { ...previous, image: url } : previous)
-      else setCategoryDraft(previous => previous ? { ...previous, image: url } : previous)
-      setMessage('Imagem carregada. Clique em salvar para confirmar.')
+      if (imageTarget === 'brand') {
+        setBrandDraft(previous => previous ? { ...previous, image: url, imageScale: 1, imageX: 0, imageY: 0 } : previous)
+      } else {
+        setCategoryDraft(previous => previous ? { ...previous, image: url, imageScale: 1, imageX: 0, imageY: 0 } : previous)
+      }
+      setMessage('Imagem carregada. Ajuste o enquadramento e clique em salvar para confirmar.')
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Não foi possível enviar a imagem.')
     } finally {
@@ -331,14 +424,22 @@ export function CatalogManager({ section, products, brands, categories, config, 
       <aside className="catalog-entity-list">
         <div className="catalog-entity-list-head"><h3>Principais marcas</h3><button onClick={addBrand}>+ Adicionar</button></div>
         {brands.map(brand => <button key={brand.id} className={selectedBrandId === brand.id ? 'active' : ''} onClick={() => selectBrand(brand)}>
-          {brand.image ? <img src={freshCatalogEditorImageUrl(brand.image)} alt=""/> : <span className="catalog-placeholder">{brand.name.slice(0, 1)}</span>}
+          {brand.image ? <span className="catalog-list-image-frame"><img src={freshCatalogEditorImageUrl(brand.image)} alt="" style={catalogImageStyle(brand)}/></span> : <span className="catalog-placeholder">{brand.name.slice(0, 1)}</span>}
           <strong>{brand.name}</strong>
         </button>)}
       </aside>
       <section className="catalog-entity-editor">
         {brandDraft ? <>
           <h3>{selectedBrandId.startsWith('new-brand-') ? 'Adicionar marca' : 'Editar marca'}</h3>
-          <div className="catalog-image-preview">{brandDraft.image ? <img src={freshCatalogEditorImageUrl(brandDraft.image)} alt=""/> : <span>Sem logo</span>}</div>
+          {brandDraft.image
+            ? <CatalogImageEditor
+                src={brandDraft.image}
+                scale={brandDraft.imageScale}
+                x={brandDraft.imageX}
+                y={brandDraft.imageY}
+                onChange={next => setBrandDraft(previous => previous ? { ...previous, ...next } : previous)}
+              />
+            : <div className="catalog-image-preview"><span>Sem logo</span></div>}
           <label><span>Nome</span><input value={brandDraft.name} onChange={event => setBrandDraft(previous => previous ? { ...previous, name: event.target.value } : previous)}/></label>
           <div className="catalog-editor-actions">
             <button className="catalog-photo-button" disabled={busy} onClick={() => chooseImage('brand')}>Adicionar / trocar foto</button>
@@ -353,14 +454,22 @@ export function CatalogManager({ section, products, brands, categories, config, 
       <aside className="catalog-entity-list">
         <div className="catalog-entity-list-head"><h3>Categorias</h3><button onClick={addCategory}>+ Adicionar</button></div>
         {categories.map(category => <button key={category.id} className={selectedCategoryId === category.id ? 'active' : ''} onClick={() => selectCategory(category)}>
-          {category.image ? <img src={freshCatalogEditorImageUrl(category.image)} alt=""/> : <span className="catalog-placeholder">◻</span>}
+          {category.image ? <span className="catalog-list-image-frame"><img src={freshCatalogEditorImageUrl(category.image)} alt="" style={catalogImageStyle(category)}/></span> : <span className="catalog-placeholder">◻</span>}
           <strong>{category.label}</strong>
         </button>)}
       </aside>
       <section className="catalog-entity-editor">
         {categoryDraft ? <>
           <h3>{selectedCategoryId.startsWith('new-category-') ? 'Adicionar categoria' : 'Editar categoria'}</h3>
-          <div className="catalog-image-preview">{categoryDraft.image ? <img src={freshCatalogEditorImageUrl(categoryDraft.image)} alt=""/> : <span>Ícone padrão</span>}</div>
+          {categoryDraft.image
+            ? <CatalogImageEditor
+                src={categoryDraft.image}
+                scale={categoryDraft.imageScale}
+                x={categoryDraft.imageX}
+                y={categoryDraft.imageY}
+                onChange={next => setCategoryDraft(previous => previous ? { ...previous, ...next } : previous)}
+              />
+            : <div className="catalog-image-preview"><span>Ícone padrão</span></div>}
           <label><span>Nome</span><input value={categoryDraft.label} onChange={event => setCategoryDraft(previous => previous ? { ...previous, label: event.target.value } : previous)}/></label>
           <div className="catalog-editor-actions">
             <button className="catalog-photo-button" disabled={busy} onClick={() => chooseImage('category')}>Adicionar / trocar foto</button>
