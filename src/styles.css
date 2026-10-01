@@ -5987,6 +5987,7 @@ html body .product-sheet .media-managed{
 .brand-image-frame{
   width:74px!important;
   height:74px!important;
+  margin:0!important;
   border-radius:15px!important;
   overflow:hidden!important;
   display:block!important;
