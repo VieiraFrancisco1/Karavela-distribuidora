@@ -6640,3 +6640,69 @@ body,
     height:180px!important;
   }
 }
+
+
+/* V68 — Energéticos segue o mesmo visual claro das demais telas do catálogo.
+   Mantém filtros e grade de dois cards, removendo somente o fundo azul herdado. */
+.energy-category-page{
+  background:#ffffff!important;
+  color:#10283b!important;
+  min-height:calc(100dvh - 60px)!important;
+}
+
+.energy-category-page .beer-home-link,
+.energy-category-page .beer-home-link svg{
+  color:#66798c!important;
+}
+
+.energy-category-page .beer-category-name h1{
+  color:#17324a!important;
+}
+
+.energy-category-page .beer-count{
+  color:#7c8c9b!important;
+}
+
+.energy-category-page .beer-category-icon,
+.energy-category-page .beer-category-icon svg{
+  color:#e86208!important;
+}
+
+.energy-category-page .beer-filter-sticky{
+  background:rgba(255,255,255,.98)!important;
+  border-bottom:1px solid #e3e9ee!important;
+  box-shadow:0 5px 12px rgba(11,49,86,.05)!important;
+  backdrop-filter:blur(10px)!important;
+}
+
+.energy-category-page .beer-filter-label{
+  color:#6f7f8d!important;
+}
+
+.energy-category-page .beer-filter-scroll button{
+  background:#ffffff!important;
+  color:#334b5e!important;
+  border:1px solid #d5dfe6!important;
+  box-shadow:none!important;
+}
+
+.energy-category-page .beer-filter-scroll button.active{
+  background:#0b4f86!important;
+  color:#ffffff!important;
+  border-color:#0b4f86!important;
+}
+
+.energy-category-page .category-product-grid{
+  background:#ffffff!important;
+}
+
+.energy-category-page .category-product-grid .product-card{
+  background:#ffffff!important;
+  color:#10283b!important;
+}
+
+@media(max-width:390px){
+  .energy-category-page{
+    min-height:calc(100dvh - 60px)!important;
+  }
+}
