@@ -892,6 +892,31 @@ export default function App() {
   const [mediaConfig, setMediaConfig] = useState<MediaConfig>({})
   const [catalogConfig, setCatalogConfig] = useState<CatalogConfig>({})
   const [catalogReady, setCatalogReady] = useState(false)
+  // Mantém a Home completamente parada enquanto a área administrativa está aberta.
+  // O painel administrativo continua rolável; somente a página atrás fica bloqueada.
+  useEffect(() => {
+    if (!adminOpen) return
+
+    const body = document.body
+    const html = document.documentElement
+    const previousBodyOverflow = body.style.overflow
+    const previousBodyOverscroll = body.style.overscrollBehavior
+    const previousHtmlOverflow = html.style.overflow
+    const previousHtmlOverscroll = html.style.overscrollBehavior
+
+    body.style.overflow = 'hidden'
+    body.style.overscrollBehavior = 'none'
+    html.style.overflow = 'hidden'
+    html.style.overscrollBehavior = 'none'
+
+    return () => {
+      body.style.overflow = previousBodyOverflow
+      body.style.overscrollBehavior = previousBodyOverscroll
+      html.style.overflow = previousHtmlOverflow
+      html.style.overscrollBehavior = previousHtmlOverscroll
+    }
+  }, [adminOpen])
+
   // Mantém a Home parada enquanto o produto está aberto,
   // sem usar position: fixed e sem executar scrollTo ao fechar.
   // Assim a página de trás não "salta" depois que o modal é fechado.
