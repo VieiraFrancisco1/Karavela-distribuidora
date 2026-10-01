@@ -105,6 +105,9 @@ async function uploadCatalogImage(file: File, kind: 'brand' | 'category', id: st
 }
 
 
+const CATALOG_MIN_SCALE = 0.5
+const CATALOG_MAX_SCALE = 3.5
+const CATALOG_PAN_LIMIT = 60
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 
 const catalogImageStyle = (item: { imageScale?: number; imageX?: number; imageY?: number }) => ({
@@ -130,9 +133,9 @@ function CatalogImageEditor({
 
   const update = (next: Partial<{ imageScale: number; imageX: number; imageY: number }>) => {
     onChange({
-      imageScale: clamp(next.imageScale ?? scale, 1, 2.5),
-      imageX: clamp(next.imageX ?? x, -45, 45),
-      imageY: clamp(next.imageY ?? y, -45, 45),
+      imageScale: clamp(next.imageScale ?? scale, CATALOG_MIN_SCALE, CATALOG_MAX_SCALE),
+      imageX: clamp(next.imageX ?? x, -CATALOG_PAN_LIMIT, CATALOG_PAN_LIMIT),
+      imageY: clamp(next.imageY ?? y, -CATALOG_PAN_LIMIT, CATALOG_PAN_LIMIT),
     })
   }
 
@@ -176,19 +179,29 @@ function CatalogImageEditor({
     </div>
 
     <div className="catalog-image-adjustments">
+      <div className="catalog-image-editor-title">Editar imagem do card</div>
       <label>
         <span>Zoom <b>{Math.round(scale * 100)}%</b></span>
-        <input type="range" min="100" max="250" value={Math.round(scale * 100)} onChange={event => update({ imageScale: Number(event.target.value) / 100 })}/>
+        <input type="range" min={CATALOG_MIN_SCALE} max={CATALOG_MAX_SCALE} step="0.01" value={scale} onChange={event => update({ imageScale: Number(event.target.value) })}/>
       </label>
       <label>
         <span>Horizontal <b>{Math.round(x)}%</b></span>
-        <input type="range" min="-45" max="45" value={Math.round(x)} onChange={event => update({ imageX: Number(event.target.value) })}/>
+        <input type="range" min={-CATALOG_PAN_LIMIT} max={CATALOG_PAN_LIMIT} step="1" value={x} onChange={event => update({ imageX: Number(event.target.value) })}/>
       </label>
       <label>
         <span>Vertical <b>{Math.round(y)}%</b></span>
-        <input type="range" min="-45" max="45" value={Math.round(y)} onChange={event => update({ imageY: Number(event.target.value) })}/>
+        <input type="range" min={-CATALOG_PAN_LIMIT} max={CATALOG_PAN_LIMIT} step="1" value={y} onChange={event => update({ imageY: Number(event.target.value) })}/>
       </label>
-      <button type="button" className="catalog-reset-image" onClick={() => onChange({ imageScale: 1, imageX: 0, imageY: 0 })}>Centralizar imagem</button>
+      <div className="catalog-image-nudge-row">
+        <button type="button" onClick={() => update({ imageX: x - 2 })}>←</button>
+        <button type="button" onClick={() => update({ imageY: y - 2 })}>↑</button>
+        <button type="button" onClick={() => update({ imageY: y + 2 })}>↓</button>
+        <button type="button" onClick={() => update({ imageX: x + 2 })}>→</button>
+      </div>
+      <div className="catalog-image-reset-row">
+        <button type="button" className="catalog-reset-image" onClick={() => update({ imageX: 0, imageY: 0 })}>Centralizar</button>
+        <button type="button" className="catalog-reset-image" onClick={() => onChange({ imageScale: 1, imageX: 0, imageY: 0 })}>Voltar ao padrão</button>
+      </div>
     </div>
   </div>
 }
@@ -422,7 +435,7 @@ export function CatalogManager({ section, products, brands, categories, config, 
 
     {section === 'brands' && <div className="catalog-split">
       <aside className="catalog-entity-list">
-        <div className="catalog-entity-list-head"><h3>Principais marcas</h3><button onClick={addBrand}>+ Adicionar</button></div>
+        <div className="catalog-entity-list-head"><h3>Principais marcas</h3><button onClick={addBrand}>+ Adicionar marca</button></div>
         {brands.map(brand => <button key={brand.id} className={selectedBrandId === brand.id ? 'active' : ''} onClick={() => selectBrand(brand)}>
           {brand.image ? <span className="catalog-list-image-frame"><img src={freshCatalogEditorImageUrl(brand.image)} alt="" style={catalogImageStyle(brand)}/></span> : <span className="catalog-placeholder">{brand.name.slice(0, 1)}</span>}
           <strong>{brand.name}</strong>
@@ -442,7 +455,7 @@ export function CatalogManager({ section, products, brands, categories, config, 
             : <div className="catalog-image-preview"><span>Sem logo</span></div>}
           <label><span>Nome</span><input value={brandDraft.name} onChange={event => setBrandDraft(previous => previous ? { ...previous, name: event.target.value } : previous)}/></label>
           <div className="catalog-editor-actions">
-            <button className="catalog-photo-button" disabled={busy} onClick={() => chooseImage('brand')}>Adicionar / trocar foto</button>
+            <button className="catalog-photo-button" disabled={busy} onClick={() => chooseImage('brand')}>Adicionar / trocar imagem</button>
             <button className="catalog-save-button" disabled={busy} onClick={() => void saveBrand()}>Salvar marca</button>
             <button className="catalog-delete-button" disabled={busy} onClick={() => void deleteBrand()}>Excluir</button>
           </div>
@@ -452,7 +465,7 @@ export function CatalogManager({ section, products, brands, categories, config, 
 
     {section === 'categories' && <div className="catalog-split">
       <aside className="catalog-entity-list">
-        <div className="catalog-entity-list-head"><h3>Categorias</h3><button onClick={addCategory}>+ Adicionar</button></div>
+        <div className="catalog-entity-list-head"><h3>Categorias</h3><button onClick={addCategory}>+ Adicionar categoria</button></div>
         {categories.map(category => <button key={category.id} className={selectedCategoryId === category.id ? 'active' : ''} onClick={() => selectCategory(category)}>
           {category.image ? <span className="catalog-list-image-frame"><img src={freshCatalogEditorImageUrl(category.image)} alt="" style={catalogImageStyle(category)}/></span> : <span className="catalog-placeholder">◻</span>}
           <strong>{category.label}</strong>
@@ -472,7 +485,7 @@ export function CatalogManager({ section, products, brands, categories, config, 
             : <div className="catalog-image-preview"><span>Ícone padrão</span></div>}
           <label><span>Nome</span><input value={categoryDraft.label} onChange={event => setCategoryDraft(previous => previous ? { ...previous, label: event.target.value } : previous)}/></label>
           <div className="catalog-editor-actions">
-            <button className="catalog-photo-button" disabled={busy} onClick={() => chooseImage('category')}>Adicionar / trocar foto</button>
+            <button className="catalog-photo-button" disabled={busy} onClick={() => chooseImage('category')}>Adicionar / trocar imagem</button>
             <button className="catalog-save-button" disabled={busy} onClick={() => void saveCategory()}>Salvar categoria</button>
             <button className="catalog-delete-button" disabled={busy} onClick={() => void deleteCategory()}>Excluir</button>
           </div>
