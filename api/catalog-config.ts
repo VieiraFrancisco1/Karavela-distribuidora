@@ -37,9 +37,9 @@ const cleanNumber = (value: unknown, min: number, max: number, fallback: number)
   return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : fallback
 }
 const imageAdjustments = (row: Record<string, unknown>) => ({
-  imageScale: cleanNumber(row.imageScale, 1, 2.5, 1),
-  imageX: cleanNumber(row.imageX, -45, 45, 0),
-  imageY: cleanNumber(row.imageY, -45, 45, 0),
+  imageScale: cleanNumber(row.imageScale, 0.5, 3.5, 1),
+  imageX: cleanNumber(row.imageX, -60, 60, 0),
+  imageY: cleanNumber(row.imageY, -60, 60, 0),
 })
 
 function sanitizeConfig(value: unknown): CatalogConfig {
