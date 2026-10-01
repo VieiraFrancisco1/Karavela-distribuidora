@@ -29,14 +29,20 @@ export type CartLine = {
 }
 
 
-export type CatalogBrand = {
+export type CatalogImageAdjustments = {
+  imageScale?: number
+  imageX?: number
+  imageY?: number
+}
+
+export type CatalogBrand = CatalogImageAdjustments & {
   id: string
   name: string
   image?: string | null
   accent?: string
 }
 
-export type CatalogCategory = {
+export type CatalogCategory = CatalogImageAdjustments & {
   id: string
   label: string
   icon: string
