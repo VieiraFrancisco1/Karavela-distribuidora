@@ -3,6 +3,13 @@ import type { CatalogBrand, CatalogCategory, CatalogConfig, Product } from './ty
 
 type CatalogSection = 'products' | 'brands' | 'categories'
 
+const CATALOG_EDITOR_IMAGE_REV = Date.now()
+const freshCatalogEditorImageUrl = (url?: string | null) => {
+  if (!url) return ''
+  const separator = url.includes('?') ? '&' : '?'
+  return `${url}${separator}admincb=${CATALOG_EDITOR_IMAGE_REV}`
+}
+
 type Props = {
   section: CatalogSection
   products: Product[]
@@ -324,14 +331,14 @@ export function CatalogManager({ section, products, brands, categories, config, 
       <aside className="catalog-entity-list">
         <div className="catalog-entity-list-head"><h3>Principais marcas</h3><button onClick={addBrand}>+ Adicionar</button></div>
         {brands.map(brand => <button key={brand.id} className={selectedBrandId === brand.id ? 'active' : ''} onClick={() => selectBrand(brand)}>
-          {brand.image ? <img src={brand.image} alt=""/> : <span className="catalog-placeholder">{brand.name.slice(0, 1)}</span>}
+          {brand.image ? <img src={freshCatalogEditorImageUrl(brand.image)} alt=""/> : <span className="catalog-placeholder">{brand.name.slice(0, 1)}</span>}
           <strong>{brand.name}</strong>
         </button>)}
       </aside>
       <section className="catalog-entity-editor">
         {brandDraft ? <>
           <h3>{selectedBrandId.startsWith('new-brand-') ? 'Adicionar marca' : 'Editar marca'}</h3>
-          <div className="catalog-image-preview">{brandDraft.image ? <img src={brandDraft.image} alt=""/> : <span>Sem logo</span>}</div>
+          <div className="catalog-image-preview">{brandDraft.image ? <img src={freshCatalogEditorImageUrl(brandDraft.image)} alt=""/> : <span>Sem logo</span>}</div>
           <label><span>Nome</span><input value={brandDraft.name} onChange={event => setBrandDraft(previous => previous ? { ...previous, name: event.target.value } : previous)}/></label>
           <div className="catalog-editor-actions">
             <button className="catalog-photo-button" disabled={busy} onClick={() => chooseImage('brand')}>Adicionar / trocar foto</button>
@@ -346,14 +353,14 @@ export function CatalogManager({ section, products, brands, categories, config, 
       <aside className="catalog-entity-list">
         <div className="catalog-entity-list-head"><h3>Categorias</h3><button onClick={addCategory}>+ Adicionar</button></div>
         {categories.map(category => <button key={category.id} className={selectedCategoryId === category.id ? 'active' : ''} onClick={() => selectCategory(category)}>
-          {category.image ? <img src={category.image} alt=""/> : <span className="catalog-placeholder">◻</span>}
+          {category.image ? <img src={freshCatalogEditorImageUrl(category.image)} alt=""/> : <span className="catalog-placeholder">◻</span>}
           <strong>{category.label}</strong>
         </button>)}
       </aside>
       <section className="catalog-entity-editor">
         {categoryDraft ? <>
           <h3>{selectedCategoryId.startsWith('new-category-') ? 'Adicionar categoria' : 'Editar categoria'}</h3>
-          <div className="catalog-image-preview">{categoryDraft.image ? <img src={categoryDraft.image} alt=""/> : <span>Ícone padrão</span>}</div>
+          <div className="catalog-image-preview">{categoryDraft.image ? <img src={freshCatalogEditorImageUrl(categoryDraft.image)} alt=""/> : <span>Ícone padrão</span>}</div>
           <label><span>Nome</span><input value={categoryDraft.label} onChange={event => setCategoryDraft(previous => previous ? { ...previous, label: event.target.value } : previous)}/></label>
           <div className="catalog-editor-actions">
             <button className="catalog-photo-button" disabled={busy} onClick={() => chooseImage('category')}>Adicionar / trocar foto</button>
