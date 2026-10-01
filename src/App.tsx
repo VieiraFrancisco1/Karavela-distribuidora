@@ -98,14 +98,20 @@ const DELIVERY_FEE_SPECIAL = 4
 const PICKUP_ADDRESS = 'Rua 26 de Junho, nº 920 · Boaviaginha · Boa Viagem, CE'
 const PIX_RECEIVER = 'Deivid dos Santos Cavalcante'
 const PIX_KEY = '08853052309'
-const WHATSAPP_ORDER_NUMBER = '5588982261291'
-const INSTAGRAM_HANDLE = 'karavelabistroedistribuidora'
+const WHATSAPP_ORDER_NUMBER = '558896916158'
+const INSTAGRAM_HANDLE = 'karavelabistrodistribuidora'
+const INSTAGRAM_URL = 'https://www.instagram.com/karavelabistrodistribuidora?stkn=MTU4MjVvNG41czc2eQ=='
 const CATALOG_IMAGE_REV = Date.now()
 const freshCatalogImageUrl = (url?: string | null) => {
   if (!url) return ''
   const separator = url.includes('?') ? '&' : '?'
   return `${url}${separator}sitecb=${CATALOG_IMAGE_REV}`
 }
+
+const catalogImageStyle = (item: { imageScale?: number; imageX?: number; imageY?: number }) => ({
+  transform: `translate(${item.imageX ?? 0}%, ${item.imageY ?? 0}%) scale(${item.imageScale ?? 1})`,
+  transformOrigin: 'center center',
+})
 
 const simpleSlug = (value: string) => value
   .normalize('NFD')
@@ -397,7 +403,7 @@ function SideMenu({ categories, onClose, onCart, onHome, onCategory, onAdmin }: 
       <div className="menu-top"><img src="/assets/logo-karavela.png" alt="Karavela Bistrô & Distribuidora"/><button onClick={onClose}><Icon name="close"/></button></div>
       <nav><button onClick={onHome}><Icon name="home"/> Início</button><button onClick={onCart}><Icon name="cart"/> Meu carrinho</button><button><Icon name="orders"/> Pedidos</button><button><Icon name="chat"/> Falar com atendente</button><button className="admin-menu-entry" onClick={onAdmin}><Icon name="orders"/> Área administrativa</button></nav>
       <div className="menu-sep"/><h3>Categorias</h3>
-      <div className="menu-cats">{categories.map(category => <button key={category.id} onClick={() => onCategory(category.id)}>{category.image ? <img className="menu-category-image" src={freshCatalogImageUrl(category.image)} alt=""/> : <CategoryIcon name={category.icon}/>}<span>{category.label}</span><Icon name="arrow"/></button>)}</div>
+      <div className="menu-cats">{categories.map(category => <button key={category.id} onClick={() => onCategory(category.id)}>{category.image ? <span className="menu-category-image-frame"><img className="menu-category-image" src={freshCatalogImageUrl(category.image)} alt="" style={catalogImageStyle(category)}/></span> : <CategoryIcon name={category.icon}/>} <span>{category.label}</span><Icon name="arrow"/></button>)}</div>
     </aside>
   </div>
 }
@@ -415,7 +421,7 @@ function SiteFooter() {
         </span>
         <span>Falar com atendente</span>
       </a>
-      <a href={`https://instagram.com/${INSTAGRAM_HANDLE}`} target="_blank" rel="noreferrer">
+      <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
         <span className="site-footer-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/></svg>
         </span>
@@ -1087,8 +1093,8 @@ export default function App() {
 
     <main>
       {checkoutOpen ? <CheckoutScreen lines={cart} onBack={() => { setCheckoutOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }) }} /> : !activeCategory ? <>
-        <section className="section brand-section"><div className="section-title"><h2>Principais marcas</h2></div><div className="rail-wrap"><div className="brand-strip">{catalogBrands.map(brand => <div className={`brand ${!brand.image ? 'brand-text' : ''}`} key={brand.id}>{brand.image ? <img src={freshCatalogImageUrl(brand.image)} alt={brand.name}/> : <div className="brand-fallback" style={{ color: brand.accent, borderColor: brand.accent }}>{brand.name}</div>}<span>{brand.name}</span></div>)}</div><div className="rail-arrow brand-arrow"><Icon name="arrow"/></div></div></section>
-        <section className="section category-section"><div className="section-title"><h2>Categorias</h2></div><div className="rail-wrap"><div className="category-strip">{catalogCategories.map(category => <button className="category-card" key={category.id} onClick={() => openCategory(category.id)}>{category.image ? <img className="category-card-image" src={freshCatalogImageUrl(category.image)} alt=""/> : <CategoryIcon name={category.icon}/>}<span>{category.label}</span></button>)}</div><div className="rail-arrow category-arrow"><Icon name="arrow"/></div></div></section>
+        <section className="section brand-section"><div className="section-title"><h2>Principais marcas</h2></div><div className="rail-wrap"><div className="brand-strip">{catalogBrands.map(brand => <div className={`brand ${!brand.image ? 'brand-text' : ''}`} key={brand.id}>{brand.image ? <span className="brand-image-frame"><img src={freshCatalogImageUrl(brand.image)} alt={brand.name} style={catalogImageStyle(brand)}/></span> : <div className="brand-fallback" style={{ color: brand.accent, borderColor: brand.accent }}>{brand.name}</div>}<span>{brand.name}</span></div>)}</div><div className="rail-arrow brand-arrow"><Icon name="arrow"/></div></div></section>
+        <section className="section category-section"><div className="section-title"><h2>Categorias</h2></div><div className="rail-wrap"><div className="category-strip">{catalogCategories.map(category => <button className="category-card" key={category.id} onClick={() => openCategory(category.id)}>{category.image ? <span className="category-card-image-frame"><img className="category-card-image" src={freshCatalogImageUrl(category.image)} alt="" style={catalogImageStyle(category)}/></span> : <CategoryIcon name={category.icon}/>}<span>{category.label}</span></button>)}</div><div className="rail-arrow category-arrow"><Icon name="arrow"/></div></div></section>
         {catalogCategories.map(category => <ProductRail key={category.id} categoryId={category.id} categories={catalogCategories} products={catalogProducts} onOpen={openProduct} onAll={openCategory} mediaConfig={mediaConfig}/>)}
         <SiteFooter/>
       </> : activeCategoryId === 'cervejas' ? <BeerCategoryPage products={allBeerProducts} filter={beerFilter} onFilter={setBeerFilter} onHome={goHome} onOpen={openProduct} mediaConfig={mediaConfig} /> : activeCategoryId === 'energeticos' ? <EnergyCategoryPage products={allEnergyProducts} filter={energyFilter} onFilter={setEnergyFilter} onHome={goHome} onOpen={openProduct} mediaConfig={mediaConfig} /> : activeCategory ? <section className="category-page"><div className="category-page-head"><button className="back-btn" onClick={goHome} aria-label="Voltar"><Icon name="back"/></button><h1>{activeCategory.label}</h1></div><div className="category-product-grid">{activeProducts.map(product => <ProductCard key={product.id} product={product} onOpen={openProduct} media={mediaConfig[product.id]}/>)}</div></section> : null}
