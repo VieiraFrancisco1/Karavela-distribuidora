@@ -139,16 +139,56 @@ export async function uploadCatalogImageToCloudinary(
 async function readCloudinaryJson<T extends object>(publicId: string): Promise<T | null> {
   if (!isCloudinaryConfigured()) return null
 
-  const { cloudName } = getEnv()
-  const url = `https://res.cloudinary.com/${encodeURIComponent(cloudName)}/raw/upload/${publicId}?v=${Date.now()}`
+  const { cloudName, apiKey, apiSecret } = getEnv()
+  const authorization = `Basic ${Buffer.from(`${apiKey}:${apiSecret}`).toString('base64')}`
 
-  const response = await fetch(url, { cache: 'no-store' })
-  if (response.status === 404) return null
-  if (!response.ok) throw new Error(`Não foi possível ler a configuração do Cloudinary (${response.status}).`)
+  // Busca primeiro os metadados do recurso pela Admin API. Isso devolve a
+  // versão atual do arquivo e evita reler uma versão antiga do JSON pelo CDN
+  // logo depois de um overwrite.
+  const resourceResponse = await fetch(
+    `https://api.cloudinary.com/v1_1/${encodeURIComponent(cloudName)}/resources/raw/upload/${encodeURIComponent(publicId)}`,
+    {
+      cache: 'no-store',
+      headers: { authorization },
+    },
+  )
 
-  const data = await response.json()
-  if (!data || typeof data !== 'object' || Array.isArray(data)) return null
-  return data as T
+  if (resourceResponse.status === 404) return null
+
+  if (resourceResponse.ok) {
+    const resource = await resourceResponse.json() as {
+      secure_url?: string
+      version?: number
+    }
+
+    if (resource.secure_url) {
+      const separator = resource.secure_url.includes('?') ? '&' : '?'
+      const currentUrl = `${resource.secure_url}${separator}cb=${resource.version ?? Date.now()}`
+      const currentResponse = await fetch(currentUrl, { cache: 'no-store' })
+
+      if (currentResponse.status === 404) return null
+      if (!currentResponse.ok) {
+        throw new Error(`Não foi possível ler a configuração atual do Cloudinary (${currentResponse.status}).`)
+      }
+
+      const currentData = await currentResponse.json()
+      if (!currentData || typeof currentData !== 'object' || Array.isArray(currentData)) return null
+      return currentData as T
+    }
+  }
+
+  // Fallback para instalações antigas/casos em que a consulta de metadados
+  // não estiver disponível.
+  const fallbackUrl = `https://res.cloudinary.com/${encodeURIComponent(cloudName)}/raw/upload/${publicId}?cb=${Date.now()}`
+  const fallbackResponse = await fetch(fallbackUrl, { cache: 'no-store' })
+  if (fallbackResponse.status === 404) return null
+  if (!fallbackResponse.ok) {
+    throw new Error(`Não foi possível ler a configuração do Cloudinary (${fallbackResponse.status}).`)
+  }
+
+  const fallbackData = await fallbackResponse.json()
+  if (!fallbackData || typeof fallbackData !== 'object' || Array.isArray(fallbackData)) return null
+  return fallbackData as T
 }
 
 export async function readCloudinaryMediaConfig<T extends object>(): Promise<T | null> {
