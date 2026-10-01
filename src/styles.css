@@ -5944,3 +5944,38 @@ html body .product-sheet .media-managed{
     margin-top:0!important;
   }
 }
+
+
+/* V64 — área administrativa isolada da Home.
+   O painel rola normalmente, mas nenhum gesto é repassado à página atrás. */
+.admin-media-overlay{
+  position:fixed!important;
+  inset:0!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  touch-action:none!important;
+}
+
+.admin-media-panel{
+  overscroll-behavior:contain!important;
+}
+
+.admin-media-layout,
+.admin-editor-main,
+.admin-product-sidebar,
+.catalog-admin,
+.catalog-entity-list,
+.catalog-entity-editor{
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-y!important;
+}
+
+/* O quadro da foto continua recebendo o gesto de arrastar sem mover a Home. */
+.admin-card-editable-frame,
+.admin-detail-preview-stage .simple-image,
+.admin-detail-preview-stage .beer-sheet-image,
+.admin-detail-preview-stage .sheet-image{
+  touch-action:none!important;
+  overscroll-behavior:none!important;
+}
