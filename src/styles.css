@@ -4759,25 +4759,16 @@ html body .simple-sheet[data-product-id][data-category-id] .simple-image--scenic
   transform-origin:center center!important;
 }
 
-html body .simple-sheet[data-product-id^="gins-"] .simple-image-main,
-html body .simple-sheet[data-product-id^="cachacas-"] .simple-image-main,
-html body .simple-sheet[data-product-id^="gins-"] .simple-image-main.media-managed,
-html body .simple-sheet[data-product-id^="cachacas-"] .simple-image-main.media-managed,
-html body .beer-sheet[data-product-id^="gins-"] .beer-sheet-main,
-html body .beer-sheet[data-product-id^="cachacas-"] .beer-sheet-main,
-html body .beer-sheet[data-product-id^="gins-"] .beer-sheet-main.media-managed,
-html body .beer-sheet[data-product-id^="cachacas-"] .beer-sheet-main.media-managed,
-html body .sheet-image[data-product-id^="gins-"] > .sheet-image-main,
-html body .sheet-image[data-product-id^="cachacas-"] > .sheet-image-main,
-html body .sheet-image[data-product-id^="gins-"] > .sheet-image-main.media-managed,
-html body .sheet-image[data-product-id^="cachacas-"] > .sheet-image-main.media-managed{
+html body .simple-sheet[data-product-id^="gins-"] .simple-image-main:not(.media-managed),
+html body .simple-sheet[data-product-id^="cachacas-"] .simple-image-main:not(.media-managed),
+html body .beer-sheet[data-product-id^="gins-"] .beer-sheet-main:not(.media-managed),
+html body .beer-sheet[data-product-id^="cachacas-"] .beer-sheet-main:not(.media-managed),
+html body .sheet-image[data-product-id^="gins-"] > .sheet-image-main:not(.media-managed),
+html body .sheet-image[data-product-id^="cachacas-"] > .sheet-image-main:not(.media-managed){
   object-fit:contain!important;
   object-position:center center!important;
   transform:none!important;
   filter:none!important;
-  --media-scale: 1!important;
-  --media-x: 0%!important;
-  --media-y: 0%!important;
 }
 
 
@@ -6705,4 +6696,40 @@ body,
   .energy-category-page{
     min-height:calc(100dvh - 60px)!important;
   }
+}
+
+
+/* V69 — libera o editor "Foto após o clique" de Gins/Cachaças.
+   O V42 preservava a aparência original zerando as variáveis do editor;
+   isso congelava arraste, zoom e posição. Agora somente fotos sem ajuste
+   ficam no padrão antigo; quando .media-managed existe, o ajuste salvo vence. */
+html body .simple-sheet[data-product-id^="gins-"] .simple-image-main.media-managed,
+html body .simple-sheet[data-product-id^="cachacas-"] .simple-image-main.media-managed,
+.admin-detail-preview-stage .simple-sheet[data-product-id^="gins-"] .simple-image-main.media-managed,
+.admin-detail-preview-stage .simple-sheet[data-product-id^="cachacas-"] .simple-image-main.media-managed{
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  transform:translate(var(--media-x,0%), var(--media-y,0%)) scale(var(--media-scale,1))!important;
+  transform-origin:center center!important;
+  transition:none!important;
+  filter:none!important;
+}
+
+.admin-detail-preview-stage .simple-sheet[data-product-id^="gins-"] .simple-image,
+.admin-detail-preview-stage .simple-sheet[data-product-id^="gins-"] .simple-image--scenic,
+.admin-detail-preview-stage .simple-sheet[data-product-id^="cachacas-"] .simple-image,
+.admin-detail-preview-stage .simple-sheet[data-product-id^="cachacas-"] .simple-image--scenic{
+  touch-action:none!important;
+  cursor:grab!important;
+}
+
+.admin-detail-preview-stage .simple-sheet[data-product-id^="gins-"] .simple-image:active,
+.admin-detail-preview-stage .simple-sheet[data-product-id^="gins-"] .simple-image--scenic:active,
+.admin-detail-preview-stage .simple-sheet[data-product-id^="cachacas-"] .simple-image:active,
+.admin-detail-preview-stage .simple-sheet[data-product-id^="cachacas-"] .simple-image--scenic:active{
+  cursor:grabbing!important;
 }
