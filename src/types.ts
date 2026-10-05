@@ -50,6 +50,7 @@ export type CatalogCategory = CatalogImageAdjustments & {
 }
 
 export type CatalogConfig = {
+  revision?: number
   hiddenProductIds?: string[]
   brands?: CatalogBrand[]
   categories?: CatalogCategory[]

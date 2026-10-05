@@ -1,0 +1,173 @@
+/* Carrossel, status de funcionamento e rodapé compacto. */
+#root > .app-shell > main {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.home-banner {
+  position: relative;
+  width: 100%;
+  height: clamp(168px, 43vw, 250px);
+  flex: none;
+  overflow: hidden;
+  border-radius: 0;
+  background: #071e3a;
+  isolation: isolate;
+}
+.home-banner-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 450ms ease;
+}
+.home-banner-slide {
+  flex: 0 0 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #071e3a;
+}
+.home-banner-slide--brahma-caixa,
+.home-banner-slide--cervejas { background: #f9b51c; }
+.home-banner-slide img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
+}
+.home-banner-slide--brahma-caixa img { object-fit: contain; }
+.home-banner-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 44px;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  color: #20beff;
+  opacity: .58;
+  filter: drop-shadow(0 0 3px rgba(14,173,255,.55));
+}
+.home-banner-arrow--previous { left: 2px; }
+.home-banner-arrow--next { right: 2px; }
+.home-banner-arrow svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.home-banner-arrow:hover,
+.home-banner-arrow:focus-visible { opacity: 1; }
+.home-banner-check {
+  position: absolute;
+  right: 38px;
+  bottom: 5px;
+  min-width: 76px;
+  min-height: 26px;
+  padding: 4px 14px;
+  border: 0;
+  border-radius: 5px;
+  background: #ff791c;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  box-shadow: 0 2px 6px rgba(0,0,0,.16);
+}
+.home-banner-check:active { background: #e45d08; }
+.home-banner button:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
+#catalogo { scroll-margin-top: 68px; }
+
+.topbar {
+  grid-template-columns: auto 1fr auto !important;
+  padding-inline: 4px !important;
+}
+.top-left {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  position: relative;
+  z-index: 3;
+}
+.topbar .menu-trigger,
+.store-status {
+  height: 34px !important;
+  min-height: 34px;
+}
+.topbar .menu-trigger { width: 34px !important; padding: 3px; }
+.topbar .menu-trigger svg { width: 24px; height: 24px; }
+.store-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 6px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 6px;
+  background: rgba(255,255,255,.075);
+  font-size: 10px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+.store-status--open { color: #8df7a9; }
+.store-status--closed { color: #ffd0bc; }
+.store-status-dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
+.topbar .top-logo { width: 122px !important; }
+.topbar .top-actions { grid-column: 3; }
+
+#root > .app-shell > main > .site-footer {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important;
+  align-items: start !important;
+  justify-items: stretch !important;
+  gap: 12px 16px !important;
+  margin: auto 0 0 !important;
+  padding: 14px 16px max(14px,env(safe-area-inset-bottom)) !important;
+  width: 100% !important;
+}
+.site-footer .site-footer-brand {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+}
+.site-footer .site-footer-brand img {
+  width: 128px !important;
+  height: 50px !important;
+  margin: 0 auto !important;
+}
+.site-footer .site-footer-block {
+  width: 100% !important;
+  justify-items: start !important;
+  text-align: left !important;
+  gap: 7px !important;
+}
+.site-footer .site-footer-block h3 { text-align: left !important; font-size: 10px !important; margin: 0 0 2px !important; }
+.site-footer .site-footer-block a,
+.site-footer .site-footer-line {
+  grid-template-columns: 15px minmax(0,1fr) !important;
+  gap: 5px !important;
+  width: 100% !important;
+  font-size: 10px !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+}
+.site-footer .site-footer-icon,
+.site-footer .site-footer-icon svg { width: 15px !important; height: 15px !important; }
+.site-footer .site-footer-block a span:last-child { overflow-wrap: anywhere; }
+.pack-unit-price { font-size: 12px; color: #536b7c; }
+
+/* A foto oficial começa inteira; os ajustes do editor continuam prevalecendo. */
+.product-card[data-product-id="licores-martini-rosato"] .product-image-wrap img:not(.media-managed),
+.simple-sheet[data-product-id="licores-martini-rosato"] .simple-image-main:not(.media-managed) {
+  object-fit: contain !important;
+  transform: none !important;
+}
+
+@media (min-width: 440px) {
+  .topbar .top-logo { width: 158px !important; }
+  .site-footer .site-footer-block a,
+  .site-footer .site-footer-line { font-size: 12px !important; }
+}
+@media (max-width: 350px) {
+  .topbar .top-logo { width: 104px !important; }
+  .store-status { font-size: 9px; padding-inline: 4px; gap: 3px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-banner-track { transition-duration: 1ms; }
+}

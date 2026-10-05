@@ -21,6 +21,7 @@ type CatalogCategory = CatalogImageAdjustments & {
 }
 
 type CatalogConfig = {
+  revision?: number
   hiddenProductIds?: string[]
   brands?: CatalogBrand[]
   categories?: CatalogCategory[]
@@ -74,7 +75,8 @@ function sanitizeConfig(value: unknown): CatalogConfig {
       }).slice(0, 100)
     : undefined
 
-  return { hiddenProductIds, brands, categories }
+  const revision = cleanNumber(input.revision, 0, 1000, 0)
+  return { revision, hiddenProductIds, brands, categories }
 }
 
 export async function GET() {

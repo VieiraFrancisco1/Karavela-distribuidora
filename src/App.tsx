@@ -4,6 +4,9 @@ import { brands as baseBrands, categories as baseCategories, products as basePro
 import type { CartLine, CatalogBrand, CatalogCategory, CatalogConfig, Product, Tier } from './types'
 import { AdminMedia, hasMediaOverride, mediaImageStyle } from './mediaAdmin'
 import type { MediaConfig, MediaViewSettings, ProductMediaOverride } from './mediaAdmin'
+import HomeBanner from './HomeBanner'
+import type { BannerDestination } from './HomeBanner'
+import StoreStatus from './StoreStatus'
 
 const money = (value: number) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
@@ -325,7 +328,7 @@ function PackSheet({ product, onClose, onAdd, media }: { product: Product; onClo
   useEffect(() => { setQty(1) }, [product.id])
 
   return <div className="overlay sheet-overlay" onMouseDown={onClose}>
-    <section className="product-sheet" onMouseDown={e => e.stopPropagation()}>
+    <section className="product-sheet pack-sheet" data-category-id={product.categoryId} data-product-id={product.id} onMouseDown={e => e.stopPropagation()}>
       <div className="sheet-grabber"/>
       <button className="sheet-close" onClick={onClose}><Icon name="close"/></button>
       <div className="sheet-head">
@@ -338,13 +341,14 @@ function PackSheet({ product, onClose, onAdd, media }: { product: Product; onClo
         </div>
       </div>
       <div className="pack-info">
-        <p><b>{product.packUnits ?? 12} unidades por pack</b></p>
+        <p><b>Caixa com {product.packUnits ?? 12} unidades</b></p>
+        {product.basePrice && <p className="pack-unit-price">Unidade avulsa: {money(product.basePrice)}</p>}
         {product.description && <p className="muted">{product.description}</p>}
-        <div className="quick-packs">{[6, 12, 15].map(v => <button key={v} onClick={() => setQty(q => q + v)}>+ {v} packs</button>)}</div>
+        <div className="quick-packs">{[1, 3, 6].map(v => <button key={v} onClick={() => setQty(q => q + v)}>+ {v} {v === 1 ? 'caixa' : 'caixas'}</button>)}</div>
       </div>
       <div className="sheet-footer">
         <div className="qty-control"><button onClick={() => setQty(q => Math.max(1, q - 1))}><Icon name="minus"/></button><strong>{qty}</strong><button onClick={() => setQty(q => q + 1)}><Icon name="plus"/></button></div>
-        <button className="add-main" onClick={(e) => onAdd(product, qty, product.price, e.currentTarget)}>Adicionar ({qty}) • {money(qty * product.price)}</button>
+        <button className="add-main" onClick={(e) => onAdd(product, qty, product.price, e.currentTarget)}>Adicionar {qty} {qty === 1 ? 'caixa' : 'caixas'} • {money(qty * product.price)}</button>
       </div>
     </section>
   </div>
@@ -901,7 +905,18 @@ export default function App() {
   const [beerFilter, setBeerFilter] = useState<BeerFilterId>('all')
   const [energyFilter, setEnergyFilter] = useState<EnergyFilterId>('all')
   const [adminOpen, setAdminOpen] = useState(false)
-  const [mediaConfig, setMediaConfig] = useState<MediaConfig>({})
+  const [savedMediaConfig, setMediaConfig] = useState<MediaConfig>({})
+  // As novas caixas começam com a foto já cadastrada da mesma cerveja.
+  // Uma edição na caixa passa a ter seu próprio ajuste, sem alterar a unidade.
+  const mediaConfig = useMemo(() => {
+    const merged = { ...savedMediaConfig }
+    for (const product of baseProducts) {
+      if (product.categoryId !== 'cervejas-300-caixa' || merged[product.id]) continue
+      const unitId = product.id.replace('cervejas-300-caixa-', 'cervejas-300-unidades-')
+      if (savedMediaConfig[unitId]) merged[product.id] = savedMediaConfig[unitId]
+    }
+    return merged
+  }, [savedMediaConfig])
   const [catalogConfig, setCatalogConfig] = useState<CatalogConfig>({})
   const [catalogReady, setCatalogReady] = useState(false)
   // Mantém a Home completamente parada enquanto a área administrativa está aberta.
@@ -1001,7 +1016,15 @@ export default function App() {
   }, [minimumNotice])
 
   const catalogBrands = catalogConfig.brands ?? defaultBrands
-  const catalogCategories = catalogConfig.categories ?? defaultCategories
+  const catalogCategories = useMemo(() => {
+    const configured = catalogConfig.categories ?? defaultCategories
+    if ((catalogConfig.revision ?? 0) >= 1 || configured.some(category => category.id === 'cervejas-300-caixa')) return configured
+    const crateCategory = defaultCategories.find(category => category.id === 'cervejas-300-caixa')!
+    const index = configured.findIndex(category => category.id === 'cervejas-300-unidades')
+    const next = [...configured]
+    next.splice(index >= 0 ? index + 1 : 0, 0, crateCategory)
+    return next
+  }, [catalogConfig.categories, catalogConfig.revision])
   const catalogProducts = useMemo(() => {
     const hidden = new Set(catalogConfig.hiddenProductIds ?? [])
     const allowedCategories = new Set(catalogCategories.map(category => category.id))
@@ -1033,6 +1056,18 @@ export default function App() {
   function closeSearch() { setSearchOpen(false); setQuery('') }
   function goHome() { setActiveCategoryId(null); setMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }) }
   function openCategory(id: string) { if (id === 'cervejas') setBeerFilter('all'); if (id === 'energeticos') setEnergyFilter('all'); setActiveCategoryId(id); setMenuOpen(false); closeSearch(); window.scrollTo({ top: 0, behavior: 'smooth' }) }
+
+  function checkBanner(destination: BannerDestination) {
+    if (destination === 'catalogo') {
+      document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else if (destination === 'brahma-caixa') {
+      openCategory('cervejas-300-caixa')
+      const brahma = catalogProducts.find(product => product.id === 'cervejas-300-caixa-brahma-300ml')
+      if (brahma) openProduct(brahma)
+    } else {
+      openCategory('long-necks')
+    }
+  }
 
   function fly(from: HTMLElement) {
     const target = cartButton.current
@@ -1077,7 +1112,7 @@ export default function App() {
   }
 
   return <div className="app-shell">
-    <header className="topbar"><button className="icon-btn" onClick={() => setMenuOpen(true)}><Icon name="menu"/></button><img className="top-logo" src="/assets/logo-karavela.png" alt="Karavela Bistrô & Distribuidora"/><div className="top-actions"><button className="icon-btn search-trigger" onClick={() => { setSearchOpen(v => !v); setQuery('') }}><Icon name="search"/></button><button ref={cartButton} className="icon-btn cart-btn" onClick={() => setCartOpen(true)}><Icon name="cart"/>{count > 0 && <><span className="drink-dot"/><span className="cart-count">{count}</span></>}</button></div></header>
+    <header className="topbar"><div className="top-left"><button className="icon-btn menu-trigger" aria-label="Abrir menu" onClick={() => setMenuOpen(true)}><Icon name="menu"/></button><StoreStatus/></div><img className="top-logo" src="/assets/logo-karavela.png" alt="Karavela Bistrô & Distribuidora"/><div className="top-actions"><button className="icon-btn search-trigger" aria-label="Buscar bebidas" onClick={() => { setSearchOpen(v => !v); setQuery('') }}><Icon name="search"/></button><button ref={cartButton} className="icon-btn cart-btn" aria-label="Abrir carrinho" onClick={() => setCartOpen(true)}><Icon name="cart"/>{count > 0 && <><span className="drink-dot"/><span className="cart-count">{count}</span></>}</button></div></header>
 
     {searchOpen && <><div className="search-dismiss" onMouseDown={closeSearch}/><div className="search-popover" onMouseDown={e => e.stopPropagation()}><div className="search-panel"><Icon name="search"/><input autoFocus value={query} onChange={e => setQuery(e.target.value)} placeholder="Buscar bebida pelo nome..."/><button onClick={closeSearch}><Icon name="close"/></button></div>{query.trim() && <div className="search-results">{filtered.length ? filtered.slice(0, 12).map(p => <button key={p.id} className="search-result" onClick={() => openProduct(p)}><span className="search-result-image"><ManagedProductImage src={p.image} alt="" settings={mediaConfig[p.id]?.card}/></span><span className="search-result-copy"><strong>{p.name}</strong><small>{p.category}{p.size ? ` • ${p.size}` : ''}</small></span><b>{money(p.price)}</b></button>) : <div className="search-empty">Nenhum produto encontrado.</div>}</div>}</div></>}
 
@@ -1093,8 +1128,8 @@ export default function App() {
 
     <main>
       {checkoutOpen ? <CheckoutScreen lines={cart} onBack={() => { setCheckoutOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }) }} /> : !activeCategory ? <>
-        <section className="section brand-section"><div className="section-title"><h2>Principais marcas</h2></div><div className="rail-wrap"><div className="brand-strip">{catalogBrands.map(brand => <div className={`brand ${!brand.image ? 'brand-text' : ''}`} key={brand.id}>{brand.image ? <span className="brand-image-frame"><img src={freshCatalogImageUrl(brand.image)} alt={brand.name} style={catalogImageStyle(brand)}/></span> : <div className="brand-fallback" style={{ color: brand.accent, borderColor: brand.accent }}>{brand.name}</div>}<span>{brand.name}</span></div>)}</div><div className="rail-arrow brand-arrow"><Icon name="arrow"/></div></div></section>
-        <section className="section category-section"><div className="section-title"><h2>Categorias</h2></div><div className="rail-wrap"><div className="category-strip">{catalogCategories.map(category => <button className="category-card" key={category.id} onClick={() => openCategory(category.id)}>{category.image ? <span className="category-card-image-frame"><img className="category-card-image" src={freshCatalogImageUrl(category.image)} alt="" style={catalogImageStyle(category)}/></span> : <CategoryIcon name={category.icon}/>}<span>{category.label}</span></button>)}</div><div className="rail-arrow category-arrow"><Icon name="arrow"/></div></div></section>
+        <HomeBanner onCheck={checkBanner} paused={menuOpen || cartOpen || searchOpen || adminOpen || !!selected}/>
+        <section id="catalogo" className="section category-section"><div className="section-title"><h2>Categorias</h2></div><div className="rail-wrap"><div className="category-strip">{catalogCategories.map(category => <button className="category-card" key={category.id} onClick={() => openCategory(category.id)}>{category.image ? <span className="category-card-image-frame"><img className="category-card-image" src={freshCatalogImageUrl(category.image)} alt="" style={catalogImageStyle(category)}/></span> : <CategoryIcon name={category.icon}/>}<span>{category.label}</span></button>)}</div><div className="rail-arrow category-arrow"><Icon name="arrow"/></div></div></section>
         {catalogCategories.map(category => <ProductRail key={category.id} categoryId={category.id} categories={catalogCategories} products={catalogProducts} onOpen={openProduct} onAll={openCategory} mediaConfig={mediaConfig}/>)}
         <SiteFooter/>
       </> : activeCategoryId === 'cervejas' ? <BeerCategoryPage products={allBeerProducts} filter={beerFilter} onFilter={setBeerFilter} onHome={goHome} onOpen={openProduct} mediaConfig={mediaConfig} /> : activeCategoryId === 'energeticos' ? <EnergyCategoryPage products={allEnergyProducts} filter={energyFilter} onFilter={setEnergyFilter} onHome={goHome} onOpen={openProduct} mediaConfig={mediaConfig} /> : activeCategory ? <section className="category-page"><div className="category-page-head"><button className="back-btn" onClick={goHome} aria-label="Voltar"><Icon name="back"/></button><h1>{activeCategory.label}</h1></div><div className="category-product-grid">{activeProducts.map(product => <ProductCard key={product.id} product={product} onOpen={openProduct} media={mediaConfig[product.id]}/>)}</div></section> : null}
@@ -1103,6 +1138,6 @@ export default function App() {
     {menuOpen && <SideMenu categories={catalogCategories} onClose={() => setMenuOpen(false)} onCart={() => { setMenuOpen(false); setCartOpen(true) }} onHome={goHome} onCategory={openCategory} onAdmin={() => { setMenuOpen(false); setAdminOpen(true) }}/>} 
     {cartOpen && <CartDrawer lines={cart} onClose={() => { setCartOpen(false); setMinimumNotice(null) }} onQty={(id, q) => setCart(prev => prev.map(x => x.product.id === id ? { ...x, qty: q, unitPrice: productPricing(x.product, q).effectiveUnitPrice } : x))} onRemove={id => setCart(prev => prev.filter(x => x.product.id !== id))} onCheckout={checkout} minimumNotice={minimumNotice} onCloseMinimumNotice={() => setMinimumNotice(null)} mediaConfig={mediaConfig}/>}    
     {selected && <ProductSheet product={selected} onClose={() => setSelected(null)} onAdd={add} media={mediaConfig[selected.id]}/>}
-    {adminOpen && <AdminMedia products={catalogProducts} brands={catalogBrands} categories={catalogCategories} catalogConfig={catalogConfig} config={mediaConfig} detailImageForProduct={(product) => detailImageByProductId[product.id] ?? product.image} onClose={() => setAdminOpen(false)} onSaved={setMediaConfig} onCatalogSaved={setCatalogConfig}/>}    
+    {adminOpen && <AdminMedia products={catalogProducts} brands={catalogBrands} categories={catalogCategories} catalogConfig={{ ...catalogConfig, revision: 1, categories: catalogCategories }} config={mediaConfig} detailImageForProduct={(product) => detailImageByProductId[product.id] ?? product.image} onClose={() => setAdminOpen(false)} onSaved={setMediaConfig} onCatalogSaved={setCatalogConfig}/>}
   </div>
 }

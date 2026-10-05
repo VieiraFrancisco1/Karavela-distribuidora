@@ -303,7 +303,7 @@ function PreviewBeerDetail({ product, src, settings, onChange }: { product: Prod
 }
 
 function PreviewPackDetail({ product, src, settings, onChange }: { product: Product; src: string; settings: MediaViewSettings; onChange: (next: MediaViewSettings) => void }) {
-  return <section className="product-sheet admin-photo-only-sheet">
+  return <section className="product-sheet pack-sheet admin-photo-only-sheet" data-category-id={product.categoryId} data-product-id={product.id}>
     <div className="sheet-grabber"/>
     <span className="sheet-close" aria-hidden="true"><PreviewIcon name="close"/></span>
     <div className="sheet-head">
@@ -324,13 +324,14 @@ function PreviewPackDetail({ product, src, settings, onChange }: { product: Prod
       </div>
     </div>
     <div className="pack-info">
-      <p><b>{product.packUnits ?? 12} unidades por pack</b></p>
+      <p><b>Caixa com {product.packUnits ?? 12} unidades</b></p>
+      {product.basePrice && <p className="pack-unit-price">Unidade avulsa: {money(product.basePrice)}</p>}
       {product.description && <p className="muted">{product.description}</p>}
-      <div className="quick-packs">{[6, 12, 15].map(value => <button type="button" tabIndex={-1} style={{ pointerEvents: 'none' }} key={value}>+ {value} packs</button>)}</div>
+      <div className="quick-packs">{[1, 3, 6].map(value => <button type="button" tabIndex={-1} style={{ pointerEvents: 'none' }} key={value}>+ {value} {value === 1 ? 'caixa' : 'caixas'}</button>)}</div>
     </div>
     <div className="sheet-footer" style={{ position: 'static', transform: 'none', width: '100%' }}>
       <div className="qty-control"><button type="button" tabIndex={-1}><PreviewIcon name="minus"/></button><strong>1</strong><button type="button" tabIndex={-1}><PreviewIcon name="plus"/></button></div>
-      <button type="button" tabIndex={-1} className="add-main" style={{ pointerEvents: 'none' }}>Adicionar (1) • {money(product.price)}</button>
+      <button type="button" tabIndex={-1} className="add-main" style={{ pointerEvents: 'none' }}>Adicionar 1 caixa • {money(product.price)}</button>
     </div>
   </section>
 }

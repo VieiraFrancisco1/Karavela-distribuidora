@@ -3,6 +3,7 @@ import type { Product } from './types'
 export const categories = [
   { id: 'cervejas-lata', label: 'Cervejas Lata', icon: 'beer-can' },
   { id: 'cervejas-300-unidades', label: 'Cervejas 300ml', icon: 'beer-bottle' },
+  { id: 'cervejas-300-caixa', label: 'Cervejas 300 ml — Caixa', icon: 'crate' },
   { id: 'long-necks', label: 'Cervejas Long Neck', icon: 'beer-bottle' },
   { id: 'zero-alcool', label: 'Cervejas Zero Álcool', icon: 'zero-beer' },
   { id: 'energeticos', label: 'Energéticos', icon: 'bolt' },
@@ -132,9 +133,10 @@ export const products: Product[] = [
   { id: 'licores-ballena-tradicional', name: 'Ballena Tradicional', category: 'Licores', categoryId: 'licores', size: '', price: 122.00, image: '/assets/products/licores/ballena-tradicional.webp', kind: 'common' },
   { id: 'licores-ballena-coco', name: 'Ballena Coco', category: 'Licores', categoryId: 'licores', size: '', price: 122.00, image: '/assets/products/licores/ballena-coco.webp', kind: 'common' },
   { id: 'licores-ballena-chocolate', name: 'Ballena Chocolate', category: 'Licores', categoryId: 'licores', size: '', price: 122.00, image: '/assets/products/licores/ballena-chocolate-caramelo.webp', kind: 'common' },
-  { id: 'licores-martini-bianco', name: 'Martini Bianco', category: 'Licores', categoryId: 'licores', size: '', price: 49.90, image: '/assets/products/licores/martini-bianco.webp', kind: 'common', provisional: true },
-  { id: 'licores-martini-extra-dry', name: 'Martini Extra Dry', category: 'Licores', categoryId: 'licores', size: '', price: 49.90, image: '/assets/products/licores/martini-extra-dry.webp', kind: 'common', provisional: true },
-  { id: 'licores-martini-rosso', name: 'Martini Rosso', category: 'Licores', categoryId: 'licores', size: '', price: 49.90, image: '/assets/products/licores/martini-rosso.webp', kind: 'common', provisional: true },
+  { id: 'licores-martini-rosato', name: 'Martini Rosato', category: 'Licores', categoryId: 'licores', size: '', price: 64.80, image: '/assets/products/licores/martini-rosato.png', kind: 'common' },
+  { id: 'licores-martini-bianco', name: 'Martini Bianco', category: 'Licores', categoryId: 'licores', size: '', price: 64.80, image: '/assets/products/licores/martini-bianco.webp', kind: 'common' },
+  { id: 'licores-martini-extra-dry', name: 'Martini Extra Dry', category: 'Licores', categoryId: 'licores', size: '', price: 59.90, image: '/assets/products/licores/martini-extra-dry.webp', kind: 'common' },
+  { id: 'licores-martini-rosso', name: 'Martini Rosso', category: 'Licores', categoryId: 'licores', size: '', price: 59.90, image: '/assets/products/licores/martini-rosso.webp', kind: 'common' },
   { id: 'espumantes-chandon', name: 'Chandon', category: 'Espumantes', categoryId: 'espumantes', size: '', price: 98.00, image: '/assets/products/placeholder.svg', kind: 'common' },
   { id: 'espumantes-lider', name: 'Líder', category: 'Espumantes', categoryId: 'espumantes', size: '', price: 13.80, image: '/assets/products/placeholder.svg', kind: 'common' },
   { id: 'espumantes-cereser', name: 'Cereser', category: 'Espumantes', categoryId: 'espumantes', size: '', price: 12.80, image: '/assets/products/placeholder.svg', kind: 'common' },
@@ -160,6 +162,13 @@ export const products: Product[] = [
   { id: 'cervejas-300-unidades-original-300ml', name: 'Original', category: 'Cervejas 300ml', categoryId: 'cervejas-300-unidades', size: '300ml', price: 3.50, image: '/assets/products/placeholder.svg', kind: 'returnable', cold: true, tiers: [{ qty: 23, unitPrice: 74.90 / 23 }] },
   { id: 'cervejas-300-unidades-devassa-300ml', name: 'Devassa', category: 'Cervejas 300ml', categoryId: 'cervejas-300-unidades', size: '300ml', price: 3.25, image: '/assets/products/placeholder.svg', kind: 'returnable', cold: true, tiers: [{ qty: 24, unitPrice: 58.80 / 24 }] },
   { id: 'cervejas-300-unidades-amstel-300ml', name: 'Amstel', category: 'Cervejas 300ml', categoryId: 'cervejas-300-unidades', size: '300ml', price: 3.25, image: '/assets/products/placeholder.svg', kind: 'returnable', cold: true, tiers: [{ qty: 24, unitPrice: 64.80 / 24 }] },
+  { id: 'cervejas-300-caixa-skol-300ml', name: 'Skol — Caixa', category: 'Cervejas 300 ml — Caixa', categoryId: 'cervejas-300-caixa', size: '300 ml · 23 unidades', price: 64.80, basePrice: 3.25, packUnits: 23, image: '/assets/products/placeholder.svg', kind: 'pack', cold: true, description: 'Caixa retornável. É necessário ter as garrafas para trocar.' },
+  { id: 'cervejas-300-caixa-brahma-300ml', name: 'Brahma — Caixa', category: 'Cervejas 300 ml — Caixa', categoryId: 'cervejas-300-caixa', size: '300 ml · 23 unidades', price: 63.80, basePrice: 3.25, packUnits: 23, image: '/assets/products/brahma-retornavel.jpg', kind: 'pack', cold: true, description: 'Caixa retornável. É necessário ter as garrafas para trocar.' },
+  { id: 'cervejas-300-caixa-bohemia-300ml', name: 'Bohemia — Caixa', category: 'Cervejas 300 ml — Caixa', categoryId: 'cervejas-300-caixa', size: '300 ml · 23 unidades', price: 64.80, basePrice: 3.25, packUnits: 23, image: '/assets/products/placeholder.svg', kind: 'pack', cold: true, description: 'Caixa retornável. É necessário ter as garrafas para trocar.' },
+  { id: 'cervejas-300-caixa-original-300ml', name: 'Original — Caixa', category: 'Cervejas 300 ml — Caixa', categoryId: 'cervejas-300-caixa', size: '300 ml · 23 unidades', price: 74.90, basePrice: 3.50, packUnits: 23, image: '/assets/products/placeholder.svg', kind: 'pack', cold: true, description: 'Caixa retornável. É necessário ter as garrafas para trocar.' },
+  { id: 'cervejas-300-caixa-brahma-duplo-malte-300ml', name: 'Brahma Duplo Malte — Caixa', category: 'Cervejas 300 ml — Caixa', categoryId: 'cervejas-300-caixa', size: '300 ml · 23 unidades', price: 69.80, basePrice: 3.25, packUnits: 23, image: '/assets/products/placeholder.svg', kind: 'pack', cold: true, description: 'Caixa retornável. É necessário ter as garrafas para trocar.' },
+  { id: 'cervejas-300-caixa-devassa-300ml', name: 'Devassa — Caixa', category: 'Cervejas 300 ml — Caixa', categoryId: 'cervejas-300-caixa', size: '300 ml · 24 unidades', price: 58.80, basePrice: 3.25, packUnits: 24, image: '/assets/products/placeholder.svg', kind: 'pack', cold: true, description: 'Caixa retornável. É necessário ter as garrafas para trocar.' },
+  { id: 'cervejas-300-caixa-amstel-300ml', name: 'Amstel — Caixa', category: 'Cervejas 300 ml — Caixa', categoryId: 'cervejas-300-caixa', size: '300 ml · 24 unidades', price: 64.80, basePrice: 3.25, packUnits: 24, image: '/assets/products/placeholder.svg', kind: 'pack', cold: true, description: 'Caixa retornável. É necessário ter as garrafas para trocar.' },
   { id: 'long-necks-heineken-330ml', name: 'Heineken', category: 'Cervejas Long Neck', categoryId: 'long-necks', size: '330ml', price: 6.80, image: '/assets/products/long-necks/heineken.png', kind: 'common', cold: true, tiers: [{ qty: 12, unitPrice: 79.20 / 12 }] },
   { id: 'long-necks-corona-330ml', name: 'Corona', category: 'Cervejas Long Neck', categoryId: 'long-necks', size: '330ml', price: 7.60, image: '/assets/products/long-necks/corona.png', kind: 'common', cold: true, tiers: [{ qty: 12, unitPrice: 87.40 / 12 }] },
   { id: 'long-necks-budweiser-330ml', name: 'Budweiser', category: 'Cervejas Long Neck', categoryId: 'long-necks', size: '330ml', price: 6.20, image: '/assets/products/long-necks/budweiser.png', kind: 'common', cold: true, tiers: [{ qty: 12, unitPrice: 71.40 / 12 }] },
@@ -215,7 +224,6 @@ export const products: Product[] = [
 ]
 
 export const productsByCategory = (categoryId: string) => products.filter(product => product.categoryId === categoryId)
-
 
 
 
