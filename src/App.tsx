@@ -799,7 +799,7 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
       {fulfillment === 'delivery' && <section ref={deliveryRef} className="checkout-card checkout-address-card">
         <div className="checkout-card-title"><span>3</span><div><b>Endereço de entrega</b><small>Boa Viagem, CE</small></div>{addressValid && <i className="checkout-complete-check" aria-label="Concluído">✓</i>}</div>
         <div className="checkout-fields">
-          <label className={attempted && !effectiveNeighborhood.trim() ? 'invalid' : ''}><span>Bairro *</span>
+          <label className={attempted && !effectiveNeighborhood.trim() ? 'invalid' : ''}><span>Bairro</span>
             <div className="checkout-input-wrap select-check-wrap">
               <select value={neighborhood} onChange={e => setNeighborhood(e.target.value)}>
                 <option value="">Selecione seu bairro</option>
@@ -808,20 +808,20 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
               {neighborhood && <i className="field-complete-check" aria-label="Preenchido">✓</i>}
             </div>
           </label>
-          {neighborhood === 'Outras' && <label className={attempted && !otherNeighborhood.trim() ? 'invalid' : ''}><span>Qual bairro? *</span>
+          {neighborhood === 'Outras' && <label className={attempted && !otherNeighborhood.trim() ? 'invalid' : ''}><span>Qual bairro?</span>
             <div className="checkout-input-wrap">
               <input value={otherNeighborhood} onChange={e => setOtherNeighborhood(e.target.value)} placeholder="Digite seu bairro" />
               {otherNeighborhood.trim().length > 0 && <i className="field-complete-check" aria-label="Preenchido">✓</i>}
             </div>
           </label>}
-          <label className={attempted && !streetValid ? 'invalid' : ''}><span>Rua *</span>
+          <label className={attempted && !streetValid ? 'invalid' : ''}><span>Rua</span>
             <div className="checkout-input-wrap">
               <input value={street} onChange={e => setStreet(e.target.value)} placeholder="Nome da rua" />
               {streetValid && <i className="field-complete-check" aria-label="Preenchido">✓</i>}
             </div>
           </label>
           <div className="address-pair">
-            <label className={attempted && !numberValid ? 'invalid' : ''}><span>Número * <button type="button" className={noNumber ? 'mini-toggle active' : 'mini-toggle'} onClick={() => { setNoNumber(v => !v); setNumber('') }}>Sem nº</button></span>
+            <label className={attempted && !numberValid ? 'invalid' : ''}><span>Número <button type="button" className={noNumber ? 'mini-toggle active' : 'mini-toggle'} onClick={() => { setNoNumber(v => !v); setNumber('') }}>Sem nº</button></span>
               <div className="checkout-input-wrap">
                 <input inputMode="numeric" pattern="[0-9]*" disabled={noNumber} value={noNumber ? 'S/N' : number} onChange={e => setNumber(e.target.value.replace(/\D/g, ''))} placeholder="123" />
                 {numberValid && <i className="field-complete-check" aria-label="Preenchido">✓</i>}
@@ -834,7 +834,7 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
               </div>
             </label>
           </div>
-          <label className={attempted && !referenceValid ? 'invalid' : ''}><span>Ponto de referência *</span>
+          <label className={attempted && !referenceValid ? 'invalid' : ''}><span>Ponto de referência</span>
             <div className="checkout-input-wrap reference-input-wrap">
               <span className="reference-pin" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
