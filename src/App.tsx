@@ -897,7 +897,12 @@ function EnergyCategoryPage({ products: allProducts, filter, onFilter, onHome, o
   </section>
 }
 
-export default function App() {
+type AppProps = {
+  initialMediaConfig?: MediaConfig
+  initialCatalogConfig?: CatalogConfig
+}
+
+export default function App({ initialMediaConfig = {}, initialCatalogConfig = {} }: AppProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [cartOpen, setCartOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
@@ -910,7 +915,7 @@ export default function App() {
   const [beerFilter, setBeerFilter] = useState<BeerFilterId>('all')
   const [energyFilter, setEnergyFilter] = useState<EnergyFilterId>('all')
   const [adminOpen, setAdminOpen] = useState(false)
-  const [savedMediaConfig, setMediaConfig] = useState<MediaConfig>({})
+  const [savedMediaConfig, setMediaConfig] = useState<MediaConfig>(initialMediaConfig)
   // As novas caixas começam com a foto já cadastrada da mesma cerveja.
   // Uma edição na caixa passa a ter seu próprio ajuste, sem alterar a unidade.
   const mediaConfig = useMemo(() => {
@@ -922,8 +927,8 @@ export default function App() {
     }
     return merged
   }, [savedMediaConfig])
-  const [catalogConfig, setCatalogConfig] = useState<CatalogConfig>({})
-  const [catalogReady, setCatalogReady] = useState(false)
+  const [catalogConfig, setCatalogConfig] = useState<CatalogConfig>(initialCatalogConfig)
+  const [catalogReady, setCatalogReady] = useState(true)
   // Mantém a Home completamente parada enquanto a área administrativa está aberta.
   // O painel administrativo continua rolável; somente a página atrás fica bloqueada.
   useEffect(() => {
