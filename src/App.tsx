@@ -571,12 +571,12 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
   const nameParts = name.trim().split(/\s+/).filter(Boolean)
   const nameValid = nameParts.length >= 2 && nameParts.every(part => part.length >= 2)
   const customerDataValid = nameValid && phoneDigits.length >= 10
-  const streetValid = street.trim().length >= 3
-  const numberValid = noNumber || number.trim().length >= 1
-  const complementValid = complement.trim().length === 0 || complement.trim().length >= 5
-  const referenceValid = reference.trim().length >= 10
+  const streetValid = street.trim().length > 0
+  const numberValid = noNumber || number.trim().length > 0
+  const complementValid = true
+  const referenceValid = reference.trim().length > 0
   const addressValid = fulfillment === 'pickup' || (
-    fulfillment === 'delivery' && effectiveNeighborhood.length >= 2 && streetValid && numberValid && complementValid && referenceValid
+    fulfillment === 'delivery' && effectiveNeighborhood.trim().length > 0 && streetValid && numberValid && referenceValid
   )
   const firstStepValid = customerDataValid && !!fulfillment && addressValid
   const parsedChange = Number(changeFor.replace(',', '.'))
@@ -799,7 +799,7 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
       {fulfillment === 'delivery' && <section ref={deliveryRef} className="checkout-card checkout-address-card">
         <div className="checkout-card-title"><span>3</span><div><b>Endereço de entrega</b><small>Boa Viagem, CE</small></div>{addressValid && <i className="checkout-complete-check" aria-label="Concluído">✓</i>}</div>
         <div className="checkout-fields">
-          <label className={attempted && effectiveNeighborhood.length < 2 ? 'invalid' : ''}><span>Bairro *</span>
+          <label className={attempted && !effectiveNeighborhood.trim() ? 'invalid' : ''}><span>Bairro *</span>
             <div className="checkout-input-wrap select-check-wrap">
               <select value={neighborhood} onChange={e => setNeighborhood(e.target.value)}>
                 <option value="">Selecione seu bairro</option>
@@ -808,10 +808,10 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
               {neighborhood && <i className="field-complete-check" aria-label="Preenchido">✓</i>}
             </div>
           </label>
-          {neighborhood === 'Outras' && <label className={attempted && otherNeighborhood.trim().length < 2 ? 'invalid' : ''}><span>Qual bairro? *</span>
+          {neighborhood === 'Outras' && <label className={attempted && !otherNeighborhood.trim() ? 'invalid' : ''}><span>Qual bairro? *</span>
             <div className="checkout-input-wrap">
               <input value={otherNeighborhood} onChange={e => setOtherNeighborhood(e.target.value)} placeholder="Digite seu bairro" />
-              {otherNeighborhood.trim().length >= 2 && <i className="field-complete-check" aria-label="Preenchido">✓</i>}
+              {otherNeighborhood.trim().length > 0 && <i className="field-complete-check" aria-label="Preenchido">✓</i>}
             </div>
           </label>}
           <label className={attempted && !streetValid ? 'invalid' : ''}><span>Rua *</span>
@@ -827,12 +827,11 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
                 {numberValid && <i className="field-complete-check" aria-label="Preenchido">✓</i>}
               </div>
             </label>
-            <label className={attempted && !complementValid ? 'invalid' : ''}><span>Complemento</span>
+            <label><span>Complemento</span>
               <div className="checkout-input-wrap">
                 <input value={complement} onChange={e => setComplement(e.target.value)} placeholder="Apto, casa..." />
-                {complement.trim().length >= 5 && <i className="field-complete-check" aria-label="Preenchido">✓</i>}
+                {complement.trim().length > 0 && <i className="field-complete-check" aria-label="Preenchido">✓</i>}
               </div>
-              {complement.trim().length > 0 && complement.trim().length < 5 && <small className="field-rule-hint">Mínimo de 5 caracteres.</small>}
             </label>
           </div>
           <label className={attempted && !referenceValid ? 'invalid' : ''}><span>Ponto de referência *</span>
@@ -843,7 +842,7 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
               <input maxLength={100} value={reference} onChange={e => setReference(e.target.value)} placeholder="Ex: perto da padaria, casa azul..." />
               {referenceValid && <i className="field-complete-check" aria-label="Preenchido">✓</i>}
             </div>
-            <small className={reference.trim().length > 0 && !referenceValid ? 'reference-helper invalid-helper' : 'reference-helper'}>Facilita a entrega. {reference.length}/100</small>
+            <small className="reference-helper">Facilita a entrega.</small>
           </label>
         </div>
         <div className="checkout-fee-line"><span>Taxa de entrega</span><strong>{effectiveNeighborhood ? money(deliveryFee) : `a partir de ${money(DELIVERY_FEE)}`}</strong></div>
