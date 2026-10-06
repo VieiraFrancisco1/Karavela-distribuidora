@@ -152,9 +152,15 @@
 .site-footer .site-footer-block a span:last-child { overflow-wrap: anywhere; }
 .pack-unit-price { font-size: 12px; color: #536b7c; }
 
+/* Mantém a foto dentro do quadro, inclusive na prévia do editor. */
+#root .pack-sheet .sheet-image > .sheet-image-main {
+  position: absolute !important;
+  inset: 0 !important;
+}
+
 /* A foto oficial começa inteira; os ajustes do editor continuam prevalecendo. */
-.product-card[data-product-id="licores-martini-rosato"] .product-image-wrap img:not(.media-managed),
-.simple-sheet[data-product-id="licores-martini-rosato"] .simple-image-main:not(.media-managed) {
+#root .product-card[data-product-id="licores-martini-rosato"] .product-image-wrap img:not(.media-managed),
+#root .simple-sheet[data-product-id="licores-martini-rosato"] .simple-image-main:not(.media-managed) {
   object-fit: contain !important;
   transform: none !important;
 }
