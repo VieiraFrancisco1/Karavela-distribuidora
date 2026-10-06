@@ -75,7 +75,37 @@
 .home-banner button:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
 #catalogo { scroll-margin-top: 68px; }
 
-/* A foto da categoria ocupa o card inteiro, com o nome legível na base. */
+/* Contorno azul neon e sombra em camadas dão profundidade às categorias. */
+#root .category-strip {
+  padding: 4px 24px 14px 3px !important;
+}
+#root .category-card {
+  position: relative !important;
+  padding: 6px 4px 20px !important;
+  border: 1px solid #0758bb !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(36,120,245,.14),
+    0 3px 0 #0a3265,
+    0 7px 13px rgba(4,28,61,.22),
+    0 0 6px rgba(20,101,242,.25) !important;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+#root .category-card:hover {
+  box-shadow:
+    inset 0 0 0 1px rgba(36,120,245,.2),
+    0 3px 0 #0a3265,
+    0 9px 16px rgba(4,28,61,.26),
+    0 0 8px rgba(20,101,242,.32) !important;
+}
+#root .category-card:active {
+  transform: translateY(2px);
+}
+#root .category-card:focus-visible {
+  outline: 2px solid #287df1;
+  outline-offset: 2px;
+}
+
+/* A faixa baixa do nome libera mais espaço para a foto. */
 #root .category-card--photo {
   position: relative !important;
   isolation: isolate;
@@ -105,28 +135,31 @@
   border-radius: 0 !important;
   pointer-events: none;
 }
-#root .category-card--photo > .category-card-label {
+#root .category-card > .category-card-label {
   position: absolute !important;
   inset: auto 0 0 !important;
   z-index: 1;
   width: 100% !important;
-  min-height: 28px !important;
-  padding: 4px 3px !important;
+  min-height: 16px !important;
+  padding: 1px 3px 2px !important;
   margin: 0 !important;
   display: flex !important;
-  align-items: center !important;
+  align-items: flex-end !important;
   justify-content: center !important;
-  background: rgba(255,255,255,.94) !important;
+  background: transparent !important;
   color: #17324a !important;
   border-radius: 0 !important;
-  font-size: 11px !important;
+  font-size: 10.5px !important;
   font-weight: 800 !important;
-  line-height: 1.08 !important;
+  line-height: 1.04 !important;
   text-align: center !important;
   white-space: normal !important;
   overflow-wrap: anywhere !important;
   transform: none !important;
   pointer-events: none;
+}
+#root .category-card--photo > .category-card-label {
+  background: rgba(255,255,255,.94) !important;
 }
 .catalog-category-preview-stage {
   display: grid;
@@ -142,7 +175,6 @@
   width: 82px !important;
   height: 90px !important;
   min-height: 90px !important;
-  border: 1px solid #e6edf3 !important;
   border-radius: 10px !important;
 }
 @media (max-width: 760px) {
