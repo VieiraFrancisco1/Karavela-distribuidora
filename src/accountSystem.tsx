@@ -399,9 +399,10 @@ export function CustomerOrdersPanel({ onClose }: { onClose: () => void }) {
 
   return <div className="account-overlay" onMouseDown={onClose}>
     <section className="orders-panel" onMouseDown={event => event.stopPropagation()}>
-      <header>
-        <div><h2>Meus pedidos</h2><p>Acompanhe os pedidos enviados para a Karavela.</p></div>
-        <button onClick={onClose}>×</button>
+      <header className="orders-panel-header">
+        <button className="orders-back-button" onClick={onClose} aria-label="Voltar">‹ <span>Voltar</span></button>
+        <div className="orders-panel-title"><h2>Meus pedidos</h2><p>Acompanhe os pedidos enviados para a Karavela.</p></div>
+        <button className="orders-close-button" onClick={onClose} aria-label="Fechar">×</button>
       </header>
       <div className="orders-list">
         {loading ? <div className="orders-empty">Carregando...</div> : orders.length ? orders.map(order => <OrderCard key={order.id} order={order} />) : <div className="orders-empty">Você ainda não enviou nenhum pedido.</div>}
@@ -486,12 +487,13 @@ export function AdminDashboard({
 
   return <div className="admin-dashboard-shell">
     <header className="admin-dashboard-top">
-      <div>
+      <button className="admin-back-button" onClick={onClose} aria-label="Voltar">‹ <span>Voltar</span></button>
+      <div className="admin-dashboard-title">
         <small>KARAVELA DISTRIBUIDORA</small>
         <h1>Acompanhar pedidos</h1>
         <span>{profile?.name || 'Loja'} · controle em tempo real</span>
       </div>
-      <button onClick={onClose}>Sair do painel</button>
+      <button className="admin-close-button" onClick={onClose} aria-label="Fechar">×</button>
     </header>
 
     <nav className="admin-dashboard-nav">
