@@ -126,7 +126,7 @@ export function AccountModal({
   onCancel?: () => void
 }) {
   const [tab, setTab] = useState<'login' | 'register'>('login')
-  const [identifier, setIdentifier] = useState(adminOnly ? '0vieira.francisco0@gmail.com' : '')
+  const [identifier, setIdentifier] = useState(adminOnly ? '(88) 96916-6158' : '')
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
@@ -182,11 +182,11 @@ export function AccountModal({
         </label>}
 
         <label>
-          <span>{adminOnly ? 'E-mail do administrador' : 'E-mail ou telefone'}</span>
+          <span>{adminOnly ? 'WhatsApp do proprietário' : 'E-mail ou telefone'}</span>
           <input
             value={identifier}
             onChange={event => setIdentifier(event.target.value)}
-            placeholder={adminOnly ? 'E-mail' : 'exemplo@email.com ou (88) 99999-9999'}
+            placeholder={adminOnly ? '(88) 96916-6158' : 'exemplo@email.com ou (88) 99999-9999'}
             autoComplete="username"
             required
           />
