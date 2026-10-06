@@ -17,7 +17,8 @@ import {
   setDoc,
 } from 'firebase/firestore'
 
-export const OWNER_EMAIL = '0vieira.francisco0@gmail.com'
+export const OWNER_PHONE = '558896916158'
+export const OWNER_AUTH_EMAIL = `${OWNER_PHONE}@telefone.karavela.app`
 
 export type CustomerProfile = {
   uid: string
@@ -81,7 +82,7 @@ export function getFirebaseServices() {
 }
 
 export function isOwner(user: User | null) {
-  return Boolean(user?.email && user.email.toLocaleLowerCase('pt-BR') === OWNER_EMAIL)
+  return Boolean(user?.email && user.email.toLocaleLowerCase('pt-BR') === OWNER_AUTH_EMAIL)
 }
 
 function phoneDigits(value: string) {
