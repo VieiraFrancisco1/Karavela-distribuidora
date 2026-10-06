@@ -117,9 +117,11 @@ function authErrorMessage(error: unknown) {
 export function AccountModal({
   onClose,
   adminOnly = false,
+  onSuccess,
 }: {
   onClose: () => void
   adminOnly?: boolean
+  onSuccess?: () => void
 }) {
   const [tab, setTab] = useState<'login' | 'register'>('login')
   const [identifier, setIdentifier] = useState(adminOnly ? '0vieira.francisco0@gmail.com' : '')
@@ -146,6 +148,7 @@ export function AccountModal({
         if (password !== confirmPassword) throw new Error('As senhas não são iguais.')
         await registerWithIdentifier({ name, identifier, phone, password })
       }
+      onSuccess?.()
       onClose()
     } catch (cause) {
       setError(authErrorMessage(cause))
