@@ -52,10 +52,15 @@
   height: 36px;
   border: 0;
   border-radius: 50%;
-  background: rgba(255,255,255,.16);
-  color: #fff;
+  background: #eef5fb;
+  color: #17324a;
   font-size: 24px;
   line-height: 1;
+}
+
+.account-modal .account-close {
+  background: rgba(255,255,255,.16);
+  color: #fff;
 }
 
 .account-heading {
