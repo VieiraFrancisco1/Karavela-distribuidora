@@ -15,6 +15,9 @@ const option = (name, fallback) => { const index = args.indexOf(name); return in
 const projectId = option('--project', 'karavela-distribuidora-bv')
 const accountEmail = option('--account', '0vieira.francisco0@gmail.com').toLowerCase()
 const ownerEmail = option('--owner-email', accountEmail).toLowerCase()
+const serviceAccountMode = args.includes('--service-account')
+const disablePublisher = args.includes('--disable-publisher')
+if (disablePublisher && !serviceAccountMode) throw new Error('Desativar a conta de publicação exige o modo de conta de serviço explícito.')
 if (!/^[a-z][a-z0-9-]{4,28}[a-z0-9]$/.test(projectId)) throw new Error('ID do projeto inválido.')
 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ownerEmail)) throw new Error('Email do dono inválido.')
 function firebase(command, json = false) {
@@ -28,23 +31,39 @@ function firebase(command, json = false) {
 const delay = ms => new Promise(resolveDelay => setTimeout(resolveDelay, ms))
 let account = firebaseAuth.getAllAccounts().find(item => item.user.email.toLowerCase() === accountEmail)
 if (args.includes('--check')) {
-  console.log('Projeto preparado: ' + projectId + '. Administrador exclusivo: ' + ownerEmail + '. Conta Firebase conectada: ' + Boolean(account))
+  console.log('Projeto preparado: ' + projectId + '. Administrador exclusivo: ' + ownerEmail + '. Conta Firebase conectada: ' + Boolean(account) + '. Publicação por conta de serviço: ' + serviceAccountMode)
   process.exit(0)
 }
-if (!account) {
+if (!serviceAccountMode && !account) {
   console.log('Entre no navegador com ' + accountEmail + '. Sua senha será digitada apenas no Google.')
   firebase(['login:add', accountEmail])
   account = firebaseAuth.getAllAccounts().find(item => item.user.email.toLowerCase() === accountEmail)
 }
-if (!account) throw new Error('A conta ' + accountEmail + ' não foi conectada. Nada foi publicado.')
-const loginArgs = ['--account', accountEmail]
+if (!serviceAccountMode && !account) throw new Error('A conta ' + accountEmail + ' não foi conectada. Nada foi publicado.')
+const loginArgs = serviceAccountMode ? [] : ['--account', accountEmail]
 console.log('Verificando projeto Firebase…')
-const projectResult = firebase(['projects:list', ...loginArgs], true)
-const projects = Array.isArray(projectResult) ? projectResult : projectResult.projects
-if (!Array.isArray(projects)) throw new Error('Não foi possível consultar seus projetos.')
-if (!projects.some(project => project.projectId === projectId)) firebase(['projects:create', projectId, '--display-name', 'Karavela Distribuidora', ...loginArgs])
+if (!serviceAccountMode) {
+  const projectResult = firebase(['projects:list', ...loginArgs], true)
+  const projects = Array.isArray(projectResult) ? projectResult : projectResult.projects
+  if (!Array.isArray(projects)) throw new Error('Não foi possível consultar seus projetos.')
+  if (!projects.some(project => project.projectId === projectId)) firebase(['projects:create', projectId, '--display-name', 'Karavela Distribuidora', ...loginArgs])
+}
 const scopes = ['email', 'openid', 'https://www.googleapis.com/auth/cloud-platform', 'https://www.googleapis.com/auth/firebase']
-const credential = await firebaseAuth.getAccessToken(account.tokens.refresh_token, scopes)
+let credential
+let publisherIdentity
+if (serviceAccountMode) {
+  const credentialPath = process.env.GOOGLE_APPLICATION_CREDENTIALS
+  if (!credentialPath) throw new Error('Informe a credencial de publicação em GOOGLE_APPLICATION_CREDENTIALS. Nada foi publicado.')
+  const serviceAccount = JSON.parse(await readFile(credentialPath, 'utf8'))
+  if (serviceAccount.type !== 'service_account' || serviceAccount.project_id !== projectId || !serviceAccount.client_email?.endsWith('@' + projectId + '.iam.gserviceaccount.com')) {
+    throw new Error('A credencial não pertence ao projeto autorizado. Nada foi publicado.')
+  }
+  if (disablePublisher && !/^[a-f0-9]{40}$/.test(serviceAccount.private_key_id || '')) throw new Error('Não foi possível identificar a chave de publicação para desativá-la.')
+  publisherIdentity = { email: serviceAccount.client_email, keyId: serviceAccount.private_key_id }
+  credential = await require('firebase-admin/app').cert(serviceAccount).getAccessToken()
+} else {
+  credential = await firebaseAuth.getAccessToken(account.tokens.refresh_token, scopes)
+}
 const accessToken = credential.access_token
 if (!accessToken) throw new Error('O Firebase não retornou uma autenticação válida.')
 async function api(url, method = 'GET', body, acceptMissing = false) {
@@ -63,9 +82,14 @@ async function operation(base, op) {
   if (!op.done) throw new Error('A configuração está demorando. Aguarde um pouco e execute novamente.')
   return op.response
 }
+if (serviceAccountMode) await api('https://firebase.googleapis.com/v1beta1/projects/' + projectId)
 console.log('Ativando autenticação, banco e hospedagem…')
 for (const service of ['identitytoolkit.googleapis.com', 'firestore.googleapis.com', 'firebasehosting.googleapis.com']) {
-  const op = await api('https://serviceusage.googleapis.com/v1/projects/' + projectId + '/services/' + service + ':enable', 'POST', {})
+  const serviceUrl = 'https://serviceusage.googleapis.com/v1/projects/' + projectId + '/services/' + service
+  const currentService = await api(serviceUrl)
+  if (currentService.state === 'ENABLED') continue
+  if (serviceAccountMode) throw new Error('Ative ' + service + ' no console do projeto antes da publicação. A credencial temporária não altera permissões de serviços.')
+  const op = await api(serviceUrl + ':enable', 'POST', {})
   await operation('https://serviceusage.googleapis.com/v1', op)
 }
 const configUrl = 'https://identitytoolkit.googleapis.com/admin/v2/projects/' + projectId + '/config'
@@ -118,4 +142,11 @@ firebase(['deploy', '--only', 'firestore,hosting', '--project', projectId, ...lo
 const site = 'https://' + projectId + '.web.app/'
 const health = await fetch(site)
 if (!health.ok || !(await health.text()).includes('Karavela')) throw new Error('O Firebase publicou, mas a confirmação da página falhou. Confira o console antes de divulgar.')
+if (disablePublisher) {
+  console.log('Desativando a chave e a conta técnica usadas nesta publicação…')
+  const publisherUrl = 'https://iam.googleapis.com/v1/projects/' + projectId + '/serviceAccounts/' + encodeURIComponent(publisherIdentity.email)
+  await api(publisherUrl + '/keys/' + encodeURIComponent(publisherIdentity.keyId) + ':disable', 'POST', {})
+  await api(publisherUrl + ':disable', 'POST', {})
+  console.log('Chave e conta técnica de publicação desativadas.')
+}
 console.log('\nPublicado: ' + site + '\nNo site, crie sua conta com ' + ownerEmail + ' e confirme o email para liberar Administrar loja.\nO catálogo não exige login; enviar e acompanhar pedidos exige uma conta.')

@@ -6,7 +6,25 @@ O catálogo e os 181 ajustes de fotos atuais foram preservados. O site passa a u
 
 Execute `Publicar-Firebase.ps1` no Windows com Node.js LTS instalado. O script também funciona sozinho: baixa este projeto, instala as dependências, abre o login oficial do Google, cria o projeto se necessário, ativa email e senha, prepara o Firestore, migra as fotos e publica o site.
 
-Conta Firebase inicial: `0vieira.francisco0@gmail.com`. Projeto sugerido: `karavela-distribuidora-bv`. A criação/publicação online não foi executada pelo assistente porque o Google retornou 502 no ambiente e nenhuma credencial Firebase estava disponível.
+Conta Firebase: `0vieira.francisco0@gmail.com`. O projeto `karavela-distribuidora-bv` e o aplicativo web já foram criados nessa conta, no plano Spark. O login por email e senha está ativado. O Firestore `(default)` foi criado na região `southamerica-east1` (São Paulo), em modo de produção, com todas as leituras e gravações de clientes inicialmente bloqueadas. A configuração pública real do aplicativo está em `src/firebase.public.json`.
+
+A publicação no Hosting ainda está pendente. O Hosting já foi inicializado, mas aguarda a primeira versão. O Cloud Shell e a página de IAM do Google Cloud estão indisponíveis neste navegador. Para publicar pelo ambiente de desenvolvimento, há uma opção de credencial temporária, restrita a esse projeto. A concessão das permissões e a geração da chave exigem confirmação específica antes da execução.
+
+### Publicação com credencial temporária
+
+Depois de criar uma conta de serviço de publicação no projeto correto, conceda somente os papéis **Administrador do Firebase** e **Consumidor do Service Usage**, no próprio projeto. A conta não precisa de acesso a outros projetos. Habilite Authentication, Firestore e Hosting pelo console antes de executar; esse modo não habilita serviços nem amplia permissões.
+
+Guarde o arquivo de credenciais fora do repositório, com acesso restrito, e indique seu caminho em `GOOGLE_APPLICATION_CREDENTIALS`. Nunca envie esse arquivo ao GitHub, coloque-o na pasta pública ou compartilhe seu conteúdo em mensagens. Execute:
+
+```sh
+npm run firebase:publish -- --service-account --project karavela-distribuidora-bv --owner-email 0vieira.francisco0@gmail.com
+```
+
+O script recusa credenciais de outro projeto antes de acessar as APIs. Ao terminar e verificar a publicação, desative a conta de serviço temporária. As publicações seguintes exigem nova autenticação autorizada.
+
+Quando o IAM do Google Cloud estiver indisponível, o console do Firebase permite preparar o papel **Editor** para a conta técnica do SDK Admin já existente, `firebase-adminsdk-fbsvc@karavela-distribuidora-bv.iam.gserviceaccount.com`. Esse acesso permite alterar os recursos do Firebase e Google Cloud somente neste projeto. Não foi concedido ainda.
+
+Para esse caminho, após a aprovação específica da permissão e da geração da chave, acrescente `--disable-publisher` ao comando. Depois de confirmar a página publicada, o script desativa a chave usada e essa conta técnica pela API oficial de IAM. A desativação é reversível pelo dono no Google Cloud e não afeta o login dos clientes, que usa diretamente o Firebase Authentication. Não use esse modo em uma conta técnica de outros sistemas: ele desativa toda a identidade técnica informada.
 
 Se o dono usar outro email, informe o parâmetro antes da primeira publicação:
 
@@ -43,6 +61,6 @@ npm run test:firebase
 npm run build
 ```
 
-Os emuladores da CLI 15 exigem Java 21. Neste ambiente, os seis testes Firebase também passaram usando a CLI oficial 14.27.0 e Java 17; os quatro testes de modelos, o TypeScript e a compilação passaram. Foram verificados login por email/telefone, isolamento de clientes, tentativas de promoção administrativa, status/totais protegidos, finalização/exclusão/restauração e envio repetido sem duplicação.
+Os emuladores da CLI 15 exigem Java 21. Neste ambiente, os seis testes Firebase também passaram usando a CLI oficial 14.27.0 e Java 17; os quatro testes de modelos, os três testes de proteção da publicação, o TypeScript e a compilação passaram. Foram verificados login por email/telefone, isolamento de clientes, tentativas de promoção administrativa, status/totais protegidos, finalização/exclusão/restauração, envio repetido sem duplicação, rejeição de credenciais ausentes ou de outro projeto e proteção contra desativação fora do modo explícito de conta de serviço.
 
-A publicação online e o login real da conta administrativa precisam ser confirmados depois da autenticação Google. O script não habilita cobrança, Cloud Functions nem Cloud Storage.
+A publicação online e o login real da conta administrativa ainda precisam ser verificados. O script não habilita cobrança, Cloud Functions nem Cloud Storage.

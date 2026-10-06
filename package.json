@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
-    "test": "node --import tsx --test tests/models.test.mjs",
+    "test": "node --import tsx --test tests/models.test.mjs tests/publish.test.mjs",
     "test:firebase": "firebase emulators:exec --project demo-karavela --only auth,firestore \"node --import tsx --test tests/firebase.test.mjs\"",
     "firebase:publish": "node --import tsx scripts/publish-firebase.mjs"
   },
