@@ -118,10 +118,12 @@ export function AccountModal({
   onClose,
   adminOnly = false,
   onSuccess,
+  onCancel,
 }: {
   onClose: () => void
   adminOnly?: boolean
   onSuccess?: () => void
+  onCancel?: () => void
 }) {
   const [tab, setTab] = useState<'login' | 'register'>('login')
   const [identifier, setIdentifier] = useState(adminOnly ? '0vieira.francisco0@gmail.com' : '')
@@ -157,9 +159,11 @@ export function AccountModal({
     }
   }
 
-  return <div className="account-overlay" onMouseDown={onClose}>
+  const cancel = onCancel ?? onClose
+
+  return <div className="account-overlay" onMouseDown={cancel}>
     <section className="account-modal" onMouseDown={event => event.stopPropagation()}>
-      <button className="account-close" onClick={onClose} aria-label="Fechar">×</button>
+      <button className="account-close" onClick={cancel} aria-label="Fechar">×</button>
       <img src="/assets/logo-karavela.png" alt="Karavela Distribuidora" />
       <div className="account-heading">
         <h2>{adminOnly ? 'Área administrativa' : tab === 'login' ? 'Entrar na sua conta' : 'Criar sua conta'}</h2>
