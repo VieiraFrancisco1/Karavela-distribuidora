@@ -254,12 +254,22 @@ function whatsappNumber(value: string) {
   return digits
 }
 
+function escapePrint(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
+
 function printOrder(order: StoredOrder) {
   const popup = window.open('', '_blank', 'width=430,height=720')
   if (!popup) return
 
   const items = order.items.map(item => `
-    <div class="row"><span>${item.qty}x ${item.name}${item.size ? ` ${item.size}` : ''}</span><b>${money(item.total)}</b></div>
+    <div class="row"><span>${item.qty}x ${escapePrint(item.name)}${item.size ? ` ${escapePrint(item.size)}` : ''}</span><b>${money(item.total)}</b></div>
   `).join('')
 
   popup.document.write(`<!doctype html>
@@ -280,11 +290,11 @@ function printOrder(order: StoredOrder) {
       <div class="muted">Pedido #${order.id.slice(0, 6).toUpperCase()} · ${dateLabel(order)}</div>
       <div class="line"></div>
       <div class="info">
-        <b>${order.customerName}</b><br>
-        ${order.customerPhone}<br>
+        <b>${escapePrint(order.customerName)}</b><br>
+        ${escapePrint(order.customerPhone)}<br>
         ${order.fulfillment === 'delivery' ? 'Entrega' : 'Retirada'} · ${paymentLabel(order.payment)}
-        ${order.address ? `<br>${order.address}` : ''}
-        ${order.neighborhood ? ` · ${order.neighborhood}` : ''}
+        ${order.address ? `<br>${escapePrint(order.address)}` : ''}
+        ${order.neighborhood ? ` · ${escapePrint(order.neighborhood)}` : ''}
       </div>
       <div class="line"></div>
       ${items}
