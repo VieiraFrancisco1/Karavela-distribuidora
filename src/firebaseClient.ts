@@ -186,19 +186,19 @@ export async function loadCustomerProfile(user: User): Promise<CustomerProfile> 
     const data = snapshot.data() as Partial<CustomerProfile>
     return {
       uid: user.uid,
-      name: data.name || user.displayName || 'Cliente',
-      email: data.email ?? (user.email && !user.email.endsWith('@telefone.karavela.app') ? user.email : null),
-      phone: data.phone || '',
-      loginType: data.loginType === 'phone' ? 'phone' : 'email',
+      name: data.name || user.displayName || (isOwner(user) ? 'Karavela Distribuidora' : 'Cliente'),
+      email: isOwner(user) ? null : (data.email ?? (user.email && !user.email.endsWith('@telefone.karavela.app') ? user.email : null)),
+      phone: isOwner(user) ? '88969166158' : (data.phone || ''),
+      loginType: isOwner(user) ? 'phone' : (data.loginType === 'phone' ? 'phone' : 'email'),
     }
   }
 
   return {
     uid: user.uid,
-    name: user.displayName || (isOwner(user) ? 'Administrador' : 'Cliente'),
-    email: user.email && !user.email.endsWith('@telefone.karavela.app') ? user.email : null,
-    phone: '',
-    loginType: 'email',
+    name: user.displayName || (isOwner(user) ? 'Karavela Distribuidora' : 'Cliente'),
+    email: isOwner(user) ? null : (user.email && !user.email.endsWith('@telefone.karavela.app') ? user.email : null),
+    phone: isOwner(user) ? '88969166158' : '',
+    loginType: isOwner(user) ? 'phone' : 'email',
   }
 }
 
