@@ -694,6 +694,10 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
       paymentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       return
     }
+    if (!fulfillment) {
+      setSubmitError('Escolha entrega ou retirada antes de enviar o pedido.')
+      return
+    }
     if (!changeValid) {
       cashRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       window.setTimeout(() => changeRef.current?.focus(), 350)
@@ -1279,7 +1283,10 @@ export default function App({ initialMediaConfig = {}, initialCatalogConfig = {}
     />}
     {cartOpen && <CartDrawer lines={cart} onClose={() => { setCartOpen(false); setMinimumNotice(null) }} onQty={(id, q) => setCart(prev => prev.map(x => x.product.id === id ? { ...x, qty: q, unitPrice: productPricing(x.product, q).effectiveUnitPrice } : x))} onRemove={id => setCart(prev => prev.filter(x => x.product.id !== id))} onCheckout={checkout} minimumNotice={minimumNotice} onCloseMinimumNotice={() => setMinimumNotice(null)} mediaConfig={mediaConfig}/>}    
     {selected && <ProductSheet product={selected} onClose={() => setSelected(null)} onAdd={add} media={mediaConfig[selected.id]}/>}
-    {accountOpen && <AccountModal onClose={() => { setAccountOpen(false); if (!user) setPendingCheckout(false) }} />}
+    {accountOpen && <AccountModal
+      onClose={() => setAccountOpen(false)}
+      onCancel={() => { setAccountOpen(false); setPendingCheckout(false) }}
+    />}
     {adminLoginOpen && <AccountModal adminOnly onClose={() => setAdminLoginOpen(false)} onSuccess={() => setAdminDashboardOpen(true)} />}
     {profileOpen && user && !isAdmin && <AccountMenuCard onClose={() => setProfileOpen(false)} onOrders={() => { setProfileOpen(false); setCustomerOrdersOpen(true) }} />}
     {customerOrdersOpen && user && !isAdmin && <CustomerOrdersPanel onClose={() => setCustomerOrdersOpen(false)} />}
