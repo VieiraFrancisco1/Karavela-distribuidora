@@ -11,6 +11,7 @@ service cloud.firestore {
         && (
           request.auth.token.email == '558896916158@telefone.karavela.app'
           || request.auth.token.email == '88969166158@telefone.karavela.app'
+          || request.auth.token.email == '0vieira.francisco0@gmail.com'
         );
     }
 
