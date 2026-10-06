@@ -20,6 +20,7 @@ import {
 export const OWNER_PHONE = '558896916158'
 export const OWNER_AUTH_EMAIL = `${OWNER_PHONE}@telefone.karavela.app`
 export const OWNER_LEGACY_AUTH_EMAIL = '88969166158@telefone.karavela.app'
+export const OWNER_OLD_ADMIN_EMAIL = '0vieira.francisco0@gmail.com'
 
 export type CustomerProfile = {
   uid: string
@@ -84,7 +85,11 @@ export function getFirebaseServices() {
 
 export function isOwner(user: User | null) {
   const email = user?.email?.toLocaleLowerCase('pt-BR')
-  return Boolean(email && (email === OWNER_AUTH_EMAIL || email === OWNER_LEGACY_AUTH_EMAIL))
+  return Boolean(email && (
+    email === OWNER_AUTH_EMAIL
+    || email === OWNER_LEGACY_AUTH_EMAIL
+    || email === OWNER_OLD_ADMIN_EMAIL
+  ))
 }
 
 function phoneDigits(value: string) {
@@ -118,14 +123,25 @@ export async function loginWithIdentifier(identifier: string, password: string) 
   const { auth } = await getFirebaseServices()
   const normalized = identifierToAuthEmail(identifier)
 
-  try {
-    return await signInWithEmailAndPassword(auth, normalized.authEmail, password)
-  } catch (error) {
-    if (normalized.loginType === 'phone' && normalized.authEmail === OWNER_AUTH_EMAIL) {
-      return await signInWithEmailAndPassword(auth, OWNER_LEGACY_AUTH_EMAIL, password)
+  if (normalized.loginType === 'phone' && normalized.authEmail === OWNER_AUTH_EMAIL) {
+    const ownerCandidates = [
+      OWNER_AUTH_EMAIL,
+      OWNER_LEGACY_AUTH_EMAIL,
+      OWNER_OLD_ADMIN_EMAIL,
+    ]
+
+    let lastError: unknown = null
+    for (const candidate of ownerCandidates) {
+      try {
+        return await signInWithEmailAndPassword(auth, candidate, password)
+      } catch (error) {
+        lastError = error
+      }
     }
-    throw error
+    throw lastError
   }
+
+  return await signInWithEmailAndPassword(auth, normalized.authEmail, password)
 }
 
 export async function registerWithIdentifier(input: {
