@@ -19,6 +19,7 @@ import {
 
 export const OWNER_PHONE = '558896916158'
 export const OWNER_AUTH_EMAIL = `${OWNER_PHONE}@telefone.karavela.app`
+export const OWNER_LEGACY_AUTH_EMAIL = '88969166158@telefone.karavela.app'
 
 export type CustomerProfile = {
   uid: string
@@ -82,7 +83,8 @@ export function getFirebaseServices() {
 }
 
 export function isOwner(user: User | null) {
-  return Boolean(user?.email && user.email.toLocaleLowerCase('pt-BR') === OWNER_AUTH_EMAIL)
+  const email = user?.email?.toLocaleLowerCase('pt-BR')
+  return Boolean(email && (email === OWNER_AUTH_EMAIL || email === OWNER_LEGACY_AUTH_EMAIL))
 }
 
 function phoneDigits(value: string) {
@@ -115,7 +117,15 @@ function identifierToAuthEmail(identifier: string) {
 export async function loginWithIdentifier(identifier: string, password: string) {
   const { auth } = await getFirebaseServices()
   const normalized = identifierToAuthEmail(identifier)
-  return await signInWithEmailAndPassword(auth, normalized.authEmail, password)
+
+  try {
+    return await signInWithEmailAndPassword(auth, normalized.authEmail, password)
+  } catch (error) {
+    if (normalized.loginType === 'phone' && normalized.authEmail === OWNER_AUTH_EMAIL) {
+      return await signInWithEmailAndPassword(auth, OWNER_LEGACY_AUTH_EMAIL, password)
+    }
+    throw error
+  }
 }
 
 export async function registerWithIdentifier(input: {
