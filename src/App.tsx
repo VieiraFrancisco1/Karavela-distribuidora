@@ -9,6 +9,8 @@ import type { BannerDestination } from './HomeBanner'
 import StoreStatus from './StoreStatus'
 import CategoryCardPhoto from './CategoryCardPhoto'
 import CategoryCardLabel from './CategoryCardLabel'
+import { AccountMenuCard, AccountModal, AdminDashboard, CustomerOrdersPanel, useAccount } from './accountSystem'
+import { createCustomerOrder } from './firebaseClient'
 
 const money = (value: number) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
@@ -39,7 +41,7 @@ const productPricing = (product: Product, qty: number) => {
 
 const primaryTier = (product: Product) => (product.tiers ?? []).slice().sort((a, b) => a.qty - b.qty)[0]
 
-type IconName = 'menu' | 'search' | 'cart' | 'close' | 'plus' | 'minus' | 'trash' | 'arrow' | 'back' | 'home' | 'chat' | 'orders'
+type IconName = 'menu' | 'search' | 'cart' | 'close' | 'plus' | 'minus' | 'trash' | 'arrow' | 'back' | 'home' | 'chat' | 'orders' | 'user'
 
 const beerCategoryIds = ['cervejas-lata', 'cervejas-300-unidades', 'long-necks', 'zero-alcool']
 const beerFilters = [
@@ -182,6 +184,7 @@ function Icon({ name }: { name: IconName }) {
     home: <><path d="m3 11 9-8 9 8v9h-6v-6H9v6H3z"/></>,
     chat: <><path d="M21 15a4 4 0 0 1-4 4H8l-5 3 1.5-5A7 7 0 1 1 21 15z"/></>,
     orders: <><path d="M6 3h12v18H6zM9 7h6M9 11h6M9 15h4"/></>,
+    user: <><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4.5 3.5-7 8-7s7.2 2.5 8 7"/></>,
   }
   return <svg {...common}>{paths[name]}</svg>
 }
@@ -406,11 +409,42 @@ function ProductSheet({ product, onClose, onAdd, media }: { product: Product; on
   </div>
 }
 
-function SideMenu({ categories, onClose, onCart, onHome, onCategory, onAdmin }: { categories: CatalogCategory[]; onClose: () => void; onCart: () => void; onHome: () => void; onCategory: (id: string) => void; onAdmin: () => void }) {
+function SideMenu({
+  categories,
+  onClose,
+  onCart,
+  onHome,
+  onCategory,
+  onAccount,
+  onOrders,
+  onAdmin,
+  loggedIn,
+  isAdmin,
+  userName,
+}: {
+  categories: CatalogCategory[]
+  onClose: () => void
+  onCart: () => void
+  onHome: () => void
+  onCategory: (id: string) => void
+  onAccount: () => void
+  onOrders: () => void
+  onAdmin: () => void
+  loggedIn: boolean
+  isAdmin: boolean
+  userName: string
+}) {
   return <div className="overlay menu-overlay" onMouseDown={onClose}>
     <aside className="side-menu" onMouseDown={e => e.stopPropagation()}>
       <div className="menu-top"><img src="/assets/logo-karavela.png" alt="Karavela Bistrô & Distribuidora"/><button onClick={onClose}><Icon name="close"/></button></div>
-      <nav><button onClick={onHome}><Icon name="home"/> Início</button><button onClick={onCart}><Icon name="cart"/> Meu carrinho</button><button><Icon name="orders"/> Pedidos</button><button><Icon name="chat"/> Falar com atendente</button><button className="admin-menu-entry" onClick={onAdmin}><Icon name="orders"/> Área administrativa</button></nav>
+      <nav>
+        <button onClick={onHome}><Icon name="home"/> Início</button>
+        <button onClick={onCart}><Icon name="cart"/> Meu carrinho</button>
+        <button onClick={onAccount}><Icon name="user"/> {loggedIn ? userName || 'Minha conta' : 'Entrar / Criar conta'}</button>
+        {loggedIn && !isAdmin && <button onClick={onOrders}><Icon name="orders"/> Meus pedidos</button>}
+        <button onClick={() => { window.location.href = `https://wa.me/${WHATSAPP_ORDER_NUMBER}` }}><Icon name="chat"/> Falar com atendente</button>
+        <button className="admin-menu-entry" onClick={onAdmin}><Icon name="orders"/> Área administrativa</button>
+      </nav>
       <div className="menu-sep"/><h3>Categorias</h3>
       <div className="menu-cats">{categories.map(category => <button key={category.id} onClick={() => onCategory(category.id)}>{category.image ? <span className="menu-category-image-frame"><img className="menu-category-image" src={freshCatalogImageUrl(category.image)} alt="" style={catalogImageStyle(category)}/></span> : <CategoryIcon name={category.icon}/>} <span>{category.label}</span><Icon name="arrow"/></button>)}</div>
     </aside>
@@ -493,10 +527,11 @@ function CartDrawer({ lines, onClose, onQty, onRemove, onCheckout, minimumNotice
 }
 
 function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => void }) {
+  const { user, profile } = useAccount()
   const subtotal = lines.reduce((sum, line) => sum + productPricing(line.product, line.qty).total, 0)
   const [step, setStep] = useState<1 | 2>(1)
-  const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
+  const [name, setName] = useState(profile?.name || '')
+  const [phone, setPhone] = useState(profile?.phone || '')
   const [fulfillment, setFulfillment] = useState<'delivery' | 'pickup' | ''>('')
   const [neighborhood, setNeighborhood] = useState('')
   const [otherNeighborhood, setOtherNeighborhood] = useState('')
@@ -512,6 +547,8 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
   const [attempted, setAttempted] = useState(false)
   const [paymentAttempted, setPaymentAttempted] = useState(false)
   const [pixCopied, setPixCopied] = useState(false)
+  const [sendingOrder, setSendingOrder] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const deliveryRef = useRef<HTMLDivElement>(null)
   const pickupRef = useRef<HTMLDivElement>(null)
   const paymentRef = useRef<HTMLDivElement>(null)
@@ -519,6 +556,11 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
   const cashRef = useRef<HTMLDivElement>(null)
   const changeRef = useRef<HTMLInputElement>(null)
   const summaryRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (profile?.name && !name) setName(profile.name)
+    if (profile?.phone && !phone) setPhone(profile.phone)
+  }, [profile, name, phone])
 
   const effectiveNeighborhood = neighborhood === 'Outras' ? otherNeighborhood.trim() : neighborhood
   const deliveryFee = fulfillment === 'delivery' ? deliveryFeeFor(effectiveNeighborhood) : 0
@@ -645,8 +687,9 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
     return rows.join('\n')
   }
 
-  function sendWhatsApp() {
+  async function sendWhatsApp() {
     setPaymentAttempted(true)
+    setSubmitError('')
     if (!payment) {
       paymentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       return
@@ -656,9 +699,50 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
       window.setTimeout(() => changeRef.current?.focus(), 350)
       return
     }
+    if (!user) {
+      setSubmitError('Entre na sua conta para enviar o pedido.')
+      return
+    }
+
     const message = buildWhatsAppMessage()
     const url = `https://wa.me/${WHATSAPP_ORDER_NUMBER}?text=${encodeURIComponent(message)}`
-    window.location.href = url
+    setSendingOrder(true)
+
+    try {
+      await createCustomerOrder(user, {
+        customerName: name.trim(),
+        customerPhone: phone.trim(),
+        fulfillment,
+        neighborhood: fulfillment === 'delivery' ? effectiveNeighborhood : '',
+        address: fulfillment === 'delivery'
+          ? `${street.trim()}, ${noNumber ? 'S/N' : number.trim()}`
+          : PICKUP_ADDRESS,
+        complement: fulfillment === 'delivery' ? complement.trim() : '',
+        reference: fulfillment === 'delivery' ? reference.trim() : '',
+        payment,
+        changeFor: payment === 'cash' && needsChange ? parsedChange : null,
+        subtotal,
+        deliveryFee,
+        total,
+        items: lines.map(line => {
+          const pricing = productPricing(line.product, line.qty)
+          return {
+            productId: line.product.id,
+            name: line.product.name,
+            size: line.product.size || '',
+            qty: line.qty,
+            unitPrice: pricing.effectiveUnitPrice,
+            total: pricing.total,
+          }
+        }),
+      })
+
+      window.location.href = url
+    } catch (cause) {
+      console.error('Falha ao registrar pedido:', cause)
+      setSubmitError('Não foi possível registrar o pedido. Confira sua conexão e tente novamente.')
+      setSendingOrder(false)
+    }
   }
 
   const addressSummary = fulfillment === 'delivery'
@@ -815,7 +899,7 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
 
       <div className="checkout-final-actions">
         <button className="checkout-secondary" onClick={() => { setStep(1); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>Voltar</button>
-        <button className="checkout-whatsapp" onClick={sendWhatsApp}>Enviar pedido para o WhatsApp <span>›</span></button>
+        {submitError && <p className="checkout-error">{submitError}</p>}<button className="checkout-whatsapp" disabled={sendingOrder} onClick={() => void sendWhatsApp()}>{sendingOrder ? 'Registrando pedido...' : 'Enviar pedido para o WhatsApp'} <span>›</span></button>
       </div>
     </div>}
   </section>
@@ -903,6 +987,7 @@ type AppProps = {
 }
 
 export default function App({ initialMediaConfig = {}, initialCatalogConfig = {} }: AppProps) {
+  const { user, profile, isAdmin } = useAccount()
   const [menuOpen, setMenuOpen] = useState(false)
   const [cartOpen, setCartOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
@@ -915,6 +1000,12 @@ export default function App({ initialMediaConfig = {}, initialCatalogConfig = {}
   const [beerFilter, setBeerFilter] = useState<BeerFilterId>('all')
   const [energyFilter, setEnergyFilter] = useState<EnergyFilterId>('all')
   const [adminOpen, setAdminOpen] = useState(false)
+  const [accountOpen, setAccountOpen] = useState(false)
+  const [adminLoginOpen, setAdminLoginOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
+  const [customerOrdersOpen, setCustomerOrdersOpen] = useState(false)
+  const [adminDashboardOpen, setAdminDashboardOpen] = useState(false)
+  const [pendingCheckout, setPendingCheckout] = useState(false)
   const [savedMediaConfig, setMediaConfig] = useState<MediaConfig>(initialMediaConfig)
   // As novas caixas começam com a foto já cadastrada da mesma cerveja.
   // Uma edição na caixa passa a ter seu próprio ajuste, sem alterar a unidade.
@@ -929,6 +1020,15 @@ export default function App({ initialMediaConfig = {}, initialCatalogConfig = {}
   }, [savedMediaConfig])
   const [catalogConfig, setCatalogConfig] = useState<CatalogConfig>(initialCatalogConfig)
   const [catalogReady, setCatalogReady] = useState(true)
+
+  useEffect(() => {
+    if (!user || !pendingCheckout) return
+    setAccountOpen(false)
+    setPendingCheckout(false)
+    setCartOpen(false)
+    setCheckoutOpen(true)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [user, pendingCheckout])
   // Mantém a Home completamente parada enquanto a área administrativa está aberta.
   // O painel administrativo continua rolável; somente a página atrás fica bloqueada.
   useEffect(() => {
@@ -1116,13 +1216,19 @@ export default function App({ initialMediaConfig = {}, initialCatalogConfig = {}
       return
     }
     setMinimumNotice(null)
+    if (!user) {
+      setCartOpen(false)
+      setPendingCheckout(true)
+      setAccountOpen(true)
+      return
+    }
     setCartOpen(false)
     setCheckoutOpen(true)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return <div className="app-shell">
-    <header className="topbar"><div className="top-left"><button className="icon-btn menu-trigger" aria-label="Abrir menu" onClick={() => setMenuOpen(true)}><Icon name="menu"/></button><StoreStatus/></div><img className="top-logo" src="/assets/logo-karavela.png" alt="Karavela Bistrô & Distribuidora"/><div className="top-actions"><button className="icon-btn search-trigger" aria-label="Buscar bebidas" onClick={() => { setSearchOpen(v => !v); setQuery('') }}><Icon name="search"/></button><button ref={cartButton} className="icon-btn cart-btn" aria-label="Abrir carrinho" onClick={() => setCartOpen(true)}><Icon name="cart"/>{count > 0 && <><span className="drink-dot"/><span className="cart-count">{count}</span></>}</button></div></header>
+    <header className="topbar"><div className="top-left"><button className="icon-btn menu-trigger" aria-label="Abrir menu" onClick={() => setMenuOpen(true)}><Icon name="menu"/></button><StoreStatus/></div><img className="top-logo" src="/assets/logo-karavela.png" alt="Karavela Bistrô & Distribuidora"/><div className="top-actions"><button className="icon-btn account-menu-button" aria-label="Minha conta" onClick={() => user ? (isAdmin ? setAdminDashboardOpen(true) : setProfileOpen(true)) : setAccountOpen(true)}><Icon name="user"/>{user && <span className="account-dot"/>}</button><button className="icon-btn search-trigger" aria-label="Buscar bebidas" onClick={() => { setSearchOpen(v => !v); setQuery('') }}><Icon name="search"/></button><button ref={cartButton} className="icon-btn cart-btn" aria-label="Abrir carrinho" onClick={() => setCartOpen(true)}><Icon name="cart"/>{count > 0 && <><span className="drink-dot"/><span className="cart-count">{count}</span></>}</button></div></header>
 
     {searchOpen && <><div className="search-dismiss" onMouseDown={closeSearch}/><div className="search-popover" onMouseDown={e => e.stopPropagation()}><div className="search-panel"><Icon name="search"/><input autoFocus value={query} onChange={e => setQuery(e.target.value)} placeholder="Buscar bebida pelo nome..."/><button onClick={closeSearch}><Icon name="close"/></button></div>{query.trim() && <div className="search-results">{filtered.length ? filtered.slice(0, 12).map(p => <button key={p.id} className="search-result" onClick={() => openProduct(p)}><span className="search-result-image"><ManagedProductImage src={p.image} alt="" settings={mediaConfig[p.id]?.card}/></span><span className="search-result-copy"><strong>{p.name}</strong><small>{p.category}{p.size ? ` • ${p.size}` : ''}</small></span><b>{money(p.price)}</b></button>) : <div className="search-empty">Nenhum produto encontrado.</div>}</div>}</div></>}
 
@@ -1138,16 +1244,46 @@ export default function App({ initialMediaConfig = {}, initialCatalogConfig = {}
 
     <main>
       {checkoutOpen ? <CheckoutScreen lines={cart} onBack={() => { setCheckoutOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }) }} /> : !activeCategory ? <>
-        <HomeBanner onCheck={checkBanner} paused={menuOpen || cartOpen || searchOpen || adminOpen || !!selected}/>
+        <HomeBanner onCheck={checkBanner} paused={menuOpen || cartOpen || searchOpen || adminOpen || accountOpen || adminLoginOpen || profileOpen || customerOrdersOpen || adminDashboardOpen || !!selected}/>
         <section id="catalogo" className="section category-section"><div className="section-title"><h2>Categorias</h2></div><div className="rail-wrap"><div className="category-strip">{catalogCategories.map(category => <button className={`category-card${category.image ? ' category-card--photo' : ''}`} key={category.id} onClick={() => openCategory(category.id)}>{category.image ? <CategoryCardPhoto src={freshCatalogImageUrl(category.image)} label={category.label} style={catalogImageStyle(category)}/> : <><CategoryIcon name={category.icon}/><CategoryCardLabel label={category.label}/></>}</button>)}</div><div className="rail-arrow category-arrow"><Icon name="arrow"/></div></div></section>
         {catalogCategories.map(category => <ProductRail key={category.id} categoryId={category.id} categories={catalogCategories} products={catalogProducts} onOpen={openProduct} onAll={openCategory} mediaConfig={mediaConfig}/>)}
         <SiteFooter/>
       </> : activeCategoryId === 'cervejas' ? <BeerCategoryPage products={allBeerProducts} filter={beerFilter} onFilter={setBeerFilter} onHome={goHome} onOpen={openProduct} mediaConfig={mediaConfig} /> : activeCategoryId === 'energeticos' ? <EnergyCategoryPage products={allEnergyProducts} filter={energyFilter} onFilter={setEnergyFilter} onHome={goHome} onOpen={openProduct} mediaConfig={mediaConfig} /> : activeCategory ? <section className="category-page"><div className="category-page-head"><button className="back-btn" onClick={goHome} aria-label="Voltar"><Icon name="back"/></button><h1>{activeCategory.label}</h1></div><div className="category-product-grid">{activeProducts.map(product => <ProductCard key={product.id} product={product} onOpen={openProduct} media={mediaConfig[product.id]}/>)}</div></section> : null}
     </main>
 
-    {menuOpen && <SideMenu categories={catalogCategories} onClose={() => setMenuOpen(false)} onCart={() => { setMenuOpen(false); setCartOpen(true) }} onHome={goHome} onCategory={openCategory} onAdmin={() => { setMenuOpen(false); setAdminOpen(true) }}/>} 
+    {menuOpen && <SideMenu
+      categories={catalogCategories}
+      onClose={() => setMenuOpen(false)}
+      onCart={() => { setMenuOpen(false); setCartOpen(true) }}
+      onHome={goHome}
+      onCategory={openCategory}
+      loggedIn={Boolean(user)}
+      isAdmin={isAdmin}
+      userName={profile?.name || ''}
+      onAccount={() => {
+        setMenuOpen(false)
+        if (!user) setAccountOpen(true)
+        else if (isAdmin) setAdminDashboardOpen(true)
+        else setProfileOpen(true)
+      }}
+      onOrders={() => {
+        setMenuOpen(false)
+        if (!user) setAccountOpen(true)
+        else setCustomerOrdersOpen(true)
+      }}
+      onAdmin={() => {
+        setMenuOpen(false)
+        if (isAdmin) setAdminDashboardOpen(true)
+        else setAdminLoginOpen(true)
+      }}
+    />}
     {cartOpen && <CartDrawer lines={cart} onClose={() => { setCartOpen(false); setMinimumNotice(null) }} onQty={(id, q) => setCart(prev => prev.map(x => x.product.id === id ? { ...x, qty: q, unitPrice: productPricing(x.product, q).effectiveUnitPrice } : x))} onRemove={id => setCart(prev => prev.filter(x => x.product.id !== id))} onCheckout={checkout} minimumNotice={minimumNotice} onCloseMinimumNotice={() => setMinimumNotice(null)} mediaConfig={mediaConfig}/>}    
     {selected && <ProductSheet product={selected} onClose={() => setSelected(null)} onAdd={add} media={mediaConfig[selected.id]}/>}
-    {adminOpen && <AdminMedia products={catalogProducts} brands={catalogBrands} categories={catalogCategories} catalogConfig={{ ...catalogConfig, revision: 1, categories: catalogCategories }} config={mediaConfig} detailImageForProduct={(product) => detailImageByProductId[product.id] ?? product.image} onClose={() => setAdminOpen(false)} onSaved={setMediaConfig} onCatalogSaved={setCatalogConfig}/>}
+    {accountOpen && <AccountModal onClose={() => { setAccountOpen(false); if (!user) setPendingCheckout(false) }} />}
+    {adminLoginOpen && <AccountModal adminOnly onClose={() => setAdminLoginOpen(false)} onSuccess={() => setAdminDashboardOpen(true)} />}
+    {profileOpen && user && !isAdmin && <AccountMenuCard onClose={() => setProfileOpen(false)} onOrders={() => { setProfileOpen(false); setCustomerOrdersOpen(true) }} />}
+    {customerOrdersOpen && user && !isAdmin && <CustomerOrdersPanel onClose={() => setCustomerOrdersOpen(false)} />}
+    {adminDashboardOpen && isAdmin && <AdminDashboard onClose={() => setAdminDashboardOpen(false)} onOpenCatalog={() => { setAdminDashboardOpen(false); setAdminOpen(true) }} />}
+    {adminOpen && isAdmin && <AdminMedia products={catalogProducts} brands={catalogBrands} categories={catalogCategories} catalogConfig={{ ...catalogConfig, revision: 1, categories: catalogCategories }} config={mediaConfig} detailImageForProduct={(product) => detailImageByProductId[product.id] ?? product.image} onClose={() => { setAdminOpen(false); setAdminDashboardOpen(true) }} onSaved={setMediaConfig} onCatalogSaved={setCatalogConfig}/>}
   </div>
 }
