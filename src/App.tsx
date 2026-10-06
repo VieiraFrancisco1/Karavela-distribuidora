@@ -10,7 +10,7 @@ import StoreStatus from './StoreStatus'
 import CategoryCardPhoto from './CategoryCardPhoto'
 import CategoryCardLabel from './CategoryCardLabel'
 import { AccountMenuCard, AccountModal, AdminDashboard, CustomerOrdersPanel, useAccount } from './accountSystem'
-import { createCustomerOrder } from './firebaseClient'
+import { createCustomerOrder, saveCheckoutProfile } from './firebaseClient'
 
 const money = (value: number) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
@@ -417,10 +417,8 @@ function SideMenu({
   onCategory,
   onAccount,
   onOrders,
-  onAdmin,
   loggedIn,
   isAdmin,
-  userName,
 }: {
   categories: CatalogCategory[]
   onClose: () => void
@@ -429,10 +427,8 @@ function SideMenu({
   onCategory: (id: string) => void
   onAccount: () => void
   onOrders: () => void
-  onAdmin: () => void
   loggedIn: boolean
   isAdmin: boolean
-  userName: string
 }) {
   return <div className="overlay menu-overlay" onMouseDown={onClose}>
     <aside className="side-menu" onMouseDown={e => e.stopPropagation()}>
@@ -440,10 +436,9 @@ function SideMenu({
       <nav>
         <button onClick={onHome}><Icon name="home"/> Início</button>
         <button onClick={onCart}><Icon name="cart"/> Meu carrinho</button>
-        <button onClick={onAccount}><Icon name="user"/> {loggedIn ? userName || 'Minha conta' : 'Entrar / Criar conta'}</button>
-        {loggedIn && !isAdmin && <button onClick={onOrders}><Icon name="orders"/> Meus pedidos</button>}
+        <button onClick={onAccount}><Icon name="user"/> {loggedIn ? 'Meu perfil' : 'Entrar / Criar conta'}</button>
+        {loggedIn && <button onClick={onOrders}><Icon name="orders"/> {isAdmin ? 'Acompanhar pedidos' : 'Meus pedidos'}</button>}
         <button onClick={() => { window.location.href = `https://wa.me/${WHATSAPP_ORDER_NUMBER}` }}><Icon name="chat"/> Falar com atendente</button>
-        <button className="admin-menu-entry" onClick={onAdmin}><Icon name="orders"/> Área administrativa</button>
       </nav>
       <div className="menu-sep"/><h3>Categorias</h3>
       <div className="menu-cats">{categories.map(category => <button key={category.id} onClick={() => onCategory(category.id)}>{category.image ? <span className="menu-category-image-frame"><img className="menu-category-image" src={freshCatalogImageUrl(category.image)} alt="" style={catalogImageStyle(category)}/></span> : <CategoryIcon name={category.icon}/>} <span>{category.label}</span><Icon name="arrow"/></button>)}</div>
@@ -528,10 +523,17 @@ function CartDrawer({ lines, onClose, onQty, onRemove, onCheckout, minimumNotice
 
 function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => void }) {
   const { user, profile } = useAccount()
+  const savedCustomer = useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem('karavela-customer-profile') || '{}') as { name?: string; phone?: string }
+    } catch {
+      return {} as { name?: string; phone?: string }
+    }
+  }, [])
   const subtotal = lines.reduce((sum, line) => sum + productPricing(line.product, line.qty).total, 0)
   const [step, setStep] = useState<1 | 2>(1)
-  const [name, setName] = useState(profile?.name || '')
-  const [phone, setPhone] = useState(profile?.phone || '')
+  const [name, setName] = useState(profile?.name || savedCustomer.name || '')
+  const [phone, setPhone] = useState(profile?.phone || savedCustomer.phone || '')
   const [fulfillment, setFulfillment] = useState<'delivery' | 'pickup' | ''>('')
   const [neighborhood, setNeighborhood] = useState('')
   const [otherNeighborhood, setOtherNeighborhood] = useState('')
@@ -713,6 +715,9 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
     setSendingOrder(true)
 
     try {
+      await saveCheckoutProfile(user, name, phone)
+      localStorage.setItem('karavela-customer-profile', JSON.stringify({ name: name.trim(), phone: phone.trim() }))
+
       await createCustomerOrder(user, {
         customerName: name.trim(),
         customerPhone: phone.trim(),
@@ -1005,7 +1010,6 @@ export default function App({ initialMediaConfig = {}, initialCatalogConfig = {}
   const [energyFilter, setEnergyFilter] = useState<EnergyFilterId>('all')
   const [adminOpen, setAdminOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
-  const [adminLoginOpen, setAdminLoginOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
   const [customerOrdersOpen, setCustomerOrdersOpen] = useState(false)
   const [adminDashboardOpen, setAdminDashboardOpen] = useState(false)
@@ -1232,7 +1236,7 @@ export default function App({ initialMediaConfig = {}, initialCatalogConfig = {}
   }
 
   return <div className="app-shell">
-    <header className="topbar"><div className="top-left"><button className="icon-btn menu-trigger" aria-label="Abrir menu" onClick={() => setMenuOpen(true)}><Icon name="menu"/></button><StoreStatus/></div><img className="top-logo" src="/assets/logo-karavela.png" alt="Karavela Bistrô & Distribuidora"/><div className="top-actions"><button className="icon-btn account-menu-button" aria-label="Minha conta" onClick={() => user ? (isAdmin ? setAdminDashboardOpen(true) : setProfileOpen(true)) : setAccountOpen(true)}><Icon name="user"/>{user && <span className="account-dot"/>}</button><button className="icon-btn search-trigger" aria-label="Buscar bebidas" onClick={() => { setSearchOpen(v => !v); setQuery('') }}><Icon name="search"/></button><button ref={cartButton} className="icon-btn cart-btn" aria-label="Abrir carrinho" onClick={() => setCartOpen(true)}><Icon name="cart"/>{count > 0 && <><span className="drink-dot"/><span className="cart-count">{count}</span></>}</button></div></header>
+    <header className="topbar"><div className="top-left"><button className="icon-btn menu-trigger" aria-label="Abrir menu" onClick={() => setMenuOpen(true)}><Icon name="menu"/></button><StoreStatus/></div><img className="top-logo" src="/assets/logo-karavela.png" alt="Karavela Bistrô & Distribuidora"/><div className="top-actions"><button className="icon-btn search-trigger" aria-label="Buscar bebidas" onClick={() => { setSearchOpen(v => !v); setQuery('') }}><Icon name="search"/></button><button ref={cartButton} className="icon-btn cart-btn" aria-label="Abrir carrinho" onClick={() => setCartOpen(true)}><Icon name="cart"/>{count > 0 && <><span className="drink-dot"/><span className="cart-count">{count}</span></>}</button></div></header>
 
     {searchOpen && <><div className="search-dismiss" onMouseDown={closeSearch}/><div className="search-popover" onMouseDown={e => e.stopPropagation()}><div className="search-panel"><Icon name="search"/><input autoFocus value={query} onChange={e => setQuery(e.target.value)} placeholder="Buscar bebida pelo nome..."/><button onClick={closeSearch}><Icon name="close"/></button></div>{query.trim() && <div className="search-results">{filtered.length ? filtered.slice(0, 12).map(p => <button key={p.id} className="search-result" onClick={() => openProduct(p)}><span className="search-result-image"><ManagedProductImage src={p.image} alt="" settings={mediaConfig[p.id]?.card}/></span><span className="search-result-copy"><strong>{p.name}</strong><small>{p.category}{p.size ? ` • ${p.size}` : ''}</small></span><b>{money(p.price)}</b></button>) : <div className="search-empty">Nenhum produto encontrado.</div>}</div>}</div></>}
 
@@ -1248,7 +1252,7 @@ export default function App({ initialMediaConfig = {}, initialCatalogConfig = {}
 
     <main>
       {checkoutOpen ? <CheckoutScreen lines={cart} onBack={() => { setCheckoutOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }) }} /> : !activeCategory ? <>
-        <HomeBanner onCheck={checkBanner} paused={menuOpen || cartOpen || searchOpen || adminOpen || accountOpen || adminLoginOpen || profileOpen || customerOrdersOpen || adminDashboardOpen || !!selected}/>
+        <HomeBanner onCheck={checkBanner} paused={menuOpen || cartOpen || searchOpen || adminOpen || accountOpen || profileOpen || customerOrdersOpen || adminDashboardOpen || !!selected}/>
         <section id="catalogo" className="section category-section"><div className="section-title"><h2>Categorias</h2></div><div className="rail-wrap"><div className="category-strip">{catalogCategories.map(category => <button className={`category-card${category.image ? ' category-card--photo' : ''}`} key={category.id} onClick={() => openCategory(category.id)}>{category.image ? <CategoryCardPhoto src={freshCatalogImageUrl(category.image)} label={category.label} style={catalogImageStyle(category)}/> : <><CategoryIcon name={category.icon}/><CategoryCardLabel label={category.label}/></>}</button>)}</div><div className="rail-arrow category-arrow"><Icon name="arrow"/></div></div></section>
         {catalogCategories.map(category => <ProductRail key={category.id} categoryId={category.id} categories={catalogCategories} products={catalogProducts} onOpen={openProduct} onAll={openCategory} mediaConfig={mediaConfig}/>)}
         <SiteFooter/>
@@ -1263,22 +1267,16 @@ export default function App({ initialMediaConfig = {}, initialCatalogConfig = {}
       onCategory={openCategory}
       loggedIn={Boolean(user)}
       isAdmin={isAdmin}
-      userName={profile?.name || ''}
       onAccount={() => {
         setMenuOpen(false)
         if (!user) setAccountOpen(true)
-        else if (isAdmin) setAdminDashboardOpen(true)
         else setProfileOpen(true)
       }}
       onOrders={() => {
         setMenuOpen(false)
         if (!user) setAccountOpen(true)
+        else if (isAdmin) setAdminDashboardOpen(true)
         else setCustomerOrdersOpen(true)
-      }}
-      onAdmin={() => {
-        setMenuOpen(false)
-        if (isAdmin) setAdminDashboardOpen(true)
-        else setAdminLoginOpen(true)
       }}
     />}
     {cartOpen && <CartDrawer lines={cart} onClose={() => { setCartOpen(false); setMinimumNotice(null) }} onQty={(id, q) => setCart(prev => prev.map(x => x.product.id === id ? { ...x, qty: q, unitPrice: productPricing(x.product, q).effectiveUnitPrice } : x))} onRemove={id => setCart(prev => prev.filter(x => x.product.id !== id))} onCheckout={checkout} minimumNotice={minimumNotice} onCloseMinimumNotice={() => setMinimumNotice(null)} mediaConfig={mediaConfig}/>}    
@@ -1287,8 +1285,11 @@ export default function App({ initialMediaConfig = {}, initialCatalogConfig = {}
       onClose={() => setAccountOpen(false)}
       onCancel={() => { setAccountOpen(false); setPendingCheckout(false) }}
     />}
-    {adminLoginOpen && <AccountModal adminOnly onClose={() => setAdminLoginOpen(false)} onSuccess={() => setAdminDashboardOpen(true)} />}
-    {profileOpen && user && !isAdmin && <AccountMenuCard onClose={() => setProfileOpen(false)} onOrders={() => { setProfileOpen(false); setCustomerOrdersOpen(true) }} />}
+    {profileOpen && user && <AccountMenuCard onClose={() => setProfileOpen(false)} onOrders={() => {
+      setProfileOpen(false)
+      if (isAdmin) setAdminDashboardOpen(true)
+      else setCustomerOrdersOpen(true)
+    }} />}
     {customerOrdersOpen && user && !isAdmin && <CustomerOrdersPanel onClose={() => setCustomerOrdersOpen(false)} />}
     {adminDashboardOpen && isAdmin && <AdminDashboard onClose={() => setAdminDashboardOpen(false)} onOpenCatalog={() => { setAdminDashboardOpen(false); setAdminOpen(true) }} />}
     {adminOpen && isAdmin && <AdminMedia products={catalogProducts} brands={catalogBrands} categories={catalogCategories} catalogConfig={{ ...catalogConfig, revision: 1, categories: catalogCategories }} config={mediaConfig} detailImageForProduct={(product) => detailImageByProductId[product.id] ?? product.image} onClose={() => { setAdminOpen(false); setAdminDashboardOpen(true) }} onSaved={setMediaConfig} onCatalogSaved={setCatalogConfig}/>}
