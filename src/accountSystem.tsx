@@ -478,8 +478,8 @@ export function AdminDashboard({
     <header className="admin-dashboard-top">
       <div>
         <small>KARAVELA DISTRIBUIDORA</small>
-        <h1>Controle da loja</h1>
-        <span>{profile?.name || 'Administrador'}</span>
+        <h1>Acompanhar pedidos</h1>
+        <span>{profile?.name || 'Loja'} · controle em tempo real</span>
       </div>
       <button onClick={onClose}>Sair do painel</button>
     </header>
@@ -492,6 +492,11 @@ export function AdminDashboard({
 
     <main className="admin-dashboard-main">
       {tab === 'orders' && <>
+        <div className="admin-order-overview">
+          <div><small>Pendentes</small><strong>{pendingCount}</strong></div>
+          <div><small>Finalizados hoje</small><strong>{todayOrders.filter(order => order.status === 'finalized').length}</strong></div>
+          <div><small>Pedidos hoje</small><strong>{todayOrders.length}</strong></div>
+        </div>
         <div className="admin-section-heading">
           <div><h2>Pedidos recebidos</h2><p>Entram aqui somente depois de o cliente tocar em “Enviar pedido para o WhatsApp”.</p></div>
           <span>{pendingCount} pendente{pendingCount === 1 ? '' : 's'}</span>
@@ -530,9 +535,9 @@ export function AccountMenuCard({
     <section className="profile-card" onMouseDown={event => event.stopPropagation()}>
       <button className="account-close" onClick={onClose}>×</button>
       <div className="profile-avatar">{(profile?.name || 'C').slice(0, 1).toUpperCase()}</div>
-      <h2>{profile?.name || 'Minha conta'}</h2>
+      <h2>{profile?.name || 'Meu perfil'}</h2>
       <p>{profile?.email || profile?.phone || ''}</p>
-      {!isAdmin && <button className="profile-action" onClick={onOrders}>Meus pedidos</button>}
+      <button className="profile-action" onClick={onOrders}>{isAdmin ? 'Acompanhar pedidos' : 'Meus pedidos'}</button>
       <button className="profile-action secondary" onClick={() => void logoutAccount()}>Sair da conta</button>
     </section>
   </div>
