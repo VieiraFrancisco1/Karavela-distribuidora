@@ -1,10 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
+import { AccountProvider } from './accountSystem'
 import type { CatalogConfig } from './types'
 import type { MediaConfig } from './mediaAdmin'
 import './styles.css'
 import './siteUpdates.css'
+import './accountSystem.css'
 
 async function loadJson<T>(url: string, fallback: T): Promise<T> {
   try {
@@ -27,10 +29,12 @@ async function bootstrap() {
 
   ReactDOM.createRoot(root).render(
     <React.StrictMode>
-      <App
-        initialMediaConfig={initialMediaConfig}
-        initialCatalogConfig={initialCatalogConfig}
-      />
+      <AccountProvider>
+        <App
+          initialMediaConfig={initialMediaConfig}
+          initialCatalogConfig={initialCatalogConfig}
+        />
+      </AccountProvider>
     </React.StrictMode>,
   )
 }
