@@ -248,6 +248,64 @@ function paymentLabel(payment: StoredOrder['payment']) {
   }[payment]
 }
 
+function whatsappNumber(value: string) {
+  const digits = value.replace(/\D/g, '')
+  if (digits.length === 10 || digits.length === 11) return `55${digits}`
+  return digits
+}
+
+function printOrder(order: StoredOrder) {
+  const popup = window.open('', '_blank', 'width=430,height=720')
+  if (!popup) return
+
+  const items = order.items.map(item => `
+    <div class="row"><span>${item.qty}x ${item.name}${item.size ? ` ${item.size}` : ''}</span><b>${money(item.total)}</b></div>
+  `).join('')
+
+  popup.document.write(`<!doctype html>
+  <html lang="pt-BR">
+    <head>
+      <meta charset="utf-8">
+      <title>Pedido ${order.id.slice(0, 6).toUpperCase()}</title>
+      <style>
+        *{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;padding:20px;color:#111}
+        h1{font-size:20px;margin:0 0 4px}.muted{color:#555;font-size:12px}
+        .line{border-top:1px dashed #999;margin:14px 0}.row{display:flex;justify-content:space-between;gap:12px;margin:7px 0;font-size:13px}
+        .total{font-size:18px;margin-top:12px}.info{font-size:13px;line-height:1.55;margin-top:12px}
+        @media print{body{padding:0}}
+      </style>
+    </head>
+    <body>
+      <h1>Karavela Distribuidora</h1>
+      <div class="muted">Pedido #${order.id.slice(0, 6).toUpperCase()} · ${dateLabel(order)}</div>
+      <div class="line"></div>
+      <div class="info">
+        <b>${order.customerName}</b><br>
+        ${order.customerPhone}<br>
+        ${order.fulfillment === 'delivery' ? 'Entrega' : 'Retirada'} · ${paymentLabel(order.payment)}
+        ${order.address ? `<br>${order.address}` : ''}
+        ${order.neighborhood ? ` · ${order.neighborhood}` : ''}
+      </div>
+      <div class="line"></div>
+      ${items}
+      <div class="line"></div>
+      <div class="row total"><span>Total</span><b>${money(order.total)}</b></div>
+      <script>window.onload=()=>{window.print();setTimeout(()=>window.close(),300)}</script>
+    </body>
+  </html>`)
+  popup.document.close()
+}
+
+function callCustomer(order: StoredOrder) {
+  const phone = whatsappNumber(order.customerPhone)
+  if (!phone) return
+  const message = [
+    `Olá, ${order.customerName}! Aqui é da Karavela Distribuidora.`,
+    `Estamos falando sobre o pedido #${order.id.slice(0, 6).toUpperCase()}.`,
+  ].join('\n')
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer')
+}
+
 function OrderCard({
   order,
   admin = false,
@@ -259,9 +317,9 @@ function OrderCard({
   onFinalize?: (order: StoredOrder) => void
   onDelete?: (order: StoredOrder) => void
 }) {
-  return <article className="order-card">
+  return <article className={`order-card${admin ? ' order-card-admin' : ''}`}>
     <div className="order-card-top">
-      <div>
+      <div className="order-main-title">
         <strong>{admin ? order.customerName : `Pedido #${order.id.slice(0, 6).toUpperCase()}`}</strong>
         <span>{dateLabel(order)}</span>
       </div>
@@ -270,7 +328,20 @@ function OrderCard({
       </span>
     </div>
 
-    {admin && <div className="order-customer-line">{order.customerPhone} · {order.fulfillment === 'delivery' ? 'Entrega' : 'Retirada'} · {paymentLabel(order.payment)}</div>}
+    {admin && <div className="order-admin-summary">
+      <div><small>PEDIDO</small><b>#{order.id.slice(0, 6).toUpperCase()}</b></div>
+      <div><small>RECEBIMENTO</small><b>{order.fulfillment === 'delivery' ? 'Entrega' : 'Retirada'}</b></div>
+      <div><small>PAGAMENTO</small><b>{paymentLabel(order.payment)}</b></div>
+    </div>}
+
+    {admin && <div className="order-customer-box">
+      <div>
+        <small>Cliente</small>
+        <strong>{order.customerPhone}</strong>
+        {order.fulfillment === 'delivery' && order.address && <span>{order.address}{order.neighborhood ? ` · ${order.neighborhood}` : ''}</span>}
+      </div>
+      <button className="whatsapp" onClick={() => callCustomer(order)}>Chamar no WhatsApp</button>
+    </div>}
 
     <div className="order-items">
       {order.items.map((item, index) => <div key={`${item.productId}-${index}`}>
@@ -282,6 +353,7 @@ function OrderCard({
     <div className="order-card-bottom">
       <div><small>Total</small><strong>{money(order.total)}</strong></div>
       {admin && <div className="order-admin-actions">
+        <button className="print" onClick={() => printOrder(order)}>Imprimir</button>
         {order.status !== 'finalized' && <button className="finish" onClick={() => onFinalize?.(order)}>Finalizar</button>}
         <button className="delete" onClick={() => onDelete?.(order)}>Excluir</button>
       </div>}
