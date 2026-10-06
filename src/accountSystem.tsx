@@ -421,6 +421,18 @@ function sameMonth(date: Date, target: Date) {
   return date.getFullYear() === target.getFullYear() && date.getMonth() === target.getMonth()
 }
 
+function dateInputValue(date: Date) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+function dateFromInput(value: string) {
+  const [year, month, day] = value.split('-').map(Number)
+  return new Date(year, Math.max(0, month - 1), day || 1)
+}
+
 function ReportSummary({ title, orders }: { title: string; orders: StoredOrder[] }) {
   const finalized = orders.filter(order => order.status === 'finalized')
   const pending = orders.filter(order => order.status === 'pending')
@@ -444,9 +456,11 @@ export function AdminDashboard({
   onOpenCatalog: () => void
 }) {
   const { isAdmin, profile } = useAccount()
-  const [tab, setTab] = useState<'orders' | 'reports'>('orders')
+  const [view, setView] = useState<'pending' | 'finalized'>('pending')
+  const [showReports, setShowReports] = useState(false)
   const [orders, setOrders] = useState<StoredOrder[]>([])
   const [loading, setLoading] = useState(true)
+  const [finalizedDate, setFinalizedDate] = useState(() => dateInputValue(new Date()))
 
   useEffect(() => {
     if (!isAdmin) return
@@ -481,54 +495,91 @@ export function AdminDashboard({
   }
 
   const now = new Date()
+  const selectedFinalizedDate = dateFromInput(finalizedDate)
   const todayOrders = orders.filter(order => sameDay(orderDate(order), now))
   const monthOrders = orders.filter(order => sameMonth(orderDate(order), now))
-  const pendingCount = orders.filter(order => order.status === 'pending').length
+  const pendingToday = todayOrders.filter(order => order.status === 'pending')
+  const finalizedForDate = orders.filter(order =>
+    order.status === 'finalized' && sameDay(orderDate(order), selectedFinalizedDate)
+  )
+  const visibleOrders = view === 'pending' ? pendingToday : finalizedForDate
 
   return <div className="admin-dashboard-shell">
     <header className="admin-dashboard-top">
       <button className="admin-back-button" onClick={onClose} aria-label="Voltar">‹ <span>Voltar</span></button>
       <div className="admin-dashboard-title">
         <small>KARAVELA DISTRIBUIDORA</small>
-        <h1>Acompanhar pedidos</h1>
-        <span>{profile?.name || 'Loja'} · controle em tempo real</span>
+        <h1>Pedidos</h1>
+        <span>{profile?.name || 'Loja'} · {now.toLocaleDateString('pt-BR')}</span>
       </div>
       <button className="admin-close-button" onClick={onClose} aria-label="Fechar">×</button>
     </header>
 
-    <nav className="admin-dashboard-nav">
-      <button className={tab === 'orders' ? 'active' : ''} onClick={() => setTab('orders')}>Pedidos {pendingCount > 0 && <b>{pendingCount}</b>}</button>
-      <button className={tab === 'reports' ? 'active' : ''} onClick={() => setTab('reports')}>Relatórios</button>
-      <button onClick={onOpenCatalog}>Editar catálogo</button>
-    </nav>
-
     <main className="admin-dashboard-main">
-      {tab === 'orders' && <>
-        <div className="admin-order-overview">
-          <div><small>Pendentes</small><strong>{pendingCount}</strong></div>
-          <div><small>Finalizados hoje</small><strong>{todayOrders.filter(order => order.status === 'finalized').length}</strong></div>
-          <div><small>Pedidos hoje</small><strong>{todayOrders.length}</strong></div>
-        </div>
-        <div className="admin-section-heading">
-          <div><h2>Pedidos recebidos</h2><p>Entram aqui somente depois de o cliente tocar em “Enviar pedido para o WhatsApp”.</p></div>
-          <span>{pendingCount} pendente{pendingCount === 1 ? '' : 's'}</span>
-        </div>
-        <div className="admin-order-list">
-          {loading ? <div className="orders-empty">Carregando pedidos...</div> : orders.length ? orders.map(order => <OrderCard key={order.id} order={order} admin onFinalize={finalize} onDelete={remove} />) : <div className="orders-empty">Nenhum pedido recebido ainda.</div>}
-        </div>
-      </>}
+      <div className="admin-quick-links">
+        <button className={showReports ? 'active' : ''} onClick={() => setShowReports(value => !value)}>
+          {showReports ? 'Voltar aos pedidos' : 'Relatórios'}
+        </button>
+        <button onClick={onOpenCatalog}>Editar catálogo</button>
+      </div>
 
-      {tab === 'reports' && <>
-        <div className="admin-section-heading"><div><h2>Relatórios</h2><p>O faturamento considera apenas pedidos finalizados.</p></div></div>
+      {showReports ? <>
+        <div className="admin-section-heading">
+          <div><h2>Relatórios</h2><p>O faturamento considera apenas pedidos finalizados.</p></div>
+        </div>
         <div className="report-grid">
           <ReportSummary title="Hoje" orders={todayOrders} />
           <ReportSummary title={now.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })} orders={monthOrders} />
         </div>
-
         <section className="report-detail">
           <h3>Pedidos de hoje</h3>
           {todayOrders.length ? todayOrders.map(order => <div key={order.id}><span>{order.customerName}</span><span>{order.status === 'finalized' ? 'Finalizado' : 'Pendente'}</span><b>{money(order.total)}</b></div>) : <p>Nenhum pedido hoje.</p>}
         </section>
+      </> : <>
+        <section className="order-status-selector" aria-label="Filtrar pedidos">
+          <button className={view === 'pending' ? 'active pending-card' : 'pending-card'} onClick={() => setView('pending')}>
+            <span>Pendentes</span>
+            <strong>{pendingToday.length}</strong>
+            <small>Pedidos de hoje</small>
+          </button>
+          <button className={view === 'finalized' ? 'active finalized-card' : 'finalized-card'} onClick={() => setView('finalized')}>
+            <span>Finalizados</span>
+            <strong>{finalizedForDate.length}</strong>
+            <small>{sameDay(selectedFinalizedDate, now) ? 'Hoje' : selectedFinalizedDate.toLocaleDateString('pt-BR')}</small>
+          </button>
+        </section>
+
+        {view === 'finalized' && <section className="finalized-date-filter">
+          <div>
+            <strong>Data dos pedidos finalizados</strong>
+            <small>Escolha um dia para consultar.</small>
+          </div>
+          <input
+            type="date"
+            value={finalizedDate}
+            max={dateInputValue(now)}
+            onChange={event => setFinalizedDate(event.target.value || dateInputValue(now))}
+          />
+        </section>}
+
+        <div className="admin-section-heading order-list-heading">
+          <div>
+            <h2>{view === 'pending' ? 'Pendentes de hoje' : 'Pedidos finalizados'}</h2>
+            <p>{view === 'pending'
+              ? 'Pedidos recebidos hoje que ainda precisam ser finalizados.'
+              : `Mostrando pedidos de ${selectedFinalizedDate.toLocaleDateString('pt-BR')}.`}
+            </p>
+          </div>
+          <span>{visibleOrders.length} pedido{visibleOrders.length === 1 ? '' : 's'}</span>
+        </div>
+
+        <div className="admin-order-list">
+          {loading
+            ? <div className="orders-empty">Carregando pedidos...</div>
+            : visibleOrders.length
+              ? visibleOrders.map(order => <OrderCard key={order.id} order={order} admin onFinalize={finalize} onDelete={remove} />)
+              : <div className="orders-empty">{view === 'pending' ? 'Nenhum pedido pendente hoje.' : 'Nenhum pedido finalizado nesta data.'}</div>}
+        </div>
       </>}
     </main>
   </div>
@@ -549,7 +600,7 @@ export function AccountMenuCard({
       <div className="profile-avatar">{(profile?.name || 'C').slice(0, 1).toUpperCase()}</div>
       <h2>{profile?.name || 'Meu perfil'}</h2>
       <p>{profile?.email || profile?.phone || ''}</p>
-      <button className="profile-action" onClick={onOrders}>{isAdmin ? 'Acompanhar pedidos' : 'Meus pedidos'}</button>
+      <button className="profile-action" onClick={onOrders}>{isAdmin ? 'Pedidos da loja' : 'Meus pedidos'}</button>
       <button className="profile-action secondary" onClick={() => void logoutAccount()}>Sair da conta</button>
     </section>
   </div>
