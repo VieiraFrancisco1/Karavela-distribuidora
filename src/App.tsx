@@ -1406,7 +1406,7 @@ export default function App({ initialMediaConfig = {}, initialCatalogConfig = {}
       else setCustomerOrdersOpen(true)
     }} />}
     {customerOrdersOpen && user && !isAdmin && <CustomerOrdersPanel onClose={() => setCustomerOrdersOpen(false)} />}
-    {adminDashboardOpen && isAdmin && <AdminDashboard onClose={() => setAdminDashboardOpen(false)} onOpenCatalog={() => { setAdminDashboardOpen(false); setAdminOpen(true) }} />}
+    {adminDashboardOpen && isAdmin && <AdminDashboard onClose={() => setAdminDashboardOpen(false)} />}
     {adminOpen && isAdmin && <AdminMedia products={catalogProducts} brands={catalogBrands} categories={catalogCategories} catalogConfig={{ ...catalogConfig, revision: 1, categories: catalogCategories }} config={mediaConfig} detailImageForProduct={(product) => detailImageByProductId[product.id] ?? product.image} onClose={() => { setAdminOpen(false); setAdminDashboardOpen(true) }} onSaved={setMediaConfig} onCatalogSaved={setCatalogConfig}/>}
   </div>
 }
