@@ -116,21 +116,17 @@ function authErrorMessage(error: unknown) {
 
 export function AccountModal({
   onClose,
-  adminOnly = false,
   onSuccess,
   onCancel,
 }: {
   onClose: () => void
-  adminOnly?: boolean
   onSuccess?: () => void
   onCancel?: () => void
 }) {
   const [tab, setTab] = useState<'login' | 'register'>('login')
-  const [identifier, setIdentifier] = useState(adminOnly ? '(88) 96916-6158' : '')
+  const [identifier, setIdentifier] = useState('')
   const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
 
@@ -140,15 +136,10 @@ export function AccountModal({
     setBusy(true)
 
     try {
-      if (tab === 'login' || adminOnly) {
-        const credential = await loginWithIdentifier(identifier, password)
-        if (adminOnly && !isOwner(credential.user)) {
-          await logoutAccount()
-          throw new Error('Acesso permitido apenas ao proprietário da loja.')
-        }
+      if (tab === 'login') {
+        await loginWithIdentifier(identifier, password)
       } else {
-        if (password !== confirmPassword) throw new Error('As senhas não são iguais.')
-        await registerWithIdentifier({ name, identifier, phone, password })
+        await registerWithIdentifier({ name, identifier, password })
       }
       onSuccess?.()
       onClose()
@@ -164,54 +155,47 @@ export function AccountModal({
   return <div className="account-overlay" onMouseDown={cancel}>
     <section className="account-modal" onMouseDown={event => event.stopPropagation()}>
       <button className="account-close" onClick={cancel} aria-label="Fechar">×</button>
-      <img src="/assets/logo-karavela.png" alt="Karavela Distribuidora" />
-      <div className="account-heading">
-        <h2>{adminOnly ? 'Área administrativa' : tab === 'login' ? 'Entrar na sua conta' : 'Criar sua conta'}</h2>
-        <p>{adminOnly ? 'Acesso exclusivo do proprietário da loja.' : 'Use e-mail ou telefone e sua senha.'}</p>
+
+      <div className="account-brand">
+        <img src="/assets/logo-karavela.png" alt="Karavela Distribuidora" />
       </div>
 
-      {!adminOnly && <div className="account-tabs">
-        <button className={tab === 'login' ? 'active' : ''} onClick={() => { setTab('login'); setError('') }}>Entrar</button>
-        <button className={tab === 'register' ? 'active' : ''} onClick={() => { setTab('register'); setError('') }}>Criar conta</button>
-      </div>}
+      <div className="account-heading">
+        <h2>{tab === 'login' ? 'Entrar na sua conta' : 'Criar sua conta'}</h2>
+        <p>{tab === 'login' ? 'Acesse com e-mail ou telefone e senha.' : 'Cadastro rápido para facilitar seus próximos pedidos.'}</p>
+      </div>
+
+      <div className="account-tabs">
+        <button className={tab === 'login' ? 'active' : ''} type="button" onClick={() => { setTab('login'); setError('') }}>Entrar</button>
+        <button className={tab === 'register' ? 'active' : ''} type="button" onClick={() => { setTab('register'); setError('') }}>Criar conta</button>
+      </div>
 
       <form onSubmit={submit}>
-        {tab === 'register' && !adminOnly && <label>
-          <span>Nome completo</span>
+        {tab === 'register' && <label>
+          <span>Nome e sobrenome</span>
           <input value={name} onChange={event => setName(event.target.value)} placeholder="Seu nome e sobrenome" autoComplete="name" required />
         </label>}
 
         <label>
-          <span>{adminOnly ? 'WhatsApp do proprietário' : 'E-mail ou telefone'}</span>
+          <span>E-mail ou telefone</span>
           <input
             value={identifier}
             onChange={event => setIdentifier(event.target.value)}
-            placeholder={adminOnly ? '(88) 96916-6158' : 'exemplo@email.com ou (88) 99999-9999'}
+            placeholder="exemplo@email.com ou (88) 99999-9999"
             autoComplete="username"
             required
           />
         </label>
-
-        {tab === 'register' && !adminOnly && <label>
-          <span>Telefone / WhatsApp</span>
-          <input value={phone} onChange={event => setPhone(event.target.value)} placeholder="(88) 99999-9999" inputMode="tel" autoComplete="tel" required />
-          <small>Se você usar o telefone para entrar, pode repetir o mesmo número aqui.</small>
-        </label>}
 
         <label>
           <span>Senha</span>
           <input value={password} onChange={event => setPassword(event.target.value)} type="password" placeholder="Mínimo de 6 caracteres" autoComplete={tab === 'login' ? 'current-password' : 'new-password'} required />
         </label>
 
-        {tab === 'register' && !adminOnly && <label>
-          <span>Confirmar senha</span>
-          <input value={confirmPassword} onChange={event => setConfirmPassword(event.target.value)} type="password" placeholder="Digite a senha novamente" autoComplete="new-password" required />
-        </label>}
-
         {error && <div className="account-error">{error}</div>}
 
         <button className="account-primary" disabled={busy} type="submit">
-          {busy ? 'Aguarde...' : adminOnly ? 'Entrar como administrador' : tab === 'login' ? 'Entrar' : 'Criar conta'}
+          {busy ? 'Aguarde...' : tab === 'login' ? 'Entrar' : 'Criar conta'}
         </button>
       </form>
     </section>
