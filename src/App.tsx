@@ -7,6 +7,7 @@ import type { MediaConfig, MediaViewSettings, ProductMediaOverride } from './med
 import HomeBanner from './HomeBanner'
 import type { BannerDestination } from './HomeBanner'
 import StoreStatus from './StoreStatus'
+import CategoryCardPhoto from './CategoryCardPhoto'
 
 const money = (value: number) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
@@ -1129,7 +1130,7 @@ export default function App() {
     <main>
       {checkoutOpen ? <CheckoutScreen lines={cart} onBack={() => { setCheckoutOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }) }} /> : !activeCategory ? <>
         <HomeBanner onCheck={checkBanner} paused={menuOpen || cartOpen || searchOpen || adminOpen || !!selected}/>
-        <section id="catalogo" className="section category-section"><div className="section-title"><h2>Categorias</h2></div><div className="rail-wrap"><div className="category-strip">{catalogCategories.map(category => <button className="category-card" key={category.id} onClick={() => openCategory(category.id)}>{category.image ? <span className="category-card-image-frame"><img className="category-card-image" src={freshCatalogImageUrl(category.image)} alt="" style={catalogImageStyle(category)}/></span> : <CategoryIcon name={category.icon}/>}<span>{category.label}</span></button>)}</div><div className="rail-arrow category-arrow"><Icon name="arrow"/></div></div></section>
+        <section id="catalogo" className="section category-section"><div className="section-title"><h2>Categorias</h2></div><div className="rail-wrap"><div className="category-strip">{catalogCategories.map(category => <button className={`category-card${category.image ? ' category-card--photo' : ''}`} key={category.id} onClick={() => openCategory(category.id)}>{category.image ? <CategoryCardPhoto src={freshCatalogImageUrl(category.image)} label={category.label} style={catalogImageStyle(category)}/> : <><CategoryIcon name={category.icon}/><span>{category.label}</span></>}</button>)}</div><div className="rail-arrow category-arrow"><Icon name="arrow"/></div></div></section>
         {catalogCategories.map(category => <ProductRail key={category.id} categoryId={category.id} categories={catalogCategories} products={catalogProducts} onOpen={openProduct} onAll={openCategory} mediaConfig={mediaConfig}/>)}
         <SiteFooter/>
       </> : activeCategoryId === 'cervejas' ? <BeerCategoryPage products={allBeerProducts} filter={beerFilter} onFilter={setBeerFilter} onHome={goHome} onOpen={openProduct} mediaConfig={mediaConfig} /> : activeCategoryId === 'energeticos' ? <EnergyCategoryPage products={allEnergyProducts} filter={energyFilter} onFilter={setEnergyFilter} onHome={goHome} onOpen={openProduct} mediaConfig={mediaConfig} /> : activeCategory ? <section className="category-page"><div className="category-page-head"><button className="back-btn" onClick={goHome} aria-label="Voltar"><Icon name="back"/></button><h1>{activeCategory.label}</h1></div><div className="category-product-grid">{activeProducts.map(product => <ProductCard key={product.id} product={product} onOpen={openProduct} media={mediaConfig[product.id]}/>)}</div></section> : null}

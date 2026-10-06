@@ -75,6 +75,84 @@
 .home-banner button:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
 #catalogo { scroll-margin-top: 68px; }
 
+/* A foto da categoria ocupa o card inteiro, com o nome legível na base. */
+#root .category-card--photo {
+  position: relative !important;
+  isolation: isolate;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+#root .category-card--photo > .category-card-image-frame {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  display: block !important;
+  background: #fff !important;
+  transform: none !important;
+}
+#root .category-card--photo .category-card-image {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 0 !important;
+  pointer-events: none;
+}
+#root .category-card--photo > .category-card-label {
+  position: absolute !important;
+  inset: auto 0 0 !important;
+  z-index: 1;
+  width: 100% !important;
+  min-height: 28px !important;
+  padding: 4px 3px !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(255,255,255,.94) !important;
+  color: #17324a !important;
+  border-radius: 0 !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  line-height: 1.08 !important;
+  text-align: center !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  transform: none !important;
+  pointer-events: none;
+}
+.catalog-category-preview-stage {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 18px;
+  background: #f4f7f9;
+  border: 1px solid #e1e7eb;
+  border-radius: 14px;
+}
+.catalog-category-preview-stage p { margin: 0; font-size: 11px; color: #536674; text-align: center; }
+#root .catalog-image-edit-frame--category {
+  width: 82px !important;
+  height: 90px !important;
+  min-height: 90px !important;
+  border: 1px solid #e6edf3 !important;
+  border-radius: 10px !important;
+}
+@media (max-width: 760px) {
+  #root .catalog-image-edit-frame--category {
+    width: 78px !important;
+    height: 86px !important;
+    min-height: 86px !important;
+  }
+}
+
 .topbar {
   grid-template-columns: auto 1fr auto !important;
   padding-inline: 4px !important;

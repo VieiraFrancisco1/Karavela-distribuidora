@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { PointerEvent as ReactPointerEvent } from 'react'
 import type { CatalogBrand, CatalogCategory, CatalogConfig, Product } from './types'
+import CategoryCardPhoto from './CategoryCardPhoto'
 
 type CatalogSection = 'products' | 'brands' | 'categories'
 
@@ -120,12 +121,14 @@ function CatalogImageEditor({
   scale = 1,
   x = 0,
   y = 0,
+  categoryLabel,
   onChange,
 }: {
   src: string
   scale?: number
   x?: number
   y?: number
+  categoryLabel?: string
   onChange: (next: { imageScale: number; imageX: number; imageY: number }) => void
 }) {
   const drag = useRef<{ pointerId: number; startX: number; startY: number; x: number; y: number } | null>(null)
@@ -160,23 +163,32 @@ function CatalogImageEditor({
     if (drag.current?.pointerId === event.pointerId) drag.current = null
   }
 
-  return <div className="catalog-image-editor">
-    <div
+  const preview = <div
       ref={frame}
-      className="catalog-image-edit-frame"
+      className={`catalog-image-edit-frame${categoryLabel !== undefined ? ' catalog-image-edit-frame--category category-card category-card--photo' : ''}`}
       onPointerDown={startDrag}
       onPointerMove={moveDrag}
       onPointerUp={stopDrag}
       onPointerCancel={stopDrag}
     >
-      <img
+      {categoryLabel !== undefined ? <CategoryCardPhoto
+        src={freshCatalogEditorImageUrl(src)}
+        label={categoryLabel}
+        style={catalogImageStyle({ imageScale: scale, imageX: x, imageY: y })}
+      /> : <><img
         src={freshCatalogEditorImageUrl(src)}
         alt=""
         draggable={false}
         style={catalogImageStyle({ imageScale: scale, imageX: x, imageY: y })}
       />
-      <span>Arraste a imagem para posicionar</span>
+      <span>Arraste a imagem para posicionar</span></>}
     </div>
+
+  return <div className="catalog-image-editor">
+    {categoryLabel !== undefined ? <div className="catalog-category-preview-stage">
+      {preview}
+      <p>Arraste a foto para ajustar o enquadramento.</p>
+    </div> : preview}
 
     <div className="catalog-image-adjustments">
       <div className="catalog-image-editor-title">Editar imagem do card</div>
@@ -479,6 +491,7 @@ export function CatalogManager({ section, products, brands, categories, config, 
           {categoryDraft.image
             ? <CatalogImageEditor
                 src={categoryDraft.image}
+                categoryLabel={categoryDraft.label}
                 scale={categoryDraft.imageScale}
                 x={categoryDraft.imageX}
                 y={categoryDraft.imageY}
