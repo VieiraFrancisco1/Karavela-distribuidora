@@ -8,7 +8,10 @@ service cloud.firestore {
 
     function isOwner() {
       return signedIn()
-        && request.auth.token.email == '558896916158@telefone.karavela.app';
+        && (
+          request.auth.token.email == '558896916158@telefone.karavela.app'
+          || request.auth.token.email == '88969166158@telefone.karavela.app'
+        );
     }
 
     match /users/{userId} {
