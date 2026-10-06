@@ -1,0 +1,7 @@
+{"indexes":[
+  {"collectionGroup":"orders","queryScope":"COLLECTION","fields":[{"fieldPath":"customerId","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}]},
+  {"collectionGroup":"orders","queryScope":"COLLECTION","fields":[{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}]}
+],"fieldOverrides":[
+  {"collectionGroup":"photos","fieldPath":"dataUrl","indexes":[]},
+  {"collectionGroup":"orders","fieldPath":"items","indexes":[]}
+]}

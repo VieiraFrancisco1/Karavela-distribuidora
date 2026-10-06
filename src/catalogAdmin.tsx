@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import type { PointerEvent as ReactPointerEvent } from 'react'
 import type { CatalogBrand, CatalogCategory, CatalogConfig, Product } from './types'
 import CategoryCardPhoto from './CategoryCardPhoto'
+import MediaImage from './MediaImage'
+import { saveCatalogConfig, uploadPhoto } from './firebaseStore'
 
 type CatalogSection = 'products' | 'brands' | 'categories'
 
@@ -29,26 +31,7 @@ const slugify = (value: string) => value
   .replace(/^-+|-+$/g, '')
   .slice(0, 70)
 
-const readApiError = async (response: Response) => {
-  try {
-    const data = await response.json() as { message?: string; error?: string }
-    return data.message || data.error || `Erro ${response.status}.`
-  } catch {
-    return `Erro ${response.status}.`
-  }
-}
-
-async function saveCatalog(next: CatalogConfig) {
-  const response = await fetch('/api/catalog-config', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(next),
-  })
-  if (!response.ok) throw new Error(await readApiError(response))
-  const data = await response.json() as { ok?: boolean; config?: CatalogConfig }
-  if (!data.ok || !data.config) throw new Error('O servidor não confirmou o salvamento do catálogo.')
-  return data.config
-}
+const saveCatalog = saveCatalogConfig
 
 async function prepareCatalogImage(file: File): Promise<File> {
   if (!file.type.startsWith('image/')) throw new Error('Escolha uma imagem válida.')
@@ -92,17 +75,8 @@ async function prepareCatalogImage(file: File): Promise<File> {
   }
 }
 
-async function uploadCatalogImage(file: File, kind: 'brand' | 'category', id: string) {
-  const prepared = await prepareCatalogImage(file)
-  const form = new FormData()
-  form.append('file', prepared, prepared.name)
-  form.append('kind', kind)
-  form.append('id', id)
-  const response = await fetch('/api/upload-catalog-image', { method: 'POST', body: form })
-  if (!response.ok) throw new Error(await readApiError(response))
-  const data = await response.json() as { ok?: boolean; url?: string }
-  if (!data.ok || !data.url) throw new Error('O servidor não retornou a nova imagem.')
-  return data.url
+async function uploadCatalogImage(file: File, _kind: 'brand' | 'category', _id: string) {
+  return uploadPhoto(await prepareCatalogImage(file))
 }
 
 
@@ -438,7 +412,7 @@ export function CatalogManager({ section, products, brands, categories, config, 
       </div>
       <div className="catalog-product-admin-list">
         {productRows.map(product => <article key={product.id}>
-          <img src={product.image} alt=""/>
+          <MediaImage src={product.image} alt=""/>
           <div><strong>{product.name}</strong><span>{product.category}{product.size ? ` • ${product.size}` : ''}</span></div>
           <button disabled={busy} onClick={() => void deleteProduct(product)}>Excluir</button>
         </article>)}
@@ -450,7 +424,7 @@ export function CatalogManager({ section, products, brands, categories, config, 
         <div className="catalog-entity-list-head"><h3>Principais marcas</h3><button onClick={addBrand}>+ Adicionar marca</button></div>
         <div className="catalog-entity-help">Toque em uma marca para editar nome, imagem e enquadramento.</div>
         {brands.map(brand => <button key={brand.id} className={selectedBrandId === brand.id ? 'active' : ''} onClick={() => selectBrand(brand)}>
-          {brand.image ? <span className="catalog-list-image-frame"><img src={freshCatalogEditorImageUrl(brand.image)} alt="" style={catalogImageStyle(brand)}/></span> : <span className="catalog-placeholder">{brand.name.slice(0, 1)}</span>}
+          {brand.image ? <span className="catalog-list-image-frame"><MediaImage src={freshCatalogEditorImageUrl(brand.image)} alt="" style={catalogImageStyle(brand)}/></span> : <span className="catalog-placeholder">{brand.name.slice(0, 1)}</span>}
           <strong>{brand.name}</strong>
         </button>)}
       </aside>
@@ -481,7 +455,7 @@ export function CatalogManager({ section, products, brands, categories, config, 
         <div className="catalog-entity-list-head"><h3>Categorias</h3><button onClick={addCategory}>+ Adicionar categoria</button></div>
         <div className="catalog-entity-help">Toque em uma categoria para editar nome, imagem e enquadramento.</div>
         {categories.map(category => <button key={category.id} className={selectedCategoryId === category.id ? 'active' : ''} onClick={() => selectCategory(category)}>
-          {category.image ? <span className="catalog-list-image-frame"><img src={freshCatalogEditorImageUrl(category.image)} alt="" style={catalogImageStyle(category)}/></span> : <span className="catalog-placeholder">◻</span>}
+          {category.image ? <span className="catalog-list-image-frame"><MediaImage src={freshCatalogEditorImageUrl(category.image)} alt="" style={catalogImageStyle(category)}/></span> : <span className="catalog-placeholder">◻</span>}
           <strong>{category.label}</strong>
         </button>)}
       </aside>

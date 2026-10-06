@@ -9,33 +9,16 @@ import type { BannerDestination } from './HomeBanner'
 import StoreStatus from './StoreStatus'
 import CategoryCardPhoto from './CategoryCardPhoto'
 import CategoryCardLabel from './CategoryCardLabel'
-
-const money = (value: number) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-
-const roundMoney = (value: number) => Math.round((value + Number.EPSILON) * 100) / 100
-
-const productPricing = (product: Product, qty: number) => {
-  const safeQty = Math.max(1, qty)
-  const tier = (product.tiers ?? [])
-    .filter(option => safeQty >= option.qty)
-    .sort((a, b) => b.qty - a.qty)[0]
-
-  if (!tier) {
-    const total = roundMoney(safeQty * product.price)
-    return { total, effectiveUnitPrice: product.price, savings: 0, tier: null as Tier | null }
-  }
-
-  const bundles = Math.floor(safeQty / tier.qty)
-  const remainder = safeQty % tier.qty
-  const total = roundMoney((bundles * tier.qty * tier.unitPrice) + (remainder * product.price))
-  const regularTotal = roundMoney(safeQty * product.price)
-  return {
-    total,
-    effectiveUnitPrice: total / safeQty,
-    savings: roundMoney(regularTotal - total),
-    tier,
-  }
-}
+import { money, productPricing, roundMoney, deliveryFeeFor } from './pricing'
+import MediaImage from './MediaImage'
+import { useSession } from './AuthProvider'
+import { AccountScreen, AuthScreen, accountError } from './AccountScreen'
+import { CustomerOrders, OwnerDashboard } from './OrdersDashboard'
+import { firebaseReady } from './firebaseClient'
+import { submitWhatsAppOrder, watchSetting } from './firebaseStore'
+import type { OrderDraft } from './ordersModel'
+import mediaSnapshot from '../public/assets/migration/media-config.json'
+import catalogSnapshot from '../public/assets/migration/catalog-config.json'
 
 const primaryTier = (product: Product) => (product.tiers ?? []).slice().sort((a, b) => a.qty - b.qty)[0]
 
@@ -152,14 +135,10 @@ const BOA_VIAGEM_NEIGHBORHOODS = [
   'Sambra', 'Tibiquari', 'Várzea do Canto', 'Vila Azul', 'Vila Holanda', 'Vila Lurdinha', 'Outras',
 ] as const
 
-const deliveryFeeFor = (neighborhood: string) => {
-  const normalized = neighborhood.trim().toLocaleLowerCase('pt-BR')
-  return normalized === 'floresta' || normalized === 'capitão mor' ? DELIVERY_FEE_SPECIAL : DELIVERY_FEE
-}
 
 function ManagedProductImage({ src, alt, settings, className = '' }: { src: string; alt: string; settings?: MediaViewSettings; className?: string }) {
   const managed = hasMediaOverride(settings)
-  return <img
+  return <MediaImage
     className={`${className}${managed ? ' media-managed' : ''}`.trim()}
     src={settings?.url || src}
     alt={alt}
@@ -273,7 +252,7 @@ function BeerSheet({ product, onClose, onAdd, media }: { product: Product; onClo
       <button className="sheet-close" onClick={onClose}><Icon name="close"/></button>
       <div className="beer-sheet-head">
         <div className="beer-sheet-image">
-          <img className="beer-sheet-backdrop" src={media?.detail?.url || product.image} alt="" aria-hidden="true"/>
+          <MediaImage className="beer-sheet-backdrop" src={media?.detail?.url || product.image} alt="" aria-hidden="true"/>
           <ManagedProductImage className="beer-sheet-main" src={product.image} alt={product.name} settings={media?.detail}/>
         </div>
       </div>
@@ -338,7 +317,7 @@ function PackSheet({ product, onClose, onAdd, media }: { product: Product; onClo
       <div className="sheet-grabber"/>
       <button className="sheet-close" onClick={onClose}><Icon name="close"/></button>
       <div className="sheet-head">
-        <div className="sheet-image"><img className="sheet-image-backdrop" src={media?.detail?.url || product.image} alt="" aria-hidden="true"/><ManagedProductImage className="sheet-image-main" src={product.image} alt={product.name} settings={media?.detail}/></div>
+        <div className="sheet-image"><MediaImage className="sheet-image-backdrop" src={media?.detail?.url || product.image} alt="" aria-hidden="true"/><ManagedProductImage className="sheet-image-main" src={product.image} alt={product.name} settings={media?.detail}/></div>
         <div className="sheet-title">
           <h2>{product.name}</h2>
           {product.size && <span className="sheet-size">{product.size}</span>}
@@ -406,13 +385,13 @@ function ProductSheet({ product, onClose, onAdd, media }: { product: Product; on
   </div>
 }
 
-function SideMenu({ categories, onClose, onCart, onHome, onCategory, onAdmin }: { categories: CatalogCategory[]; onClose: () => void; onCart: () => void; onHome: () => void; onCategory: (id: string) => void; onAdmin: () => void }) {
+function SideMenu({ categories, onClose, onCart, onHome, onCategory, onAdmin, onAccount, onOrders, isOwner, accountName }: { categories: CatalogCategory[]; onClose: () => void; onCart: () => void; onHome: () => void; onCategory: (id: string) => void; onAdmin: () => void; onAccount: () => void; onOrders: () => void; isOwner: boolean; accountName: string }) {
   return <div className="overlay menu-overlay" onMouseDown={onClose}>
     <aside className="side-menu" onMouseDown={e => e.stopPropagation()}>
-      <div className="menu-top"><img src="/assets/logo-karavela.png" alt="Karavela Bistrô & Distribuidora"/><button onClick={onClose}><Icon name="close"/></button></div>
-      <nav><button onClick={onHome}><Icon name="home"/> Início</button><button onClick={onCart}><Icon name="cart"/> Meu carrinho</button><button><Icon name="orders"/> Pedidos</button><button><Icon name="chat"/> Falar com atendente</button><button className="admin-menu-entry" onClick={onAdmin}><Icon name="orders"/> Área administrativa</button></nav>
+      <div className="menu-top"><img src="/assets/logo-karavela.png" alt="Karavela Bistrô & Distribuidora"/><button aria-label="Fechar menu" onClick={onClose}><Icon name="close"/></button></div>
+      <nav><button onClick={onHome}><Icon name="home"/> Início</button><button onClick={onAccount}><Icon name="home"/> {accountName || 'Entrar / Criar conta'}</button><button onClick={onCart}><Icon name="cart"/> Meu carrinho</button><button onClick={onOrders}><Icon name="orders"/> Meus pedidos</button><a href={'https://wa.me/' + WHATSAPP_ORDER_NUMBER} target="_blank" rel="noreferrer"><Icon name="chat"/> Falar com atendente</a>{isOwner && <button className="admin-menu-entry" onClick={onAdmin}><Icon name="orders"/> Administrar loja</button>}</nav>
       <div className="menu-sep"/><h3>Categorias</h3>
-      <div className="menu-cats">{categories.map(category => <button key={category.id} onClick={() => onCategory(category.id)}>{category.image ? <span className="menu-category-image-frame"><img className="menu-category-image" src={freshCatalogImageUrl(category.image)} alt="" style={catalogImageStyle(category)}/></span> : <CategoryIcon name={category.icon}/>} <span>{category.label}</span><Icon name="arrow"/></button>)}</div>
+      <div className="menu-cats">{categories.map(category => <button key={category.id} onClick={() => onCategory(category.id)}>{category.image ? <span className="menu-category-image-frame"><MediaImage className="menu-category-image" src={freshCatalogImageUrl(category.image)} alt="" style={catalogImageStyle(category)}/></span> : <CategoryIcon name={category.icon}/>} <span>{category.label}</span><Icon name="arrow"/></button>)}</div>
     </aside>
   </div>
 }
@@ -492,11 +471,16 @@ function CartDrawer({ lines, onClose, onQty, onRemove, onCheckout, minimumNotice
   </aside></div>
 }
 
-function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => void }) {
+function CheckoutScreen({ lines, onBack, onSubmitted }: { lines: CartLine[]; onBack: () => void; onSubmitted: () => void }) {
+  const { user, profile } = useSession()
+  const [sending, setSending] = useState(false)
+  const sendingLock = useRef(false)
+  const [sendError, setSendError] = useState('')
+  const orderId = useRef('')
   const subtotal = lines.reduce((sum, line) => sum + productPricing(line.product, line.qty).total, 0)
   const [step, setStep] = useState<1 | 2>(1)
-  const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
+  const [name, setName] = useState(profile?.name || user?.displayName || '')
+  const [phone, setPhone] = useState(profile?.phone || '')
   const [fulfillment, setFulfillment] = useState<'delivery' | 'pickup' | ''>('')
   const [neighborhood, setNeighborhood] = useState('')
   const [otherNeighborhood, setOtherNeighborhood] = useState('')
@@ -645,8 +629,10 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
     return rows.join('\n')
   }
 
-  function sendWhatsApp() {
+  async function sendWhatsApp() {
+    if (sendingLock.current) return
     setPaymentAttempted(true)
+    if (!firstStepValid || !lines.length || !user || !fulfillment) { setSendError('Confira seus dados e o carrinho antes de enviar.'); return }
     if (!payment) {
       paymentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       return
@@ -656,9 +642,29 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
       window.setTimeout(() => changeRef.current?.focus(), 350)
       return
     }
-    const message = buildWhatsAppMessage()
-    const url = `https://wa.me/${WHATSAPP_ORDER_NUMBER}?text=${encodeURIComponent(message)}`
-    window.location.href = url
+    sendingLock.current = true
+    setSending(true); setSendError('')
+    try {
+      const draft: OrderDraft = {
+        customer: { name: name.trim(), phone: phone.trim() }, fulfillment,
+        address: { neighborhood: effectiveNeighborhood, street: street.trim(), number: noNumber ? 'S/N' : number.trim(), complement: complement.trim(), reference: reference.trim() },
+        payment, changeFor: payment === 'cash' && needsChange ? parsedChange : null,
+        items: lines.map(line => ({ productId: line.product.id, qty: line.qty })),
+      }
+      const fingerprint = JSON.stringify(draft)
+      const key = 'karavela-order-draft-' + user.uid
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(key) || 'null')
+        if (saved?.fingerprint === fingerprint && typeof saved.id === 'string') orderId.current = saved.id
+        else { orderId.current = crypto.randomUUID(); sessionStorage.setItem(key, JSON.stringify({ id: orderId.current, fingerprint })) }
+      } catch { orderId.current ||= crypto.randomUUID() }
+      const order = await submitWhatsAppOrder(user.uid, orderId.current, draft)
+      const message = buildWhatsAppMessage() + '\n\n*Pedido:* ' + order.code
+      try { sessionStorage.removeItem(key) } catch { /* Browser storage may be disabled. */ }
+      onSubmitted()
+      window.location.href = 'https://wa.me/' + WHATSAPP_ORDER_NUMBER + '?text=' + encodeURIComponent(message)
+    } catch (error) { setSendError(accountError(error)) }
+    finally { sendingLock.current = false; setSending(false) }
   }
 
   const addressSummary = fulfillment === 'delivery'
@@ -815,9 +821,10 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
 
       <div className="checkout-final-actions">
         <button className="checkout-secondary" onClick={() => { setStep(1); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>Voltar</button>
-        <button className="checkout-whatsapp" onClick={sendWhatsApp}>Enviar pedido para o WhatsApp <span>›</span></button>
+        <button className="checkout-whatsapp" onClick={() => void sendWhatsApp()} disabled={sending}>{sending ? 'Registrando pedido…' : 'Enviar pedido para o WhatsApp'} <span>›</span></button>
       </div>
     </div>}
+    {sendError && <p className="checkout-error order-send-error" role="alert">{sendError}</p>}
   </section>
 }
 
@@ -898,6 +905,9 @@ function EnergyCategoryPage({ products: allProducts, filter, onFilter, onHome, o
 }
 
 export default function App() {
+  const { user, profile, isOwner, loading: sessionLoading } = useSession()
+  const [accountView, setAccountView] = useState<'account' | 'orders' | 'admin' | null>(() => { const route = window.location.hash.slice(2); return route === 'conta' ? 'account' : route === 'pedidos' ? 'orders' : route === 'admin' ? 'admin' : null })
+  const [serviceNotice, setServiceNotice] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
   const [cartOpen, setCartOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
@@ -910,7 +920,7 @@ export default function App() {
   const [beerFilter, setBeerFilter] = useState<BeerFilterId>('all')
   const [energyFilter, setEnergyFilter] = useState<EnergyFilterId>('all')
   const [adminOpen, setAdminOpen] = useState(false)
-  const [savedMediaConfig, setMediaConfig] = useState<MediaConfig>({})
+  const [savedMediaConfig, setMediaConfig] = useState<MediaConfig>(mediaSnapshot as MediaConfig)
   // As novas caixas começam com a foto já cadastrada da mesma cerveja.
   // Uma edição na caixa passa a ter seu próprio ajuste, sem alterar a unidade.
   const mediaConfig = useMemo(() => {
@@ -922,7 +932,7 @@ export default function App() {
     }
     return merged
   }, [savedMediaConfig])
-  const [catalogConfig, setCatalogConfig] = useState<CatalogConfig>({})
+  const [catalogConfig, setCatalogConfig] = useState<CatalogConfig>(catalogSnapshot as CatalogConfig)
   const [catalogReady, setCatalogReady] = useState(false)
   // Mantém a Home completamente parada enquanto a área administrativa está aberta.
   // O painel administrativo continua rolável; somente a página atrás fica bloqueada.
@@ -990,25 +1000,19 @@ export default function App() {
 
   useEffect(() => { localStorage.setItem('karavela-distribuidora-cart', JSON.stringify(cart)) }, [cart])
   useEffect(() => {
-    let active = true
-    fetch(`/api/media-config?v=${Date.now()}`, { cache: 'no-store' })
-      .then(response => response.ok ? response.json() : {})
-      .then((config: MediaConfig) => { if (active && config && typeof config === 'object') setMediaConfig(config) })
-      .catch(() => undefined)
-    return () => { active = false }
+    setCatalogReady(true)
+    if (!firebaseReady) return
+    const failed = () => setServiceNotice('Não foi possível atualizar o catálogo. Confira sua conexão.')
+    const offMedia = watchSetting<MediaConfig>('media', setMediaConfig, failed)
+    const offCatalog = watchSetting<CatalogConfig>('catalog', setCatalogConfig, failed)
+    return () => { offMedia(); offCatalog() }
   }, [])
   useEffect(() => {
-    let active = true
-    fetch(`/api/catalog-config?v=${Date.now()}`, { cache: 'no-store' })
-      .then(response => response.ok ? response.json() : {})
-      .then((config: CatalogConfig) => {
-        if (!active) return
-        if (config && typeof config === 'object' && !Array.isArray(config)) setCatalogConfig(config)
-        setCatalogReady(true)
-      })
-      .catch(() => { if (active) setCatalogReady(true) })
-    return () => { active = false }
+    const syncHash = () => { const route = window.location.hash.slice(2); setAccountView(route === 'conta' ? 'account' : route === 'pedidos' ? 'orders' : route === 'admin' ? 'admin' : null) }
+    window.addEventListener('hashchange', syncHash)
+    return () => window.removeEventListener('hashchange', syncHash)
   }, [])
+  useEffect(() => { if (!isOwner) setAdminOpen(false) }, [isOwner])
   useEffect(() => {
     if (!addedNotice) return
     const timer = window.setTimeout(() => setAddedNotice(null), 4200)
@@ -1059,8 +1063,8 @@ export default function App() {
   const allEnergyProducts = catalogProducts.filter(product => product.categoryId === 'energeticos')
 
   function closeSearch() { setSearchOpen(false); setQuery('') }
-  function goHome() { setActiveCategoryId(null); setMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }) }
-  function openCategory(id: string) { if (id === 'cervejas') setBeerFilter('all'); if (id === 'energeticos') setEnergyFilter('all'); setActiveCategoryId(id); setMenuOpen(false); closeSearch(); window.scrollTo({ top: 0, behavior: 'smooth' }) }
+  function goHome() { setAccountView(null); setCheckoutOpen(false); if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search); setActiveCategoryId(null); setMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }) }
+  function openCategory(id: string) { setAccountView(null); setCheckoutOpen(false); if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search); if (id === 'cervejas') setBeerFilter('all'); if (id === 'energeticos') setEnergyFilter('all'); setActiveCategoryId(id); setMenuOpen(false); closeSearch(); window.scrollTo({ top: 0, behavior: 'smooth' }) }
 
   function checkBanner(destination: BannerDestination) {
     if (destination === 'catalogo') {
@@ -1105,6 +1109,8 @@ export default function App() {
   }
 
   function openProduct(product: Product) { closeSearch(); setSelected(product) }
+  function openAccount(view: 'account' | 'orders' | 'admin') { setAccountView(view); setCheckoutOpen(false); setMenuOpen(false); closeSearch(); window.location.hash = view === 'account' ? '/conta' : view === 'orders' ? '/pedidos' : '/admin'; window.scrollTo({ top: 0 }) }
+
   function checkout(total: number) {
     if (total < 20) {
       setMinimumNotice({ total })
@@ -1112,6 +1118,8 @@ export default function App() {
     }
     setMinimumNotice(null)
     setCartOpen(false)
+    setAccountView(null)
+    if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search)
     setCheckoutOpen(true)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -1131,18 +1139,19 @@ export default function App() {
       <button className="added-close" aria-label="Fechar notificação" onClick={() => setAddedNotice(null)}><Icon name="close" /></button>
     </aside>}
 
+    {serviceNotice && <p className="service-notice" role="status">{serviceNotice}</p>}
     <main>
-      {checkoutOpen ? <CheckoutScreen lines={cart} onBack={() => { setCheckoutOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }) }} /> : !activeCategory ? <>
-        <HomeBanner onCheck={checkBanner} paused={menuOpen || cartOpen || searchOpen || adminOpen || !!selected}/>
+      {accountView || checkoutOpen ? (sessionLoading ? <div className="account-page" role="status">Carregando sua conta…</div> : !user ? <AuthScreen title={checkoutOpen ? 'Entre para enviar seu pedido' : accountView === 'admin' ? 'Acesso do administrador' : 'Minha conta'} onBack={goHome} onSuccess={() => undefined}/> : accountView === 'orders' ? <CustomerOrders onBack={goHome}/> : accountView === 'admin' && isOwner ? <OwnerDashboard onBack={goHome} onPhotos={() => setAdminOpen(true)}/> : checkoutOpen ? <CheckoutScreen lines={cart} onBack={goHome} onSubmitted={() => { setCart([]); openAccount('orders') }}/> : <AccountScreen onBack={goHome} onOrders={() => openAccount('orders')} onAdmin={() => openAccount('admin')}/>) : !activeCategory ? <>
+        <HomeBanner onCheck={checkBanner} paused={menuOpen || cartOpen || searchOpen || adminOpen || !!selected || !!accountView}/>
         <section id="catalogo" className="section category-section"><div className="section-title"><h2>Categorias</h2></div><div className="rail-wrap"><div className="category-strip">{catalogCategories.map(category => <button className={`category-card${category.image ? ' category-card--photo' : ''}`} key={category.id} onClick={() => openCategory(category.id)}>{category.image ? <CategoryCardPhoto src={freshCatalogImageUrl(category.image)} label={category.label} style={catalogImageStyle(category)}/> : <><CategoryIcon name={category.icon}/><CategoryCardLabel label={category.label}/></>}</button>)}</div><div className="rail-arrow category-arrow"><Icon name="arrow"/></div></div></section>
         {catalogCategories.map(category => <ProductRail key={category.id} categoryId={category.id} categories={catalogCategories} products={catalogProducts} onOpen={openProduct} onAll={openCategory} mediaConfig={mediaConfig}/>)}
         <SiteFooter/>
       </> : activeCategoryId === 'cervejas' ? <BeerCategoryPage products={allBeerProducts} filter={beerFilter} onFilter={setBeerFilter} onHome={goHome} onOpen={openProduct} mediaConfig={mediaConfig} /> : activeCategoryId === 'energeticos' ? <EnergyCategoryPage products={allEnergyProducts} filter={energyFilter} onFilter={setEnergyFilter} onHome={goHome} onOpen={openProduct} mediaConfig={mediaConfig} /> : activeCategory ? <section className="category-page"><div className="category-page-head"><button className="back-btn" onClick={goHome} aria-label="Voltar"><Icon name="back"/></button><h1>{activeCategory.label}</h1></div><div className="category-product-grid">{activeProducts.map(product => <ProductCard key={product.id} product={product} onOpen={openProduct} media={mediaConfig[product.id]}/>)}</div></section> : null}
     </main>
 
-    {menuOpen && <SideMenu categories={catalogCategories} onClose={() => setMenuOpen(false)} onCart={() => { setMenuOpen(false); setCartOpen(true) }} onHome={goHome} onCategory={openCategory} onAdmin={() => { setMenuOpen(false); setAdminOpen(true) }}/>} 
-    {cartOpen && <CartDrawer lines={cart} onClose={() => { setCartOpen(false); setMinimumNotice(null) }} onQty={(id, q) => setCart(prev => prev.map(x => x.product.id === id ? { ...x, qty: q, unitPrice: productPricing(x.product, q).effectiveUnitPrice } : x))} onRemove={id => setCart(prev => prev.filter(x => x.product.id !== id))} onCheckout={checkout} minimumNotice={minimumNotice} onCloseMinimumNotice={() => setMinimumNotice(null)} mediaConfig={mediaConfig}/>}    
+    {menuOpen && <SideMenu categories={catalogCategories} onClose={() => setMenuOpen(false)} onCart={() => { setMenuOpen(false); setCartOpen(true) }} onHome={goHome} onCategory={openCategory} onAdmin={() => openAccount('admin')} onAccount={() => openAccount('account')} onOrders={() => openAccount('orders')} isOwner={isOwner} accountName={user ? (profile?.name || user.displayName || 'Minha conta') : ''}/>}
+    {cartOpen && <CartDrawer lines={cart} onClose={() => { setCartOpen(false); setMinimumNotice(null) }} onQty={(id, q) => setCart(prev => prev.map(x => x.product.id === id ? { ...x, qty: q, unitPrice: productPricing(x.product, q).effectiveUnitPrice } : x))} onRemove={id => setCart(prev => prev.filter(x => x.product.id !== id))} onCheckout={checkout} minimumNotice={minimumNotice} onCloseMinimumNotice={() => setMinimumNotice(null)} mediaConfig={mediaConfig}/>}
     {selected && <ProductSheet product={selected} onClose={() => setSelected(null)} onAdd={add} media={mediaConfig[selected.id]}/>}
-    {adminOpen && <AdminMedia products={catalogProducts} brands={catalogBrands} categories={catalogCategories} catalogConfig={{ ...catalogConfig, revision: 1, categories: catalogCategories }} config={mediaConfig} detailImageForProduct={(product) => detailImageByProductId[product.id] ?? product.image} onClose={() => setAdminOpen(false)} onSaved={setMediaConfig} onCatalogSaved={setCatalogConfig}/>}
+    {adminOpen && isOwner && <AdminMedia products={catalogProducts} brands={catalogBrands} categories={catalogCategories} catalogConfig={{ ...catalogConfig, revision: 1, categories: catalogCategories }} config={mediaConfig} detailImageForProduct={(product) => detailImageByProductId[product.id] ?? product.image} onClose={() => setAdminOpen(false)} onSaved={setMediaConfig} onCatalogSaved={setCatalogConfig}/>}
   </div>
 }

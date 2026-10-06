@@ -1,0 +1,89 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function owner() {
+      return signedIn() && request.auth.token.email_verified == true
+        && request.auth.token.email == get(/databases/$(database)/documents/access/owner).data.email;
+    }
+    function text(value, max) { return value is string && value.size() <= max; }
+    function validCustomer(value) {
+      return value is map && value.keys().hasOnly(['name','phone'])
+        && text(value.name,100) && value.name.size() >= 3 && text(value.phone,30) && value.phone.size() >= 10;
+    }
+    function validAddress(value) {
+      return value is map && value.keys().hasAll(['neighborhood','street','number','complement','reference'])
+        && value.keys().hasOnly(['neighborhood','street','number','complement','reference'])
+        && text(value.neighborhood,100) && text(value.street,200) && text(value.number,20)
+        && text(value.complement,200) && text(value.reference,300);
+    }
+    function validItems(value) {
+      return value is map && value.keys().size() > 0 && value.keys().size() <= 200
+        && value.keys().hasOnly(get(/databases/$(database)/documents/access/catalog).data.productIds)
+        && value.values().toSet().hasOnly(get(/databases/$(database)/documents/access/catalog).data.quantities);
+    }
+    function validSettlement(value) {
+      return value is map && value.keys().hasOnly(['subtotal','deliveryFee','total'])
+        && value.subtotal is number && value.subtotal >= 0
+        && value.deliveryFee is number && value.deliveryFee >= 0 && value.deliveryFee <= 20
+        && value.total is number && value.total >= 0 && value.total >= value.subtotal + value.deliveryFee - 0.001 && value.total <= value.subtotal + value.deliveryFee + 0.001;
+    }
+    match /access/{id} {
+      allow get: if id == 'owner' && owner();
+      allow list, write: if false;
+    }
+    match /settings/{id} {
+      allow read: if id in ['media','catalog'];
+      allow write: if owner() && id in ['media','catalog'];
+    }
+    match /photos/{id} {
+      allow get: if true;
+      allow list: if false;
+      allow create: if owner() && request.resource.data.keys().hasOnly(['dataUrl','createdAt'])
+        && request.resource.data.createdAt == request.time
+        && text(request.resource.data.dataUrl,900000)
+        && request.resource.data.dataUrl.matches('data:image/webp;base64,[A-Za-z0-9+/=]+');
+      allow update, delete: if false;
+    }
+    match /customers/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['name','phone','identifier','kind','createdAt'])
+        && text(request.resource.data.name,100) && request.resource.data.name.size() >= 3
+        && text(request.resource.data.phone,30) && text(request.resource.data.identifier,254)
+        && request.resource.data.kind in ['email','phone'] && request.resource.data.createdAt == request.time;
+      allow update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name','phone'])
+        && text(request.resource.data.name,100) && request.resource.data.name.size() >= 3
+        && text(request.resource.data.phone,30);
+      allow delete: if false;
+    }
+    match /orders/{id} {
+      allow get: if signedIn() && (!exists(/databases/$(database)/documents/orders/$(id)) || owner() || resource.data.customerId == request.auth.uid);
+      allow list: if signedIn() && (owner() || resource.data.customerId == request.auth.uid);
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['customer','fulfillment','address','payment','changeFor','items','customerId','fingerprint','code','source','status','createdAt','completedAt','deletedAt','settlement'])
+        && request.resource.data.customerId == request.auth.uid && request.resource.data.source == 'whatsapp'
+        && request.resource.data.status == 'pending' && request.resource.data.settlement == null
+        && request.resource.data.completedAt == null && request.resource.data.deletedAt == null
+        && request.resource.data.createdAt == request.time && text(request.resource.data.code,20)
+        && text(request.resource.data.fingerprint,64) && request.resource.data.fingerprint.size() == 64
+        && validCustomer(request.resource.data.customer) && validAddress(request.resource.data.address)
+        && request.resource.data.fulfillment in ['delivery','pickup']
+        && (request.resource.data.fulfillment == 'pickup' || (request.resource.data.address.street.size() >= 3 && request.resource.data.address.neighborhood.size() >= 2))
+        && request.resource.data.payment in ['pix','credit','debit','cash']
+        && (request.resource.data.changeFor == null || (request.resource.data.changeFor is number && request.resource.data.changeFor > 0 && request.resource.data.payment == 'cash'))
+        && validItems(request.resource.data.items);
+      allow update: if owner()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','completedAt','deletedAt','settlement'])
+        && ((resource.data.status == 'pending' && resource.data.deletedAt == null
+          && request.resource.data.status == 'completed' && request.resource.data.completedAt == request.time
+          && request.resource.data.deletedAt == resource.data.deletedAt && validSettlement(request.resource.data.settlement))
+        || (request.resource.data.status == resource.data.status && request.resource.data.completedAt == resource.data.completedAt
+          && request.resource.data.settlement == resource.data.settlement
+          && (request.resource.data.deletedAt == null || request.resource.data.deletedAt == request.time)));
+      allow delete: if false;
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

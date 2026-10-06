@@ -1,0 +1,2508 @@
+{
+  "vinhos-san-jose": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790979238/karavela-distribuidora/products/vinhos-san-jose/card.png",
+      "scale": 1.15,
+      "x": -1.2686553078958103,
+      "y": -0.21003222549179698
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790979238/karavela-distribuidora/products/vinhos-san-jose/card.png",
+      "scale": 1.05,
+      "x": -0.6294720032594535,
+      "y": -13.333333333333332
+    }
+  },
+  "vinhos-dom-bento": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790980146/karavela-distribuidora/products/vinhos-dom-bento/card.png",
+      "scale": 1.16,
+      "x": 0.42288160741042885,
+      "y": -3.3600365577709423
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790980146/karavela-distribuidora/products/vinhos-dom-bento/card.png",
+      "scale": 1.07,
+      "x": -0.7194104318543009,
+      "y": -15.85080233487216
+    }
+  },
+  "vinhos-sao-braz": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790979465/karavela-distribuidora/products/vinhos-sao-braz/card.png",
+      "scale": 1.18,
+      "x": -0.4228868502426907,
+      "y": 2.3100003999026906
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790979465/karavela-distribuidora/products/vinhos-sao-braz/card.png",
+      "scale": 1.08,
+      "x": -1.2590064413079982,
+      "y": -11.375288529829543
+    }
+  },
+  "vinhos-quinta-do-morgado-tinto-suave": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790979671/karavela-distribuidora/products/vinhos-quinta-do-morgado-tinto-suave/card.png",
+      "scale": 1.07,
+      "x": -1.7985589693907236,
+      "y": -15.337922067353219
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790979671/karavela-distribuidora/products/vinhos-quinta-do-morgado-tinto-suave/card.png",
+      "scale": 1.17,
+      "x": -0.4228842288265598,
+      "y": -3.3599949012406984
+    }
+  },
+  "vinhos-quinta-do-morgado-branco-suave": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790979714/karavela-distribuidora/products/vinhos-quinta-do-morgado-branco-suave/card.png",
+      "scale": 1.16,
+      "x": 0.6343276539479051,
+      "y": 1.4699964675262351
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790979714/karavela-distribuidora/products/vinhos-quinta-do-morgado-branco-suave/card.png",
+      "scale": 1.06,
+      "x": -1.6187066401538819,
+      "y": -11.934749718868371
+    }
+  },
+  "vinhos-quinta-do-morgado-tinto-seco": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790980267/karavela-distribuidora/products/vinhos-quinta-do-morgado-tinto-seco/card.png",
+      "scale": 1.36,
+      "x": -0.627986947587926,
+      "y": 1.0394740749049831
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790980267/karavela-distribuidora/products/vinhos-quinta-do-morgado-tinto-seco/card.png",
+      "scale": 1.24,
+      "x": -0.9892078791276755,
+      "y": -16.22378262606534
+    }
+  },
+  "vinhos-o-gaucho-tinto-suave": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790980622/karavela-distribuidora/products/vinhos-o-gaucho-tinto-suave/card.png",
+      "scale": 1.27,
+      "x": -1.3489214568569365,
+      "y": -15.291359641335228
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790980622/karavela-distribuidora/products/vinhos-o-gaucho-tinto-suave/card.png",
+      "scale": 1.38,
+      "x": -1.6915578866352865,
+      "y": 2.730002366090918
+    }
+  },
+  "vinhos-o-gaucho-tinto-seco": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790986997/karavela-distribuidora/products/vinhos-o-gaucho-tinto-seco/card.png",
+      "scale": 1.26,
+      "x": 0.4228842288265598,
+      "y": 0.8400039323764551
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790986997/karavela-distribuidora/products/vinhos-o-gaucho-tinto-seco/card.png",
+      "scale": 1.12,
+      "x": -0.6295009908401026,
+      "y": -11.934758966619317
+    }
+  },
+  "vinhos-o-gaucho-rose-suave": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790980956/karavela-distribuidora/products/vinhos-o-gaucho-rose-suave/card.png",
+      "scale": 1.15,
+      "x": -0.6343276539479051,
+      "y": -1.889998433714463
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790980956/karavela-distribuidora/products/vinhos-o-gaucho-rose-suave/card.png",
+      "scale": 1.08,
+      "x": -0.17987128265495533,
+      "y": -13.240088260535039
+    }
+  },
+  "vinhos-reservado-sweet-branco": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790981194/karavela-distribuidora/products/vinhos-reservado-sweet-branco/card.png",
+      "scale": 1.17,
+      "x": 0,
+      "y": 0.42000196618822755
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790981194/karavela-distribuidora/products/vinhos-reservado-sweet-branco/card.png",
+      "scale": 1.1,
+      "x": -1.0791507673503156,
+      "y": -12.49420166015625
+    }
+  },
+  "vinhos-reservado-sweet-rose": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790981229/karavela-distribuidora/products/vinhos-reservado-sweet-rose/card.png",
+      "scale": 1.2,
+      "x": -1.2686553078958103,
+      "y": 3.150004332279145
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790981229/karavela-distribuidora/products/vinhos-reservado-sweet-rose/card.png",
+      "scale": 1.11,
+      "x": -0.8992705654397756,
+      "y": -10.629401929450756
+    }
+  },
+  "vinhos-reservado-sweet-red": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790981331/karavela-distribuidora/products/vinhos-reservado-sweet-red/card.png",
+      "scale": 1.22,
+      "x": -1.883950461956313,
+      "y": 1.8710986987964529
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790981331/karavela-distribuidora/products/vinhos-reservado-sweet-red/card.png",
+      "scale": 1.13,
+      "x": -1.0791407331877831,
+      "y": -11.654996004971592
+    }
+  },
+  "vinhos-santa-helena-carmenere": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790983023/karavela-distribuidora/products/vinhos-santa-helena-carmenere/detail.png",
+      "scale": 1.11,
+      "x": -0.35969127959029956,
+      "y": -14.265728574810614
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790981384/karavela-distribuidora/products/vinhos-santa-helena-carmenere/card.png",
+      "scale": 1.05,
+      "x": -0.6343276539479052,
+      "y": 2.73002319435604
+    }
+  },
+  "vinhos-santa-helena-rose": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790983305/karavela-distribuidora/products/vinhos-santa-helena-rose/card.png",
+      "scale": 1.14,
+      "x": 1,
+      "y": -15.291405880089963
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790983305/karavela-distribuidora/products/vinhos-santa-helena-rose/card.png",
+      "scale": 1.22,
+      "x": -0.6343289646559707,
+      "y": 2.730002366090918
+    }
+  },
+  "vinhos-santa-helena-malbec": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790986908/karavela-distribuidora/products/vinhos-santa-helena-malbec/card.png",
+      "scale": 1.2,
+      "x": -1.0572171256067269,
+      "y": 1.0500153296031298
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790986908/karavela-distribuidora/products/vinhos-santa-helena-malbec/card.png",
+      "scale": 1.11,
+      "x": -1.2589941773315694,
+      "y": -16.876461144649618
+    }
+  },
+  "vinhos-santa-helena-merlot": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790983725/karavela-distribuidora/products/vinhos-santa-helena-merlot/card.png",
+      "scale": 1.06,
+      "x": -0.7194316150863144,
+      "y": -12.494183164654356
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790983725/karavela-distribuidora/products/vinhos-santa-helena-merlot/card.png",
+      "scale": 1.15,
+      "x": -0.8140571402476244,
+      "y": 7.070775567710969
+    }
+  },
+  "vinhos-pergula-tinto-suave": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790984955/karavela-distribuidora/products/vinhos-pergula-tinto-suave/card.png",
+      "scale": 1.19,
+      "x": 1,
+      "y": 1.0499945013380076
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790984955/karavela-distribuidora/products/vinhos-pergula-tinto-suave/card.png",
+      "scale": 1.11,
+      "x": -1.3489214568569365,
+      "y": -16.783216071851324
+    }
+  },
+  "vinhos-pergula-branco-suave": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790985043/karavela-distribuidora/products/vinhos-pergula-branco-suave/card.png",
+      "scale": 1,
+      "x": 0.08992839443231525,
+      "y": -14.079256924715908
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790985043/karavela-distribuidora/products/vinhos-pergula-branco-suave/card.png",
+      "scale": 1.07,
+      "x": -1.057209261358334,
+      "y": 3.5699646419371294
+    }
+  },
+  "vinhos-pergula-tinto-seco-bordo": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790985173/karavela-distribuidora/products/vinhos-pergula-tinto-seco-bordo/card.png",
+      "scale": 1.05,
+      "x": 1,
+      "y": 1.0394946948902026
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790985173/karavela-distribuidora/products/vinhos-pergula-tinto-seco-bordo/card.png",
+      "scale": 1,
+      "x": 0,
+      "y": -16.969696969696972
+    }
+  },
+  "vinhos-pergula-tinto-suave-bordo": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790985379/karavela-distribuidora/products/vinhos-pergula-tinto-suave-bordo/card.png",
+      "scale": 1.1,
+      "x": -1.057209261358334,
+      "y": 3.9900082646556005
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790985379/karavela-distribuidora/products/vinhos-pergula-tinto-suave-bordo/card.png",
+      "scale": 1,
+      "x": -0.17986124849242302,
+      "y": -14.825180516098484
+    }
+  },
+  "vinhos-casal-garcia-sweet-branco": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790986858/karavela-distribuidora/products/vinhos-casal-garcia-sweet-branco/card.png",
+      "scale": 1.05,
+      "x": -1.3489392953681056,
+      "y": -11.748250325520834
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790986858/karavela-distribuidora/products/vinhos-casal-garcia-sweet-branco/card.png",
+      "scale": 1.17,
+      "x": -1.2686395793990246,
+      "y": 0.42000196618822755
+    }
+  },
+  "vinhos-casal-garcia-sweet-rose": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790986312/karavela-distribuidora/products/vinhos-casal-garcia-sweet-rose/card.png",
+      "scale": 1.04,
+      "x": -0.7194249256446258,
+      "y": -12.400919596354168
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790986312/karavela-distribuidora/products/vinhos-casal-garcia-sweet-rose/card.png",
+      "scale": 1.2,
+      "x": 0,
+      "y": 0
+    }
+  },
+  "vinhos-casal-garcia-tinto": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790986218/karavela-distribuidora/products/vinhos-casal-garcia-tinto/card.png",
+      "scale": 1.06,
+      "x": -0.8992861741370487,
+      "y": -11.375297777580492
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790986218/karavela-distribuidora/products/vinhos-casal-garcia-tinto/card.png",
+      "scale": 1.18,
+      "x": -0.4228894716588216,
+      "y": 3.3599949012406984
+    }
+  },
+  "whiskys-old-parr-1l": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792124/karavela-distribuidora/products/whiskys-old-parr-1l/card.png",
+      "scale": 1,
+      "x": -1.798567888646305,
+      "y": -19.86015088630445
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792124/karavela-distribuidora/products/whiskys-old-parr-1l/card.png",
+      "scale": 1.18,
+      "x": 0,
+      "y": -4.620000799805381
+    }
+  },
+  "refrigerantes-coca-cola-2l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790772098/karavela-distribuidora/products/refrigerantes-coca-cola-2l/card.png",
+      "scale": 1.5,
+      "x": 0.6343302753640363,
+      "y": -1.0499945013380076
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790772116/karavela-distribuidora/products/refrigerantes-coca-cola-2l/detail.png",
+      "scale": 1.15,
+      "x": -0.9892034194998831,
+      "y": -18.648034298058707
+    }
+  },
+  "refrigerantes-coca-cola-zero-2l": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790772235/karavela-distribuidora/products/refrigerantes-coca-cola-zero-2l/detail.png",
+      "scale": 1.03,
+      "x": -1.9568069885578439,
+      "y": -14.773862896543559
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790772220/karavela-distribuidora/products/refrigerantes-coca-cola-zero-2l/card.png",
+      "scale": 1.37,
+      "x": -1.674626669830737,
+      "y": 6.860722722233953
+    }
+  },
+  "refrigerantes-cajuina-2l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790773355/karavela-distribuidora/products/refrigerantes-cajuina-2l/card.png",
+      "scale": 1.43,
+      "x": -2.3026123198177295,
+      "y": 4.365900400522593
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790773375/karavela-distribuidora/products/refrigerantes-cajuina-2l/detail.png",
+      "scale": 1.11,
+      "x": -2.7877757677739807,
+      "y": -11.095571806936553
+    }
+  },
+  "refrigerantes-sprite-2l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790773508/karavela-distribuidora/products/refrigerantes-sprite-2l/card.png",
+      "scale": 1.57,
+      "x": -2.114426386965061,
+      "y": -1.8899880195819019
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790773483/karavela-distribuidora/products/refrigerantes-sprite-2l/detail.png",
+      "scale": 1.31,
+      "x": -2.967633671545559,
+      "y": -19.86011851917614
+    }
+  },
+  "refrigerantes-fanta-laranja-2l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790773532/karavela-distribuidora/products/refrigerantes-fanta-laranja-2l/card.png",
+      "scale": 1.43,
+      "x": -1.4800934901848937,
+      "y": 0.42000196618822755
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790773552/karavela-distribuidora/products/refrigerantes-fanta-laranja-2l/detail.png",
+      "scale": 1.13,
+      "x": -1.708629460051457,
+      "y": -18.18181818181818
+    }
+  },
+  "refrigerantes-fanta-uva-2l": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790773600/karavela-distribuidora/products/refrigerantes-fanta-uva-2l/detail.png",
+      "scale": 1,
+      "x": -1.2589897177037765,
+      "y": -17.715611313328598
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790773622/karavela-distribuidora/products/refrigerantes-fanta-uva-2l/card.png",
+      "scale": 1.27,
+      "x": -1.8775966485156792,
+      "y": 0.83160400390625
+    }
+  },
+  "cervejas-lata-skol-350ml": {
+    "card": {
+      "scale": 2.2,
+      "x": -1.2474979846089063,
+      "y": -22.052144430802677
+    },
+    "detail": {
+      "scale": 1.48,
+      "x": -1.9541153333876011,
+      "y": -11.65499600497159
+    }
+  },
+  "cervejas-lata-brahma-chopp-350ml": {
+    "detail": {
+      "scale": 1.5,
+      "x": -1.01954081626634,
+      "y": -5.128220066879735
+    },
+    "card": {
+      "scale": 2.19,
+      "x": -1.2707697767021116,
+      "y": -13.150190132094096
+    }
+  },
+  "cervejas-lata-brahma-duplo-malte-350ml": {
+    "card": {
+      "scale": 1.83,
+      "x": 0.4292275303884052,
+      "y": -13.50305515531605
+    },
+    "detail": {
+      "scale": 1.24,
+      "x": -1.019553456298941,
+      "y": -5.594408439867425
+    }
+  },
+  "cervejas-lata-original-350ml": {
+    "detail": {
+      "scale": 1.55,
+      "x": -1.1894649878680967,
+      "y": -6.620058001893934
+    },
+    "card": {
+      "scale": 2.23,
+      "x": -1.674629265032603,
+      "y": -12.665109652666851
+    }
+  },
+  "cervejas-lata-antarctica-350ml": {
+    "card": {
+      "scale": 2.37,
+      "x": -1.6873028135041683,
+      "y": -23.507399262835857
+    },
+    "detail": {
+      "scale": 1.62,
+      "x": -1.1894692012122972,
+      "y": -14.172492749763258
+    }
+  },
+  "cervejas-lata-bohemia-350ml": {
+    "detail": {
+      "scale": 1.61,
+      "x": 0.08494839243222696,
+      "y": -12.214466441761365
+    },
+    "card": {
+      "scale": 2.33,
+      "x": -0.4186527746548849,
+      "y": -19.366220548495363
+    }
+  },
+  "cervejas-lata-devassa-350ml": {
+    "card": {
+      "scale": 2.12,
+      "x": -0.8267489862035777,
+      "y": -16.006246475519784
+    },
+    "detail": {
+      "scale": 1.56,
+      "x": 0.16992206492965667,
+      "y": -11.748250325520832
+    }
+  },
+  "cervejas-lata-amstel-350ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790740978/karavela-distribuidora/products/cervejas-lata-amstel-350ml/card.png",
+      "scale": 1.65,
+      "x": -1.2453913800509981,
+      "y": -7.268124795716873
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790741062/karavela-distribuidora/products/cervejas-lata-amstel-350ml/detail.png",
+      "scale": 1.23,
+      "x": -0.9345913704980626,
+      "y": -5.8741436582623106
+    }
+  },
+  "cervejas-lata-michelob-ultra-350ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790741377/karavela-distribuidora/products/cervejas-lata-michelob-ultra-350ml/detail.png",
+      "scale": 1.23,
+      "x": -0.25488204405843473,
+      "y": -4.4755230527935606
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790741406/karavela-distribuidora/products/cervejas-lata-michelob-ultra-350ml/card.png",
+      "scale": 1.63,
+      "x": -0.21144080370521443,
+      "y": -5.6699953011433895
+    }
+  },
+  "cervejas-lata-stella-pure-gold-350ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790740864/karavela-distribuidora/products/cervejas-lata-stella-pure-gold-350ml/detail.png",
+      "scale": 1.21,
+      "x": -0.3398420231872128,
+      "y": -7.552471738873107
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790740929/karavela-distribuidora/products/cervejas-lata-stella-pure-gold-350ml/card.png",
+      "scale": 1.59,
+      "x": -1.8881689663329215,
+      "y": -8.736011075272899
+    }
+  },
+  "cervejas-lata-budweiser-350ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790741132/karavela-distribuidora/products/cervejas-lata-budweiser-350ml/card.png",
+      "scale": 1.55,
+      "x": -0.839427777507405,
+      "y": -6.869081410733719
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790741167/karavela-distribuidora/products/cervejas-lata-budweiser-350ml/detail.png",
+      "scale": 1.16,
+      "x": -0.6796924730628264,
+      "y": -7.449882738517992
+    }
+  },
+  "cervejas-lata-spaten-350ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790741207/karavela-distribuidora/products/cervejas-lata-spaten-350ml/detail.png",
+      "scale": 1.17,
+      "x": -1.01954081626634,
+      "y": -5.720264781605113
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790741569/karavela-distribuidora/products/cervejas-lata-spaten-350ml/card.png",
+      "scale": 1.57,
+      "x": -1.7742546324962007,
+      "y": -6.850202295800929
+    }
+  },
+  "cervejas-lata-heineken-350ml": {
+    "detail": {
+      "scale": 1.56,
+      "x": -1.0195471362826407,
+      "y": -13.240116003787877
+    },
+    "card": {
+      "scale": 2.05,
+      "x": -1.2644212060937399,
+      "y": -15.420415528934193
+    }
+  },
+  "cervejas-lata-corona-350ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790741320/karavela-distribuidora/products/cervejas-lata-corona-350ml/detail.png",
+      "scale": 1.17,
+      "x": -1.2744186469805743,
+      "y": -6.992992054332387
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790741350/karavela-distribuidora/products/cervejas-lata-corona-350ml/card.png",
+      "scale": 1.56,
+      "x": -0.4186553698567511,
+      "y": -6.444889790302999
+    }
+  },
+  "cervejas-lata-stella-350ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790741452/karavela-distribuidora/products/cervejas-lata-stella-350ml/detail.png",
+      "scale": 1.13,
+      "x": 0.13083832572487641,
+      "y": -6.6713478781960225
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790741493/karavela-distribuidora/products/cervejas-lata-stella-350ml/card.png",
+      "scale": 1.56,
+      "x": -1.465297687301428,
+      "y": -7.068592793232686
+    }
+  },
+  "vodkas-ciroc": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775210/karavela-distribuidora/products/vodkas-ciroc/card.png",
+      "scale": 1.3,
+      "x": -2.11442376554893,
+      "y": 0.8400039323764551
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775228/karavela-distribuidora/products/vodkas-ciroc/detail.png",
+      "scale": 1,
+      "x": -0.26978518329694534,
+      "y": -17.902082963423293
+    }
+  },
+  "refrigerantes-guarana-2l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790771698/karavela-distribuidora/products/refrigerantes-guarana-2l/card.png",
+      "scale": 1.3,
+      "x": -1.691544779554632,
+      "y": 0.21000098309411377
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790771720/karavela-distribuidora/products/refrigerantes-guarana-2l/detail.png",
+      "scale": 1,
+      "x": -1.169064667992306,
+      "y": -16.41025427616004
+    }
+  },
+  "refrigerantes-refri-cola-2l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790773718/karavela-distribuidora/products/refrigerantes-refri-cola-2l/card.png",
+      "scale": 1.24,
+      "x": -0.8373159301172346,
+      "y": 2.7027027027027026
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790773692/karavela-distribuidora/products/refrigerantes-refri-cola-2l/detail.png",
+      "scale": 1,
+      "x": -1.7985611992046167,
+      "y": -12.7738906397964
+    }
+  },
+  "refrigerantes-refri-guarana-2l": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790773741/karavela-distribuidora/products/refrigerantes-refri-guarana-2l/detail.png",
+      "scale": 1,
+      "x": -0.08993062424621101,
+      "y": -16.316999955610793
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790773771/karavela-distribuidora/products/refrigerantes-refri-guarana-2l/card.png",
+      "scale": 1.27,
+      "x": -0.6343224111156431,
+      "y": -3.570006298467373
+    }
+  },
+  "refrigerantes-refri-laranja-2l": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790773797/karavela-distribuidora/products/refrigerantes-refri-laranja-2l/detail.png",
+      "scale": 1.06,
+      "x": -1.528778245721567,
+      "y": -12.587428237452652
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790773818/karavela-distribuidora/products/refrigerantes-refri-laranja-2l/card.png",
+      "scale": 1.33,
+      "x": -1.4568360372376143,
+      "y": 3.1437044900664426
+    }
+  },
+  "refrigerantes-cajuina-zero-2l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790773862/karavela-distribuidora/products/refrigerantes-cajuina-zero-2l/card.png",
+      "scale": 1.22,
+      "x": -0.6343276539479051,
+      "y": 3.1500043322791456
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790773848/karavela-distribuidora/products/refrigerantes-cajuina-zero-2l/detail.png",
+      "scale": 1,
+      "x": -0.179862363399371,
+      "y": -16.59673517400568
+    }
+  },
+  "vodkas-absolut": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775251/karavela-distribuidora/products/vodkas-absolut/detail.png",
+      "scale": 1.04,
+      "x": -1.7086183109819761,
+      "y": -18.461562647964016
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775275/karavela-distribuidora/products/vodkas-absolut/card.png",
+      "scale": 1.38,
+      "x": 0.21144604653747628,
+      "y": 1.0499945013380076
+    }
+  },
+  "vodkas-smirnoff-1l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775357/karavela-distribuidora/products/vodkas-smirnoff-1l/card.png",
+      "scale": 1.35,
+      "x": 0,
+      "y": 0
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775326/karavela-distribuidora/products/vodkas-smirnoff-1l/detail.png",
+      "scale": 1.6,
+      "x": -0.4496553510449532,
+      "y": -0.09324507279829546
+    }
+  },
+  "vodkas-orloff-1l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775396/karavela-distribuidora/products/vodkas-orloff-1l/card.png",
+      "scale": 1.32,
+      "x": 0.4186579650586173,
+      "y": -1.4552760768581081
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775413/karavela-distribuidora/products/vodkas-orloff-1l/detail.png",
+      "scale": 1.02,
+      "x": -0.17985455905073433,
+      "y": -17.90210145892519
+    }
+  },
+  "vodkas-slova-tradicional": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775480/karavela-distribuidora/products/vodkas-slova-tradicional/detail.png",
+      "scale": 1.56,
+      "x": 0,
+      "y": 0
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775499/karavela-distribuidora/products/vodkas-slova-tradicional/card.png",
+      "scale": 1.32,
+      "x": -1.2559661095702532,
+      "y": -0.6236926929370776
+    }
+  },
+  "vodkas-slova-blueberry": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775516/karavela-distribuidora/products/vodkas-slova-blueberry/card.png",
+      "scale": 1.35,
+      "x": 0.21144342512134534,
+      "y": -1.0499945013380076
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775538/karavela-distribuidora/products/vodkas-slova-blueberry/detail.png",
+      "scale": 1.55,
+      "x": -2.6079011403981807,
+      "y": -1.4918286872632576
+    }
+  },
+  "vodkas-slova-frutas-vermelhas": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775582/karavela-distribuidora/products/vodkas-slova-frutas-vermelhas/detail.png",
+      "scale": 1.56,
+      "x": 2.2298138961929226e-06,
+      "y": 1.3053755326704546
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775621/karavela-distribuidora/products/vodkas-slova-frutas-vermelhas/card.png",
+      "scale": 1.38,
+      "x": -0.4228842288265598,
+      "y": 2.730002366090918
+    }
+  },
+  "vodkas-slova-maracuja": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775640/karavela-distribuidora/products/vodkas-slova-maracuja/card.png",
+      "scale": 1.49,
+      "x": -0.6343302753640361,
+      "y": 1.0499736730728857
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775657/karavela-distribuidora/products/vodkas-slova-maracuja/detail.png",
+      "scale": 1.66,
+      "x": -1.618720019037259,
+      "y": 1.9580448035037878
+    }
+  },
+  "vodkas-slova-limao": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775681/karavela-distribuidora/products/vodkas-slova-limao/card.png",
+      "scale": 1.4,
+      "x": -0.6343276539479051,
+      "y": 3.9900082646556005
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775695/karavela-distribuidora/products/vodkas-slova-limao/detail.png",
+      "scale": 1.59,
+      "x": -0.8992761399745158,
+      "y": 4.568768125591856
+    }
+  },
+  "vodkas-slova-kiwi": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775720/karavela-distribuidora/products/vodkas-slova-kiwi/card.png",
+      "scale": 1.45,
+      "x": 0.6343302753640362,
+      "y": 3.36001572950582
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790775743/karavela-distribuidora/products/vodkas-slova-kiwi/detail.png",
+      "scale": 1.6,
+      "x": -0.809354434983889,
+      "y": 3.0769301905776514
+    }
+  },
+  "whiskys-passport-1l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790778060/karavela-distribuidora/products/whiskys-passport-1l/card.png",
+      "scale": 1.31,
+      "x": 0,
+      "y": 0
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790779386/karavela-distribuidora/products/whiskys-passport-1l/detail.png",
+      "scale": 1.1,
+      "x": -1.3489192270430401,
+      "y": -18.08859160452178
+    }
+  },
+  "whiskys-black-white-750ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790779447/karavela-distribuidora/products/whiskys-black-white-750ml/card.png",
+      "scale": 1.38,
+      "x": -0.6343302753640361,
+      "y": 1.4699964675262351
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790779413/karavela-distribuidora/products/whiskys-black-white-750ml/detail.png",
+      "scale": 1.13,
+      "x": -1.3489091928805075,
+      "y": -16.689961751302082
+    }
+  },
+  "whiskys-black-white-1l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790779466/karavela-distribuidora/products/whiskys-black-white-1l/card.png",
+      "scale": 1.33,
+      "x": -1.057206639942203,
+      "y": 2.0999994168085765
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790779515/karavela-distribuidora/products/whiskys-black-white-1l/detail.png",
+      "scale": 1.69,
+      "x": -1.8884840191021914,
+      "y": 2.144488710345644
+    }
+  },
+  "whiskys-cavalo-branco-1l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790779631/karavela-distribuidora/products/whiskys-cavalo-branco-1l/card.png",
+      "scale": 1.42,
+      "x": 0.21144080370521443,
+      "y": 1.4699964675262351
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790779569/karavela-distribuidora/products/whiskys-cavalo-branco-1l/detail.png",
+      "scale": 1.12,
+      "x": -1.0791518822572637,
+      "y": -16.689961751302082
+    }
+  },
+  "whiskys-ballantine-s-1l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790779712/karavela-distribuidora/products/whiskys-ballantine-s-1l/card.png",
+      "scale": 1.5,
+      "x": -0.6343302753640361,
+      "y": 0.20999056896155271
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790779750/karavela-distribuidora/products/whiskys-ballantine-s-1l/detail.png",
+      "scale": 1.11,
+      "x": -2.158281466375566,
+      "y": -17.062942042495266
+    }
+  },
+  "whiskys-gold-label-700ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790779842/karavela-distribuidora/products/whiskys-gold-label-700ml/card.png",
+      "scale": 1.32,
+      "x": 0,
+      "y": 0
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790779785/karavela-distribuidora/products/whiskys-gold-label-700ml/detail.png",
+      "scale": 1.09,
+      "x": -0.9892078791276755,
+      "y": -16.59673517400568
+    }
+  },
+  "whiskys-double-black-1l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790779887/karavela-distribuidora/products/whiskys-double-black-1l/card.png",
+      "scale": 1.28,
+      "x": 0.21144342512134534,
+      "y": 1.0499945013380076
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790779927/karavela-distribuidora/products/whiskys-double-black-1l/detail.png",
+      "scale": 1.01,
+      "x": 0.2697941025525308,
+      "y": -15.757575757575756
+    }
+  },
+  "whiskys-black-label-1l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790779969/karavela-distribuidora/products/whiskys-black-label-1l/card.png",
+      "scale": 1.33,
+      "x": -0.4228842288265598,
+      "y": 1.6800182788854712
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790779985/karavela-distribuidora/products/whiskys-black-label-1l/detail.png",
+      "scale": 1.03,
+      "x": -1.708619425888924,
+      "y": -15.571113355232008
+    }
+  },
+  "whiskys-old-parr-750ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792193/karavela-distribuidora/products/whiskys-old-parr-750ml/card.png",
+      "scale": 1.26,
+      "x": -0.6279973283953908,
+      "y": -10.187107807881123
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792193/karavela-distribuidora/products/whiskys-old-parr-750ml/card.png",
+      "scale": 1.08,
+      "x": -2.2481998266453487,
+      "y": -24.055943344578594
+    }
+  },
+  "whiskys-chivas-regal-1l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792265/karavela-distribuidora/products/whiskys-chivas-regal-1l/card.png",
+      "scale": 1.25,
+      "x": -0.4228842288265598,
+      "y": -3.78003852395917
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792265/karavela-distribuidora/products/whiskys-chivas-regal-1l/card.png",
+      "scale": 1,
+      "x": -0.8992839443231525,
+      "y": -20.79254150390625
+    }
+  },
+  "whiskys-buchanan-s-1l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792293/karavela-distribuidora/products/whiskys-buchanan-s-1l/card.png",
+      "scale": 1.27,
+      "x": -0.4228658789136432,
+      "y": -3.150004332279145
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792313/karavela-distribuidora/products/whiskys-buchanan-s-1l/detail.png",
+      "scale": 1,
+      "x": -1.708643953841782,
+      "y": -20.046617912523672
+    }
+  },
+  "whiskys-royal-salute-1l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792365/karavela-distribuidora/products/whiskys-royal-salute-1l/card.png",
+      "scale": 1.32,
+      "x": 0,
+      "y": -2.730002366090918
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792365/karavela-distribuidora/products/whiskys-royal-salute-1l/card.png",
+      "scale": 1,
+      "x": 0,
+      "y": -17.99533728397254
+    }
+  },
+  "whiskys-jack-daniel-s-tradicional-1l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792410/karavela-distribuidora/products/whiskys-jack-daniel-s-tradicional-1l/card.png",
+      "scale": 1.3,
+      "x": 0,
+      "y": -2.5199701405991206
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792427/karavela-distribuidora/products/whiskys-jack-daniel-s-tradicional-1l/detail.png",
+      "scale": 1.05,
+      "x": -0.809351090263045,
+      "y": -18.275063254616477
+    }
+  },
+  "whiskys-jack-daniel-s-honey-1l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792449/karavela-distribuidora/products/whiskys-jack-daniel-s-honey-1l/card.png",
+      "scale": 1.33,
+      "x": -2.5373106157916205,
+      "y": -0.6300133634149024
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792449/karavela-distribuidora/products/whiskys-jack-daniel-s-honey-1l/card.png",
+      "scale": 1.06,
+      "x": -0.24820094155229677,
+      "y": -17.156205610795457
+    }
+  },
+  "whiskys-jack-daniel-s-fire-1l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792525/karavela-distribuidora/products/whiskys-jack-daniel-s-fire-1l/card.png",
+      "scale": 1.32,
+      "x": 0.3084735703582846,
+      "y": -1.0499945013380076
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792525/karavela-distribuidora/products/whiskys-jack-daniel-s-fire-1l/card.png",
+      "scale": 1.04,
+      "x": -1.7086383793070417,
+      "y": -16.969687721946023
+    }
+  },
+  "whiskys-jack-daniel-s-maca-verde-1l": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792588/karavela-distribuidora/products/whiskys-jack-daniel-s-maca-verde-1l/card.png",
+      "scale": 1.05,
+      "x": -1.6187088699677783,
+      "y": -15.9440566554214
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792588/karavela-distribuidora/products/whiskys-jack-daniel-s-maca-verde-1l/card.png",
+      "scale": 1.41,
+      "x": -1.057211882774465,
+      "y": 1.0499945013380076
+    }
+  },
+  "whiskys-red-label-1l": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792622/karavela-distribuidora/products/whiskys-red-label-1l/detail.png",
+      "scale": 1.76,
+      "x": -0.5395681367799953,
+      "y": -1.3053662849195076
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790792711/karavela-distribuidora/products/whiskys-red-label-1l/card.png",
+      "scale": 1.4,
+      "x": -1.9029882046759772,
+      "y": -1.2600267268298047
+    }
+  },
+  "cervejas-300-unidades-amstel-300ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790860152/karavela-distribuidora/products/cervejas-300-unidades-amstel-300ml/detail.png",
+      "scale": 1.19,
+      "x": -0.7646545588637049,
+      "y": -5.687635017163826
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790859187/karavela-distribuidora/products/cervejas-300-unidades-amstel-300ml/card.png",
+      "scale": 1.28,
+      "x": -0.21144342512134534,
+      "y": -4.410020644976389
+    }
+  },
+  "cervejas-300-unidades-devassa-300ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790859423/karavela-distribuidora/products/cervejas-300-unidades-devassa-300ml/card.png",
+      "scale": 1.08,
+      "x": 0.08496208580087837,
+      "y": -2.2377615263967803
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790859423/karavela-distribuidora/products/cervejas-300-unidades-devassa-300ml/card.png",
+      "scale": 1.36,
+      "x": -0.6343276539479051,
+      "y": -3.5700271267324952
+    }
+  },
+  "cervejas-300-unidades-original-300ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790859487/karavela-distribuidora/products/cervejas-300-unidades-original-300ml/card.png",
+      "scale": 1.22,
+      "x": -1.046642317444677,
+      "y": -6.029098098342483
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790859608/karavela-distribuidora/products/cervejas-300-unidades-original-300ml/detail.png",
+      "scale": 1.19,
+      "x": -1.4443343918939302,
+      "y": -6.247077710700758
+    }
+  },
+  "cervejas-300-unidades-bohemia-300ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790796387/karavela-distribuidora/products/cervejas-300-unidades-bohemia-300ml/card.png",
+      "scale": 1.38,
+      "x": 0.21142245379229788,
+      "y": -3.7800072815614865
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790796387/karavela-distribuidora/products/cervejas-300-unidades-bohemia-300ml/card.png",
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    }
+  },
+  "cervejas-300-unidades-brahma-duplo-malte-300ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790797421/karavela-distribuidora/products/cervejas-300-unidades-brahma-duplo-malte-300ml/card.png",
+      "scale": 1.4,
+      "x": -0.3258645692541444,
+      "y": -5.879996284237502
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790797421/karavela-distribuidora/products/cervejas-300-unidades-brahma-duplo-malte-300ml/card.png",
+      "scale": 1.06,
+      "x": -1.4443449252544314,
+      "y": -2.890458540482955
+    }
+  },
+  "cervejas-300-unidades-brahma-300ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790797499/karavela-distribuidora/products/cervejas-300-unidades-brahma-300ml/card.png",
+      "scale": 1.29,
+      "x": 0.6343276539479051,
+      "y": -0.6299925351497802
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790797499/karavela-distribuidora/products/cervejas-300-unidades-brahma-300ml/card.png",
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    }
+  },
+  "cervejas-300-unidades-skol-300ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790858732/karavela-distribuidora/products/cervejas-300-unidades-skol-300ml/detail.png",
+      "scale": 1.06,
+      "x": -0.8496198046727335,
+      "y": -3.0769116950757573
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790858690/karavela-distribuidora/products/cervejas-300-unidades-skol-300ml/card.png",
+      "scale": 1.32,
+      "x": -1.4801039758494174,
+      "y": -4.4099998167112675
+    }
+  },
+  "gins-tanqueray": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790952141/karavela-distribuidora/products/gins-tanqueray/card.png",
+      "scale": 1.28,
+      "x": -0.845769768361185,
+      "y": -0.8400039323764551
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790952141/karavela-distribuidora/products/gins-tanqueray/card.png",
+      "scale": 1.7,
+      "x": -1.34894821462369,
+      "y": 0.279725970643939
+    }
+  },
+  "cachacas-aviador": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790987677/karavela-distribuidora/products/cachacas-aviador/card.png",
+      "scale": 1.16,
+      "x": -1.911458872410661,
+      "y": 1.2873263902180199
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790987677/karavela-distribuidora/products/cachacas-aviador/card.png",
+      "scale": 1.02,
+      "x": -0.7194394194349518,
+      "y": -16.68994787967566
+    }
+  },
+  "long-necks-praya-330ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790861076/karavela-distribuidora/products/long-necks-praya-330ml/card.png",
+      "scale": 1.27,
+      "x": 0,
+      "y": -5.040002765993608
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790861076/karavela-distribuidora/products/long-necks-praya-330ml/card.png",
+      "scale": 1.04,
+      "x": -0.16992417160175674,
+      "y": -0.27970747514204547
+    }
+  },
+  "long-necks-smirnoff-ice-275ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790860544/karavela-distribuidora/products/long-necks-smirnoff-ice-275ml/card.png",
+      "scale": 1.34,
+      "x": -2.0933002061005515,
+      "y": -6.860702102248734
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790860544/karavela-distribuidora/products/long-necks-smirnoff-ice-275ml/card.png",
+      "scale": 1.11,
+      "x": -0.8496187513366834,
+      "y": -2.424251671993371
+    }
+  },
+  "long-necks-ice-cabare-tangerina-275ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790861465/karavela-distribuidora/products/long-necks-ice-cabare-tangerina-275ml/card.png",
+      "scale": 1.37,
+      "x": -0.6279843523860598,
+      "y": -11.018680881809544
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790861465/karavela-distribuidora/products/long-necks-ice-cabare-tangerina-275ml/card.png",
+      "scale": 1.1,
+      "x": -0.9345681971049606,
+      "y": -5.314691716974432
+    }
+  },
+  "long-necks-ice-cabare-frutas-amarelas-275ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790862016/karavela-distribuidora/products/long-necks-ice-cabare-frutas-amarelas-275ml/card.png",
+      "scale": 1.38,
+      "x": -0.4228868502426907,
+      "y": -3.3599949012406984
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790862016/karavela-distribuidora/products/long-necks-ice-cabare-frutas-amarelas-275ml/card.png",
+      "scale": 1.07,
+      "x": 0.16995471834720943,
+      "y": 1.3986437248461177
+    }
+  },
+  "long-necks-ice-cabare-limao-275ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790862542/karavela-distribuidora/products/long-necks-ice-cabare-limao-275ml/card.png",
+      "scale": 1.57,
+      "x": -0.8373133349153685,
+      "y": -14.345107207427155
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790862542/karavela-distribuidora/products/long-necks-ice-cabare-limao-275ml/card.png",
+      "scale": 1.27,
+      "x": -0.2548883640747353,
+      "y": -9.04430967388731
+    }
+  },
+  "long-necks-ice-cabare-frutas-vermelhas-275ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790863366/karavela-distribuidora/products/long-necks-ice-cabare-frutas-vermelhas-275ml/card.png",
+      "scale": 1.33,
+      "x": -0.5436435627602663,
+      "y": -9.382834397340918
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790863425/karavela-distribuidora/products/long-necks-ice-cabare-frutas-vermelhas-275ml/detail.png",
+      "scale": 1.06,
+      "x": -1.019550296290791,
+      "y": -2.797204219933712
+    }
+  },
+  "long-necks-amstel-ultra-330ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790865825/karavela-distribuidora/products/long-necks-amstel-ultra-330ml/card.png",
+      "scale": 1.28,
+      "x": -2.093269063678157,
+      "y": -6.444900100295609
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790865825/karavela-distribuidora/products/long-necks-amstel-ultra-330ml/card.png",
+      "scale": 1.07,
+      "x": -1.1045050087393187,
+      "y": -3.822835286458334
+    }
+  },
+  "long-necks-michelob-ultra-330ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790865340/karavela-distribuidora/products/long-necks-michelob-ultra-330ml/card.png",
+      "scale": 1.07,
+      "x": -1.189479734572798,
+      "y": -3.8228445342092803
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790865340/karavela-distribuidora/products/long-necks-michelob-ultra-330ml/card.png",
+      "scale": 1.3,
+      "x": 0,
+      "y": -7.276524724187078
+    }
+  },
+  "long-necks-eisenbahn-355ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790866085/karavela-distribuidora/products/long-necks-eisenbahn-355ml/detail.png",
+      "scale": 1,
+      "x": 0.1699210115936065,
+      "y": -0.27971672289299254
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790866110/karavela-distribuidora/products/long-necks-eisenbahn-355ml/card.png",
+      "scale": 1.29,
+      "x": -1.4695421436966987,
+      "y": -7.541176896440525
+    }
+  },
+  "long-necks-corona-330ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790874956/karavela-distribuidora/products/long-necks-corona-330ml/card.png",
+      "scale": 1.2,
+      "x": -1.255973895175852,
+      "y": -5.613285786396748
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790875599/karavela-distribuidora/products/long-necks-corona-330ml/detail.png",
+      "scale": 1.18,
+      "x": -0.8300779350703436,
+      "y": -4.247086958451705
+    }
+  },
+  "long-necks-budweiser-330ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790875639/karavela-distribuidora/products/long-necks-budweiser-330ml/detail.png",
+      "scale": 1.19,
+      "x": 0,
+      "y": -4
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790875191/karavela-distribuidora/products/long-necks-budweiser-330ml/card.png",
+      "scale": 1.26,
+      "x": -1.8818360193642762,
+      "y": -8.131207807261221
+    }
+  },
+  "long-necks-stella-330ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790875234/karavela-distribuidora/products/long-necks-stella-330ml/card.png",
+      "scale": 1.3,
+      "x": -1.6746318602344692,
+      "y": -7.923275876306828
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790875234/karavela-distribuidora/products/long-necks-stella-330ml/card.png",
+      "scale": 1.05,
+      "x": -0.934573463785211,
+      "y": -2.4242424242424243
+    }
+  },
+  "long-necks-stella-pure-gold-330ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790875281/karavela-distribuidora/products/long-necks-stella-pure-gold-330ml/card.png",
+      "scale": 1.34,
+      "x": -1.06778666472225,
+      "y": -7.3374034814708935
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790875281/karavela-distribuidora/products/long-necks-stella-pure-gold-330ml/card.png",
+      "scale": 1.03,
+      "x": -0.9345787304654617,
+      "y": -1.5850830078125
+    }
+  },
+  "long-necks-spaten-355ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790875342/karavela-distribuidora/products/long-necks-spaten-355ml/card.png",
+      "scale": 1.34,
+      "x": -0.5119581711591685,
+      "y": -6.860722722233953
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790875342/karavela-distribuidora/products/long-necks-spaten-355ml/card.png",
+      "scale": 1.04,
+      "x": -2.124073211742961,
+      "y": -2.237756902521309
+    }
+  },
+  "long-necks-heineken-330ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790875962/karavela-distribuidora/products/long-necks-heineken-330ml/card.png",
+      "scale": 1.15,
+      "x": -0.509780941493671,
+      "y": -4.694652210582387
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790875962/karavela-distribuidora/products/long-necks-heineken-330ml/card.png",
+      "scale": 1.45,
+      "x": 0,
+      "y": -8
+    }
+  },
+  "zero-alcool-heineken-long-neck-zero-330ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790876900/karavela-distribuidora/products/zero-alcool-heineken-long-neck-zero-330ml/card.jpg",
+      "scale": 1.33,
+      "x": 0,
+      "y": -2
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790876900/karavela-distribuidora/products/zero-alcool-heineken-long-neck-zero-330ml/card.jpg",
+      "scale": 1.03,
+      "x": -0.3398472898674633,
+      "y": 1.4918286872632576
+    }
+  },
+  "zero-alcool-corona-long-neck-zero-330ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790879422/karavela-distribuidora/products/zero-alcool-corona-long-neck-zero-330ml/card.png",
+      "scale": 1.28,
+      "x": -1.0572171256067269,
+      "y": -4.620000799805381
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790879422/karavela-distribuidora/products/zero-alcool-corona-long-neck-zero-330ml/card.png",
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    }
+  },
+  "zero-alcool-budweiser-long-neck-zero-330ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790879503/karavela-distribuidora/products/zero-alcool-budweiser-long-neck-zero-330ml/card.png",
+      "scale": 1.02,
+      "x": -0.509780941493671,
+      "y": -0.6526970140861742
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790879503/karavela-distribuidora/products/zero-alcool-budweiser-long-neck-zero-330ml/card.png",
+      "scale": 1.3,
+      "x": -0.418655369856751,
+      "y": -4.781692092483108
+    }
+  },
+  "zero-alcool-corona-lata-zero-350ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790879566/karavela-distribuidora/products/zero-alcool-corona-lata-zero-350ml/card.jpg",
+      "scale": 1.59,
+      "x": -1.4547281481859051,
+      "y": -12.284986414307026
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790879566/karavela-distribuidora/products/zero-alcool-corona-lata-zero-350ml/card.jpg",
+      "scale": 1.25,
+      "x": -1.5293091177274096,
+      "y": -10.909100156841857
+    }
+  },
+  "zero-alcool-budweiser-lata-zero-350ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790879780/karavela-distribuidora/products/zero-alcool-budweiser-lata-zero-350ml/card.png",
+      "scale": 1.72,
+      "x": -0.42713649704169376,
+      "y": -21.254150138350006
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790879780/karavela-distribuidora/products/zero-alcool-budweiser-lata-zero-350ml/card.png",
+      "scale": 1.37,
+      "x": -2.124039504989358,
+      "y": -16.130537553267047
+    }
+  },
+  "energeticos-bally-maca-verde-2l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790879852/karavela-distribuidora/products/energeticos-bally-maca-verde-2l/card.jpg",
+      "scale": 1.27,
+      "x": -0.4313548965612435,
+      "y": -5.231104118309663
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790879852/karavela-distribuidora/products/energeticos-bally-maca-verde-2l/card.jpg",
+      "scale": 1.08,
+      "x": -1.348921456856936,
+      "y": -19.580420291785035
+    }
+  },
+  "zero-alcool-heineken-lata-zero-350ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790879945/karavela-distribuidora/products/zero-alcool-heineken-lata-zero-350ml/card.png",
+      "scale": 1.75,
+      "x": -0.2135552987257805,
+      "y": -20.147383949889843
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790879945/karavela-distribuidora/products/zero-alcool-heineken-lata-zero-350ml/card.png",
+      "scale": 1.38,
+      "x": -1.6992206492965651,
+      "y": -16.41024502840909
+    }
+  },
+  "zero-alcool-brahma-lata-zero-350ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790880023/karavela-distribuidora/products/zero-alcool-brahma-lata-zero-350ml/card.jpg",
+      "scale": 1.9,
+      "x": -1.8860739615406168,
+      "y": -26.205943657833707
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790880023/karavela-distribuidora/products/zero-alcool-brahma-lata-zero-350ml/card.jpg",
+      "scale": 1.32,
+      "x": -1.2744249669968748,
+      "y": -13.986030347419506
+    }
+  },
+  "energeticos-monster-pessego-lata": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790880629/karavela-distribuidora/products/energeticos-monster-pessego-lata/card.png",
+      "scale": 1.7,
+      "x": -2.093284634889354,
+      "y": -20.997949548669766
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790880629/karavela-distribuidora/products/energeticos-monster-pessego-lata/card.png",
+      "scale": 1.3,
+      "x": -0.6294920715845183,
+      "y": -26.853119821259472
+    }
+  },
+  "energeticos-monster-violeta-lata": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790880749/karavela-distribuidora/products/energeticos-monster-violeta-lata/card.png",
+      "scale": 1.4,
+      "x": -1.4388520811031478,
+      "y": -27.878787878787882
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790880749/karavela-distribuidora/products/energeticos-monster-violeta-lata/card.png",
+      "scale": 1.72,
+      "x": 0.4186579650586173,
+      "y": -19.958434233794343
+    }
+  },
+  "energeticos-monster-melancia-lata": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790881005/karavela-distribuidora/products/energeticos-monster-melancia-lata/card.png",
+      "scale": 1.46,
+      "x": -1.6187021805260897,
+      "y": -27.557097463896785
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790881005/karavela-distribuidora/products/energeticos-monster-melancia-lata/card.png",
+      "scale": 1.82,
+      "x": -1.6746214794270045,
+      "y": -20.997918618691934
+    }
+  },
+  "energeticos-monster-zero-lata": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790881317/karavela-distribuidora/products/energeticos-monster-zero-lata/card.png",
+      "scale": 1.77,
+      "x": -1.4568399431475456,
+      "y": -25.34911904025172
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790881317/karavela-distribuidora/products/energeticos-monster-zero-lata/card.png",
+      "scale": 1.39,
+      "x": -0.15827254711998107,
+      "y": -28.997664018110793
+    }
+  },
+  "energeticos-monster-ultra-zero-lata": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790881432/karavela-distribuidora/products/energeticos-monster-ultra-zero-lata/card.png",
+      "scale": 1.74,
+      "x": -1.2602001851580589,
+      "y": -24.75900523293034
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790881432/karavela-distribuidora/products/energeticos-monster-ultra-zero-lata/card.png",
+      "scale": 1.32,
+      "x": -1.7086361494931452,
+      "y": -26.666648171164773
+    }
+  },
+  "energeticos-monster-ultra-lata": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790881764/karavela-distribuidora/products/energeticos-monster-ultra-lata/card.png",
+      "scale": 1.39,
+      "x": -1.1690635530853577,
+      "y": -28.386959191524625
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790881764/karavela-distribuidora/products/energeticos-monster-ultra-lata/card.png",
+      "scale": 1.89,
+      "x": -0.8373081445116359,
+      "y": -27.02701671703442
+    }
+  },
+  "energeticos-monster-mango-loco-lata": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790881851/karavela-distribuidora/products/energeticos-monster-mango-loco-lata/card.png",
+      "scale": 1.75,
+      "x": -0.8373055493097697,
+      "y": -30.56132342364337
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790881851/karavela-distribuidora/products/energeticos-monster-mango-loco-lata/card.png",
+      "scale": 1.28,
+      "x": -1.3489214568569365,
+      "y": -28.717951919093277
+    }
+  },
+  "energeticos-monster-tradicional-lata": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790881938/karavela-distribuidora/products/energeticos-monster-tradicional-lata/card.png",
+      "scale": 1.84,
+      "x": -0.8373107397135022,
+      "y": -30.977104805611273
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790881938/karavela-distribuidora/products/energeticos-monster-tradicional-lata/card.png",
+      "scale": 1.28,
+      "x": -1.438854310917044,
+      "y": -27.87877863103693
+    }
+  },
+  "energeticos-red-bull-lata": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790882367/karavela-distribuidora/products/energeticos-red-bull-lata/card.jpg",
+      "scale": 1.28,
+      "x": -0.6294965312123105,
+      "y": -26.293704870975375
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790882367/karavela-distribuidora/products/energeticos-red-bull-lata/card.jpg",
+      "scale": 1.85,
+      "x": 0.4165461438827115,
+      "y": -28.312211882737202
+    }
+  },
+  "energeticos-bally-coco-e-acai-2l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790882425/karavela-distribuidora/products/energeticos-bally-coco-e-acai-2l/card.png",
+      "scale": 1.21,
+      "x": -0.6047386695971046,
+      "y": -7.278624602164678
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790882425/karavela-distribuidora/products/energeticos-bally-coco-e-acai-2l/card.png",
+      "scale": 1.05,
+      "x": -1.1690635530853577,
+      "y": -21.53844659978693
+    }
+  },
+  "energeticos-bally-melancia-2l": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790882543/karavela-distribuidora/products/energeticos-bally-melancia-2l/card.png",
+      "scale": 1,
+      "x": -0.44964197216157625,
+      "y": -19.86013701467803
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790882543/karavela-distribuidora/products/energeticos-bally-melancia-2l/card.png",
+      "scale": 1.1,
+      "x": -2.1144447368779775,
+      "y": -2.3100003999026906
+    }
+  },
+  "energeticos-night-power-2l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790948519/karavela-distribuidora/products/energeticos-night-power-2l/card.png",
+      "scale": 1.13,
+      "x": -1.6915578866352865,
+      "y": -2.5199701405991206
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790948519/karavela-distribuidora/products/energeticos-night-power-2l/card.png",
+      "scale": 1,
+      "x": -0.17985678886463052,
+      "y": -19.673656116832383
+    }
+  },
+  "gins-beefeater": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790951973/karavela-distribuidora/products/gins-beefeater/card.png",
+      "scale": 1.66,
+      "x": -0.9891978449651426,
+      "y": 2.0512806285511367
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790951973/karavela-distribuidora/products/gins-beefeater/card.png",
+      "scale": 1.17,
+      "x": -1.6915474009707627,
+      "y": 1.4699964675262351
+    }
+  },
+  "gins-gordons": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790951627/karavela-distribuidora/products/gins-gordons/card.png",
+      "scale": 1.2,
+      "x": -1.268657929311941,
+      "y": 4.199998833617154
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790951627/karavela-distribuidora/products/gins-gordons/card.png",
+      "scale": 1.68,
+      "x": -1.169064667992306,
+      "y": 3.4918471827651514
+    }
+  },
+  "gins-bombay": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790951914/karavela-distribuidora/products/gins-bombay/card.png",
+      "scale": 1.73,
+      "x": 0,
+      "y": 0
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790951914/karavela-distribuidora/products/gins-bombay/card.png",
+      "scale": 1.27,
+      "x": -0.4186579650586173,
+      "y": -1.0394740749049831
+    }
+  },
+  "gins-rocks-tradicional": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790952328/karavela-distribuidora/products/gins-rocks-tradicional/card.png",
+      "scale": 1.24,
+      "x": -1.9029593690985371,
+      "y": 3.570027126732495
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790952328/karavela-distribuidora/products/gins-rocks-tradicional/card.png",
+      "scale": 1.69,
+      "x": -1.597117938781441,
+      "y": 3.9160896070075757
+    }
+  },
+  "gins-rocks-morango": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790952424/karavela-distribuidora/products/gins-rocks-morango/card.png",
+      "scale": 1.21,
+      "x": 0.09700917390789177,
+      "y": 0.20996974069643054
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790952424/karavela-distribuidora/products/gins-rocks-morango/card.png",
+      "scale": 1.65,
+      "x": -0.359713577729261,
+      "y": 0.6526646469578603
+    }
+  },
+  "gins-rocks-melancia": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790952763/karavela-distribuidora/products/gins-rocks-melancia/card.png",
+      "scale": 1.21,
+      "x": -2.3258671906702753,
+      "y": 3.150004332279145
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790952763/karavela-distribuidora/products/gins-rocks-melancia/card.png",
+      "scale": 1.65,
+      "x": -0.8992750250675678,
+      "y": 3.7295902136600376
+    }
+  },
+  "gins-rocks-maca-verde": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790953031/karavela-distribuidora/products/gins-rocks-maca-verde/card.png",
+      "scale": 1.19,
+      "x": -1.057206639942203,
+      "y": 0.20996974069643054
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790953031/karavela-distribuidora/products/gins-rocks-maca-verde/card.png",
+      "scale": 1.68,
+      "x": -0.17983895035346117,
+      "y": 1.2121212121212122
+    }
+  },
+  "gins-mancao-maromba-maca-verde": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790957807/karavela-distribuidora/products/gins-mancao-maromba-maca-verde/card.png",
+      "scale": 1.1,
+      "x": -1.0572276112712504,
+      "y": -0.8400247606415772
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790957807/karavela-distribuidora/products/gins-mancao-maromba-maca-verde/card.png",
+      "scale": 1.55,
+      "x": 0,
+      "y": 0
+    }
+  },
+  "gins-mancao-maromba-frutas-vermelhas": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790961678/karavela-distribuidora/products/gins-mancao-maromba-frutas-vermelhas/card.png",
+      "scale": 1.17,
+      "x": -0.8373055493097697,
+      "y": 2.2869007007495776
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790961678/karavela-distribuidora/products/gins-mancao-maromba-frutas-vermelhas/card.png",
+      "scale": 1.47,
+      "x": -0.8093544349838891,
+      "y": 2.144534949100379
+    }
+  },
+  "gins-mancao-maromba-frutas-tropicais": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790961826/karavela-distribuidora/products/gins-mancao-maromba-frutas-tropicais/card.png",
+      "scale": 1.55,
+      "x": 0,
+      "y": 0
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790961826/karavela-distribuidora/products/gins-mancao-maromba-frutas-tropicais/card.png",
+      "scale": 1.07,
+      "x": 0,
+      "y": 0
+    }
+  },
+  "gins-mancao-maromba-uva": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790961843/karavela-distribuidora/products/gins-mancao-maromba-uva/card.png",
+      "scale": 1.04,
+      "x": -0.6343302753640361,
+      "y": 0.6299925351497802
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790961843/karavela-distribuidora/products/gins-mancao-maromba-uva/card.png",
+      "scale": 1.55,
+      "x": -0.359713577729261,
+      "y": 0.5594334457859849
+    }
+  },
+  "cachacas-ypioca-guarana": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790968119/karavela-distribuidora/products/cachacas-ypioca-guarana/card.png",
+      "scale": 1.06,
+      "x": 0,
+      "y": 0
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790968119/karavela-distribuidora/products/cachacas-ypioca-guarana/card.png",
+      "scale": 1,
+      "x": 0,
+      "y": -18.088563861268938
+    }
+  },
+  "bomboniere-caixa-de-bombom-garoto": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790976849/karavela-distribuidora/products/bomboniere-caixa-de-bombom-garoto/card.png",
+      "scale": 1.19,
+      "x": -1.4800987330171556,
+      "y": -9.357593580239765
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790976849/karavela-distribuidora/products/bomboniere-caixa-de-bombom-garoto/card.png",
+      "scale": 1.16,
+      "x": -0.44964197216157625,
+      "y": -22.843812884706438
+    }
+  },
+  "bomboniere-caixa-de-bombom-nestle": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790976927/karavela-distribuidora/products/bomboniere-caixa-de-bombom-nestle/card.png",
+      "scale": 1.16,
+      "x": -1.057211882774465,
+      "y": -3.989966608125356
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790976927/karavela-distribuidora/products/bomboniere-caixa-de-bombom-nestle/card.png",
+      "scale": 1.13,
+      "x": -1.0791251244905098,
+      "y": -16.13053292939157
+    }
+  },
+  "bomboniere-caixa-de-bombom-lacta": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790977013/karavela-distribuidora/products/bomboniere-caixa-de-bombom-lacta/card.png",
+      "scale": 1.04,
+      "x": -1.61870218052609,
+      "y": -15.944056655421404
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790977013/karavela-distribuidora/products/bomboniere-caixa-de-bombom-lacta/card.png",
+      "scale": 1.02,
+      "x": -1.2686605507280722,
+      "y": -1.0499945013380076
+    }
+  },
+  "bomboniere-trident": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790977049/karavela-distribuidora/products/bomboniere-trident/card.png",
+      "scale": 1.44,
+      "x": 0.41864758425115234,
+      "y": -20.997928928684544
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790977049/karavela-distribuidora/products/bomboniere-trident/card.png",
+      "scale": 1.31,
+      "x": -0.5395703665938916,
+      "y": -25.08160215435606
+    }
+  },
+  "bomboniere-trident-cereja": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790977315/karavela-distribuidora/products/bomboniere-trident-cereja/card.png",
+      "scale": 1.25,
+      "x": -2.068357531571043,
+      "y": -16.317027698863637
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790977315/karavela-distribuidora/products/bomboniere-trident-cereja/card.png",
+      "scale": 1.45,
+      "x": -1.4885538819691715,
+      "y": -10.647019640155483
+    }
+  },
+  "bomboniere-trident-melancia": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790977539/karavela-distribuidora/products/bomboniere-trident-melancia/card.png",
+      "scale": 1.45,
+      "x": -1.2559842759833169,
+      "y": -9.355514113967484
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790977539/karavela-distribuidora/products/bomboniere-trident-melancia/card.png",
+      "scale": 1.21,
+      "x": -2.697842913713873,
+      "y": -15.477859034682764
+    }
+  },
+  "cachacas-sagatiba-prata": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791068485/karavela-distribuidora/products/cachacas-sagatiba-prata/card.png",
+      "scale": 1.22,
+      "x": -1.057209261358334,
+      "y": 1.4699964675262351
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791068485/karavela-distribuidora/products/cachacas-sagatiba-prata/card.png",
+      "scale": 1.13,
+      "x": -1.16906801271315,
+      "y": -17.062923546993375
+    }
+  },
+  "cachacas-busca-brisa": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790988064/karavela-distribuidora/products/cachacas-busca-brisa/card.jpg",
+      "scale": 1.04,
+      "x": -1.7985634290185124,
+      "y": -15.850802334872158
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790988064/karavela-distribuidora/products/cachacas-busca-brisa/card.jpg",
+      "scale": 1.14,
+      "x": -2.0932794444856215,
+      "y": 1.4552966968433276
+    }
+  },
+  "cachacas-cachaca-salinas": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790988095/karavela-distribuidora/products/cachacas-cachaca-salinas/card.png",
+      "scale": 1.28,
+      "x": -1.2559842759833169,
+      "y": -5.613316716374578
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790988095/karavela-distribuidora/products/cachacas-cachaca-salinas/card.png",
+      "scale": 1.13,
+      "x": -1,
+      "y": -20.6060791015625
+    }
+  },
+  "cachacas-ypioca-150": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790988191/karavela-distribuidora/products/cachacas-ypioca-150/card.png",
+      "scale": 1.33,
+      "x": -0.2029804905637308,
+      "y": -10.634440367435396
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790988191/karavela-distribuidora/products/cachacas-ypioca-150/card.png",
+      "scale": 1.2,
+      "x": -0.9892101089415715,
+      "y": -23.776226621685602
+    }
+  },
+  "cachacas-ypioca-160": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790988290/karavela-distribuidora/products/cachacas-ypioca-160/card.png",
+      "scale": 1.23,
+      "x": -1.2589975220524137,
+      "y": -23.030312278053977
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790988290/karavela-distribuidora/products/cachacas-ypioca-160/card.png",
+      "scale": 1.37,
+      "x": -1.2559687047721195,
+      "y": -9.14760280299831
+    }
+  },
+  "cachacas-ypioca-lima-limao": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790988370/karavela-distribuidora/products/cachacas-ypioca-lima-limao/card.png",
+      "scale": 1.13,
+      "x": 0.6343276539479051,
+      "y": 1.2599642420344381
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790988370/karavela-distribuidora/products/cachacas-ypioca-lima-limao/card.png",
+      "scale": 1.05,
+      "x": -0.6294965312123105,
+      "y": -16.2237548828125
+    }
+  },
+  "cachacas-ypioca-mestra-ouro": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790988452/karavela-distribuidora/products/cachacas-ypioca-mestra-ouro/card.png",
+      "scale": 1.03,
+      "x": 0.08993173915315955,
+      "y": -16.130537553267047
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1790988452/karavela-distribuidora/products/cachacas-ypioca-mestra-ouro/card.png",
+      "scale": 1.13,
+      "x": -0.4228842288265598,
+      "y": 1.0499945013380076
+    }
+  },
+  "cachacas-ypioca-mestra-prata": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791068598/karavela-distribuidora/products/cachacas-ypioca-mestra-prata/card.png",
+      "scale": 1.04,
+      "x": -0.35968013052081826,
+      "y": -15.94408439867424
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791068598/karavela-distribuidora/products/cachacas-ypioca-mestra-prata/card.png",
+      "scale": 1.15,
+      "x": 1,
+      "y": 1.8710986987964529
+    }
+  },
+  "cachacas-ypioca-ouro": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791068957/karavela-distribuidora/products/cachacas-ypioca-ouro/card.png",
+      "scale": 1.03,
+      "x": 0.44964085725462816,
+      "y": -16.68998487067945
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791068957/karavela-distribuidora/products/cachacas-ypioca-ouro/card.png",
+      "scale": 1.13,
+      "x": 0,
+      "y": 1.0416360211181446
+    }
+  },
+  "cachacas-ypioca-prata": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791068993/karavela-distribuidora/products/cachacas-ypioca-prata/card.png",
+      "scale": 1.13,
+      "x": -1.2686553078958103,
+      "y": 1.0499945013380076
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791068993/karavela-distribuidora/products/cachacas-ypioca-prata/card.png",
+      "scale": 1.02,
+      "x": -1.8884829041952433,
+      "y": -16.03732022372159
+    }
+  },
+  "cachacas-51-ouro": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791069108/karavela-distribuidora/products/cachacas-51-ouro/card.png",
+      "scale": 1.02,
+      "x": -0.1798567888646305,
+      "y": -15.757603500828598
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791069108/karavela-distribuidora/products/cachacas-51-ouro/card.png",
+      "scale": 1.14,
+      "x": -0.2093315777311749,
+      "y": 1.4552966968433276
+    }
+  },
+  "cachacas-51-prata": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791069337/karavela-distribuidora/products/cachacas-51-prata/card.png",
+      "scale": 1.02,
+      "x": -0.6294965312123105,
+      "y": -15.850830078125
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791069337/karavela-distribuidora/products/cachacas-51-prata/card.png",
+      "scale": 1.13,
+      "x": 0.21144342512134534,
+      "y": 1.889998433714463
+    }
+  },
+  "cachacas-51-mel": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791069455/karavela-distribuidora/products/cachacas-51-mel/card.png",
+      "scale": 1.12,
+      "x": 0.42711833062863025,
+      "y": 1.050036157868252
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791069455/karavela-distribuidora/products/cachacas-51-mel/card.png",
+      "scale": 1.02,
+      "x": -0.4496363976268358,
+      "y": -15.477859034682766
+    }
+  },
+  "cachacas-pitu-prata": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791069544/karavela-distribuidora/products/cachacas-pitu-prata/card.png",
+      "scale": 1.02,
+      "x": -0.4496375125337839,
+      "y": -16.130537553267047
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791069544/karavela-distribuidora/products/cachacas-pitu-prata/card.png",
+      "scale": 1.14,
+      "x": 0,
+      "y": 0.6300341916800245
+    }
+  },
+  "cachacas-pitu-amarelinha": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791069617/karavela-distribuidora/products/cachacas-pitu-amarelinha/card.png",
+      "scale": 1.03,
+      "x": -1.1690769319687349,
+      "y": -15.757548014322916
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791069617/karavela-distribuidora/products/cachacas-pitu-amarelinha/card.png",
+      "scale": 1.15,
+      "x": 0,
+      "y": 2.940034591582715
+    }
+  },
+  "cachacas-montilla-carta-branca": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791069644/karavela-distribuidora/products/cachacas-montilla-carta-branca/card.png",
+      "scale": 1.1,
+      "x": -0.20932898252930865,
+      "y": 0.83160400390625
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791069644/karavela-distribuidora/products/cachacas-montilla-carta-branca/card.png",
+      "scale": 1,
+      "x": -0.2697862982038938,
+      "y": -16.969696969696972
+    }
+  },
+  "cachacas-montilla-carta-ouro-envelhecida": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791069726/karavela-distribuidora/products/cachacas-montilla-carta-ouro-envelhecida/card.png",
+      "scale": 1,
+      "x": -1.2589908326107249,
+      "y": -16.87647039240057
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791069726/karavela-distribuidora/products/cachacas-montilla-carta-ouro-envelhecida/card.png",
+      "scale": 1.11,
+      "x": -0.4186527746548849,
+      "y": 0.415802001953125
+    }
+  },
+  "cachacas-pingo-de-ouro": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791237051/karavela-distribuidora/products/cachacas-pingo-de-ouro/card.png",
+      "scale": 1.03,
+      "x": -1.3489214568569365,
+      "y": -16.503499348958336
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791237051/karavela-distribuidora/products/cachacas-pingo-de-ouro/card.png",
+      "scale": 1.15,
+      "x": -1.465282116090231,
+      "y": 0.20787007099873311
+    }
+  },
+  "cachacas-zinebra-roxs-verde": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791237155/karavela-distribuidora/products/cachacas-zinebra-roxs-verde/detail.png",
+      "scale": 1.02,
+      "x": -0.4496464317893686,
+      "y": -17.529139663233902
+    }
+  },
+  "cachacas-zinebra-roxs-prata": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791237249/karavela-distribuidora/products/cachacas-zinebra-roxs-prata/detail.png",
+      "scale": 1.02,
+      "x": -0.17984786960904584,
+      "y": -15.571113355232008
+    }
+  },
+  "cachacas-parati-prata": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791237389/karavela-distribuidora/products/cachacas-parati-prata/card.png",
+      "scale": 1.02,
+      "x": 0.08992616461841908,
+      "y": -16.22379187381629
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791237389/karavela-distribuidora/products/cachacas-parati-prata/card.png",
+      "scale": 1.14,
+      "x": 0.4228894716588216,
+      "y": 1.0499945013380076
+    }
+  },
+  "cachacas-parati-ouro": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791237469/karavela-distribuidora/products/cachacas-parati-ouro/card.png",
+      "scale": 1.12,
+      "x": -1.0572145041905958,
+      "y": 0.42000196618822755
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791237469/karavela-distribuidora/products/cachacas-parati-ouro/card.png",
+      "scale": 1,
+      "x": -0.08992839443231525,
+      "y": -16.22379187381629
+    }
+  },
+  "cachacas-douradinha-prata": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791237582/karavela-distribuidora/products/cachacas-douradinha-prata/card.png",
+      "scale": 1.02,
+      "x": -1.7838511169321336e-05,
+      "y": -15.850802334872158
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791237582/karavela-distribuidora/products/cachacas-douradinha-prata/card.png",
+      "scale": 1.15,
+      "x": -1.6746214794270045,
+      "y": 1.6631667678420607
+    }
+  },
+  "cachacas-douradinha-ouro": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791237622/karavela-distribuidora/products/cachacas-douradinha-ouro/card.png",
+      "scale": 1.15,
+      "x": 0,
+      "y": -4.781671472497888
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791237622/karavela-distribuidora/products/cachacas-douradinha-ouro/card.png",
+      "scale": 1.02,
+      "x": -1.1690646679923058,
+      "y": -15.757575757575758
+    }
+  },
+  "espumantes-chandon": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791238789/karavela-distribuidora/products/espumantes-chandon/card.png",
+      "scale": 1.12,
+      "x": -0.8373159301172344,
+      "y": -3.950129328547297
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791238789/karavela-distribuidora/products/espumantes-chandon/card.png",
+      "scale": 1.02,
+      "x": -0.5395681367799953,
+      "y": -15.57109023585464
+    }
+  },
+  "espumantes-lider": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791238892/karavela-distribuidora/products/espumantes-lider/card.png",
+      "scale": 1.05,
+      "x": -0.9892223729180005,
+      "y": -15.104878743489582
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791238892/karavela-distribuidora/products/espumantes-lider/card.png",
+      "scale": 1.14,
+      "x": -0.6343276539479051,
+      "y": -3.150004332279145
+    }
+  },
+  "espumantes-cereser": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791238944/karavela-distribuidora/products/espumantes-cereser/card.png",
+      "scale": 1.05,
+      "x": -1,
+      "y": -12.121212121212121
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791238944/karavela-distribuidora/products/espumantes-cereser/card.png",
+      "scale": 1.18,
+      "x": -0.21145391078586917,
+      "y": 1.6799870364877878
+    }
+  },
+  "licores-campari-1l": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791239022/karavela-distribuidora/products/licores-campari-1l/card.png",
+      "scale": 1.15,
+      "x": 0.11603915723622205,
+      "y": 1.0394740749049831
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791239022/karavela-distribuidora/products/licores-campari-1l/card.png",
+      "scale": 1.05,
+      "x": -1.079140733187783,
+      "y": -16.78320682410038
+    }
+  },
+  "licores-aperol-1l": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791239162/karavela-distribuidora/products/licores-aperol-1l/card.png",
+      "scale": 1.04,
+      "x": 0.2697851832969458,
+      "y": -15.757575757575756
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791239162/karavela-distribuidora/products/licores-aperol-1l/card.png",
+      "scale": 1.14,
+      "x": -0.2093315777311749,
+      "y": 0.8316246238914696
+    }
+  },
+  "licores-ballena-tradicional": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791239189/karavela-distribuidora/products/licores-ballena-tradicional/card.png",
+      "scale": 1.25,
+      "x": -0.4228894716588216,
+      "y": -4.829970540501812
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791239189/karavela-distribuidora/products/licores-ballena-tradicional/card.png",
+      "scale": 1.11,
+      "x": 0.44963751253378437,
+      "y": -20.233089562618368
+    }
+  },
+  "licores-ballena-coco": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791239267/karavela-distribuidora/products/licores-ballena-coco/card.png",
+      "scale": 1.11,
+      "x": -0.3597224969848456,
+      "y": -20.885795824455492
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791239267/karavela-distribuidora/products/licores-ballena-coco/card.png",
+      "scale": 1.22,
+      "x": 0,
+      "y": -5.460004732181836
+    }
+  },
+  "licores-ballena-chocolate": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791239292/karavela-distribuidora/products/licores-ballena-chocolate/card.png",
+      "scale": 1.2,
+      "x": 0,
+      "y": -1.8710986987964529
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791239292/karavela-distribuidora/products/licores-ballena-chocolate/card.png",
+      "scale": 1.08,
+      "x": -0.5395614473383069,
+      "y": -18.55477997750947
+    }
+  },
+  "licores-martini-bianco": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791239380/karavela-distribuidora/products/licores-martini-bianco/card.png",
+      "scale": 1.05,
+      "x": -8.919255584660668e-06,
+      "y": -16.41025427616004
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791239380/karavela-distribuidora/products/licores-martini-bianco/card.png",
+      "scale": 1.15,
+      "x": -0.8372951685023049,
+      "y": 1.0395359348606419
+    }
+  },
+  "licores-martini-extra-dry": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791239408/karavela-distribuidora/products/licores-martini-extra-dry/card.png",
+      "scale": 1.13,
+      "x": -1.0466449126465434,
+      "y": 1.247406005859375
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791239408/karavela-distribuidora/products/licores-martini-extra-dry/card.png",
+      "scale": 1.05,
+      "x": -0.8093533200769409,
+      "y": -16.876461144649625
+    }
+  },
+  "licores-martini-rosso": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791239517/karavela-distribuidora/products/licores-martini-rosso/card.png",
+      "scale": 1.05,
+      "x": -0.5395703665938915,
+      "y": -17.249404444839016
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791239517/karavela-distribuidora/products/licores-martini-rosso/card.png",
+      "scale": 1.13,
+      "x": -0.8373159301172346,
+      "y": 0.8315627639358109
+    }
+  },
+  "cervejas-300-caixa-skol-300ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791258217/karavela-distribuidora/products/cervejas-300-caixa-skol-300ml/card.png",
+      "scale": 1.17,
+      "x": -0.42287636457816696,
+      "y": -5.460004732181836
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791258217/karavela-distribuidora/products/cervejas-300-caixa-skol-300ml/card.png",
+      "scale": 1.11,
+      "x": 0.5947103738769962,
+      "y": -4.102589000355113
+    }
+  },
+  "cervejas-300-caixa-brahma-300ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791258316/karavela-distribuidora/products/cervejas-300-caixa-brahma-300ml/card.png",
+      "scale": 1.15,
+      "x": 0.4228894716588216,
+      "y": -4.41003105910895
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791258316/karavela-distribuidora/products/cervejas-300-caixa-brahma-300ml/card.png",
+      "scale": 1.12,
+      "x": 1.01954292293844,
+      "y": -6.153832637902461
+    }
+  },
+  "cervejas-300-caixa-original-300ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791258487/karavela-distribuidora/products/cervejas-300-caixa-original-300ml/card.png",
+      "scale": 1.09,
+      "x": 0.3398483432035135,
+      "y": -4.5687681255918555
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791258487/karavela-distribuidora/products/cervejas-300-caixa-original-300ml/card.png",
+      "scale": 1.15,
+      "x": 0.2093315777311749,
+      "y": -4.98960340345228
+    }
+  },
+  "cervejas-300-caixa-devassa-300ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791258554/karavela-distribuidora/products/cervejas-300-caixa-devassa-300ml/card.png",
+      "scale": 1.11,
+      "x": 0.7646461321753041,
+      "y": -5.314682469223484
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791258554/karavela-distribuidora/products/cervejas-300-caixa-devassa-300ml/card.png",
+      "scale": 1.2,
+      "x": 0.8330818545294288,
+      "y": -8.549068238941604
+    }
+  },
+  "cervejas-300-caixa-bohemia-300ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791258646/karavela-distribuidora/products/cervejas-300-caixa-bohemia-300ml/card.png",
+      "scale": 1.16,
+      "x": 0.3398483432035135,
+      "y": -8.391612659801137
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791258646/karavela-distribuidora/products/cervejas-300-caixa-bohemia-300ml/card.png",
+      "scale": 1.21,
+      "x": 0,
+      "y": -9.355514113967484
+    }
+  },
+  "cervejas-300-caixa-amstel-300ml": {
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791258720/karavela-distribuidora/products/cervejas-300-caixa-amstel-300ml/card.png",
+      "scale": 1.11,
+      "x": 0.6796945797349266,
+      "y": -5.128220066879735
+    },
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791258720/karavela-distribuidora/products/cervejas-300-caixa-amstel-300ml/card.png",
+      "scale": 1.18,
+      "x": 1.465297687301428,
+      "y": -6.860681482263513
+    }
+  },
+  "cervejas-300-caixa-brahma-duplo-malte-300ml": {
+    "card": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791259029/karavela-distribuidora/products/cervejas-300-caixa-brahma-duplo-malte-300ml/card.png",
+      "scale": 1.3,
+      "x": -0.6279843523860598,
+      "y": -9.355472873997044
+    },
+    "detail": {
+      "url": "https://res.cloudinary.com/tstplevv/image/upload/v1791259029/karavela-distribuidora/products/cervejas-300-caixa-brahma-duplo-malte-300ml/card.png",
+      "scale": 1.12,
+      "x": -0.6796903663907266,
+      "y": -4.568795868844697
+    }
+  }
+}
