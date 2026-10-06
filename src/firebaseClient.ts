@@ -89,18 +89,26 @@ function phoneDigits(value: string) {
   return value.replace(/\D/g, '')
 }
 
+function normalizePhone(value: string) {
+  const digits = phoneDigits(value)
+  if (digits.length === 10 || digits.length === 11) {
+    return { canonical: `55${digits}`, local: digits }
+  }
+  if ((digits.length === 12 || digits.length === 13) && digits.startsWith('55')) {
+    return { canonical: digits, local: digits.slice(2) }
+  }
+  throw new Error('Informe um e-mail ou telefone válido.')
+}
+
 function identifierToAuthEmail(identifier: string) {
   const value = identifier.trim().toLocaleLowerCase('pt-BR')
   if (value.includes('@')) return { authEmail: value, loginType: 'email' as const, phone: '' }
 
-  const digits = phoneDigits(value)
-  if (digits.length < 10 || digits.length > 13) {
-    throw new Error('Informe um e-mail ou telefone válido.')
-  }
+  const phone = normalizePhone(value)
   return {
-    authEmail: `${digits}@telefone.karavela.app`,
+    authEmail: `${phone.canonical}@telefone.karavela.app`,
     loginType: 'phone' as const,
-    phone: digits,
+    phone: phone.local,
   }
 }
 
@@ -113,15 +121,15 @@ export async function loginWithIdentifier(identifier: string, password: string) 
 export async function registerWithIdentifier(input: {
   name: string
   identifier: string
-  phone: string
   password: string
 }) {
   const { auth, db } = await getFirebaseServices()
   const normalized = identifierToAuthEmail(input.identifier)
-  const contactPhone = phoneDigits(normalized.loginType === 'phone' ? normalized.phone : input.phone)
+  const nameParts = input.name.trim().split(/\s+/).filter(Boolean)
 
-  if (input.name.trim().length < 3) throw new Error('Informe seu nome completo.')
-  if (contactPhone.length < 10) throw new Error('Informe um telefone/WhatsApp válido.')
+  if (nameParts.length < 2 || nameParts.some(part => part.length < 2)) {
+    throw new Error('Informe nome e sobrenome.')
+  }
   if (input.password.length < 6) throw new Error('A senha precisa ter pelo menos 6 caracteres.')
 
   const credential = await createUserWithEmailAndPassword(auth, normalized.authEmail, input.password)
@@ -131,7 +139,7 @@ export async function registerWithIdentifier(input: {
     uid: credential.user.uid,
     name: input.name.trim(),
     email: normalized.loginType === 'email' ? normalized.authEmail : null,
-    phone: contactPhone,
+    phone: normalized.loginType === 'phone' ? normalized.phone : '',
     loginType: normalized.loginType,
   }
 
@@ -186,4 +194,23 @@ export async function createCustomerOrder(user: User, input: CreateOrderInput) {
   })
 
   return orderRef.id
+}
+
+
+export async function saveCheckoutProfile(user: User, name: string, phone: string) {
+  const { db } = await getFirebaseServices()
+  const normalizedPhone = phoneDigits(phone)
+  const profile = await loadCustomerProfile(user)
+
+  await setDoc(doc(db, 'users', user.uid), {
+    ...profile,
+    uid: user.uid,
+    name: name.trim() || profile.name,
+    phone: normalizedPhone || profile.phone,
+    updatedAt: serverTimestamp(),
+  }, { merge: true })
+
+  if (name.trim() && name.trim() !== user.displayName) {
+    await updateProfile(user, { displayName: name.trim() })
+  }
 }
