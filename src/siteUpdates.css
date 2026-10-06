@@ -7,7 +7,7 @@
 .home-banner {
   position: relative;
   width: 100%;
-  height: clamp(168px, 43vw, 250px);
+  height: clamp(156px, 47vw, 280px);
   flex: none;
   overflow: hidden;
   border-radius: 0;
@@ -21,14 +21,20 @@
   transition: transform 450ms ease;
 }
 .home-banner-slide {
+  display: block;
   flex: 0 0 100%;
+  width: 100%;
   height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
   overflow: hidden;
   background: #071e3a;
 }
 .home-banner-slide--brahma-caixa,
 .home-banner-slide--cervejas { background: #f9b51c; }
 .home-banner-slide img {
+  display: block;
   width: 100%;
   height: 100%;
   max-width: none;
@@ -36,6 +42,8 @@
   object-position: center;
 }
 .home-banner-slide--brahma-caixa img { object-fit: contain; }
+.home-banner-slide--bebidas img { object-position: center 25%; }
+.home-banner-slide--cervejas img { object-position: center 35%; }
 .home-banner-arrow {
   position: absolute;
   top: 50%;
@@ -56,22 +64,26 @@
 .home-banner-arrow svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 .home-banner-arrow:hover,
 .home-banner-arrow:focus-visible { opacity: 1; }
-.home-banner-check {
+.home-banner-position {
   position: absolute;
-  right: 38px;
-  bottom: 5px;
-  min-width: 76px;
-  min-height: 26px;
-  padding: 4px 14px;
-  border: 0;
-  border-radius: 5px;
-  background: #ff791c;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 800;
-  box-shadow: 0 2px 6px rgba(0,0,0,.16);
+  left: 50%;
+  bottom: 7px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
 }
-.home-banner-check:active { background: #e45d08; }
+.home-banner-position span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(7,30,58,.4);
+}
+.home-banner-position .is-current {
+  background: #20beff;
+  box-shadow: 0 0 3px rgba(14,173,255,.5);
+}
 .home-banner button:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
 #catalogo { scroll-margin-top: 68px; }
 
@@ -85,17 +97,15 @@
   border: 1px solid #0758bb !important;
   box-shadow:
     inset 0 0 0 1px rgba(36,120,245,.14),
-    0 3px 0 #0a3265,
-    0 7px 13px rgba(4,28,61,.22),
-    0 0 6px rgba(20,101,242,.25) !important;
+    0 4px 10px rgba(4,28,61,.12),
+    0 0 5px rgba(20,101,242,.2) !important;
   transition: transform 160ms ease, box-shadow 160ms ease;
 }
 #root .category-card:hover {
   box-shadow:
     inset 0 0 0 1px rgba(36,120,245,.2),
-    0 3px 0 #0a3265,
-    0 9px 16px rgba(4,28,61,.26),
-    0 0 8px rgba(20,101,242,.32) !important;
+    0 5px 12px rgba(4,28,61,.16),
+    0 0 6px rgba(20,101,242,.26) !important;
 }
 #root .category-card:active {
   transform: translateY(2px);
