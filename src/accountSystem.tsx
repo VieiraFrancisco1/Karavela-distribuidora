@@ -346,11 +346,10 @@ function OrderCard({
 
     {admin && <div className="order-customer-box">
       <div>
-        <small>Cliente</small>
+        <small>CONTATO</small>
         <strong>{order.customerPhone}</strong>
         {order.fulfillment === 'delivery' && order.address && <span>{order.address}{order.neighborhood ? ` · ${order.neighborhood}` : ''}</span>}
       </div>
-      <button className="whatsapp" onClick={() => callCustomer(order)}>Chamar no WhatsApp</button>
     </div>}
 
     <div className="order-items">
@@ -362,7 +361,8 @@ function OrderCard({
 
     <div className="order-card-bottom">
       <div><small>Total</small><strong>{money(order.total)}</strong></div>
-      {admin && <div className="order-admin-actions">
+      {admin && <div className={`order-admin-actions ${order.status === 'finalized' ? 'is-finalized' : ''}`}>
+        <button className="whatsapp" onClick={() => callCustomer(order)}>WhatsApp</button>
         <button className="print" onClick={() => printOrder(order)}>Imprimir</button>
         {order.status !== 'finalized' && <button className="finish" onClick={() => onFinalize?.(order)}>Finalizar</button>}
         <button className="delete" onClick={() => onDelete?.(order)}>Excluir</button>
