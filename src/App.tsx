@@ -1272,7 +1272,22 @@ export default function App({ initialMediaConfig = {}, initialCatalogConfig = {}
   const allEnergyProducts = catalogProducts.filter(product => product.categoryId === 'energeticos')
 
   function closeSearch() { setSearchOpen(false); setQuery('') }
-  function goHome() { setActiveCategoryId(null); setMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }) }
+  function goHome() {
+    setActiveCategoryId(null)
+    setMenuOpen(false)
+    setSelected(null)
+    setCartOpen(false)
+    setCheckoutOpen(false)
+    setAccountOpen(false)
+    setProfileOpen(false)
+    setCustomerOrdersOpen(false)
+    setAdminDashboardOpen(false)
+    setAdminOpen(false)
+    setPendingCheckout(false)
+    setMinimumNotice(null)
+    closeSearch()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
   function openCategory(id: string) { if (id === 'cervejas') setBeerFilter('all'); if (id === 'energeticos') setEnergyFilter('all'); setActiveCategoryId(id); setMenuOpen(false); closeSearch(); window.scrollTo({ top: 0, behavior: 'smooth' }) }
 
   function checkBanner(destination: BannerDestination) {
@@ -1336,7 +1351,7 @@ export default function App({ initialMediaConfig = {}, initialCatalogConfig = {}
   }
 
   return <div className="app-shell">
-    <header className="topbar"><div className="top-left"><button className="icon-btn menu-trigger" aria-label="Abrir menu" onClick={() => setMenuOpen(true)}><Icon name="menu"/></button><StoreStatus/></div><img className="top-logo" src="/assets/logo-karavela.png" alt="Karavela Bistrô & Distribuidora"/><div className="top-actions"><button className="icon-btn search-trigger" aria-label="Buscar bebidas" onClick={() => { setSearchOpen(v => !v); setQuery('') }}><Icon name="search"/></button><button ref={cartButton} className="icon-btn cart-btn" aria-label="Abrir carrinho" onClick={() => setCartOpen(true)}><Icon name="cart"/>{count > 0 && <><span className="drink-dot"/><span className="cart-count">{count}</span></>}</button></div></header>
+    <header className="topbar"><div className="top-left"><button className="icon-btn menu-trigger" aria-label="Abrir menu" onClick={() => setMenuOpen(true)}><Icon name="menu"/></button><StoreStatus/></div><button className="top-logo-button" type="button" onClick={goHome} aria-label="Voltar para o início"><img className="top-logo" src="/assets/logo-karavela.png" alt="Karavela Bistrô & Distribuidora"/></button><div className="top-actions"><button className="icon-btn search-trigger" aria-label="Buscar bebidas" onClick={() => { setSearchOpen(v => !v); setQuery('') }}><Icon name="search"/></button><button ref={cartButton} className="icon-btn cart-btn" aria-label="Abrir carrinho" onClick={() => setCartOpen(true)}><Icon name="cart"/>{count > 0 && <><span className="drink-dot"/><span className="cart-count">{count}</span></>}</button></div></header>
 
     {searchOpen && <><div className="search-dismiss" onMouseDown={closeSearch}/><div className="search-popover" onMouseDown={e => e.stopPropagation()}><div className="search-panel"><Icon name="search"/><input autoFocus value={query} onChange={e => setQuery(e.target.value)} placeholder="Buscar bebida pelo nome..."/><button onClick={closeSearch}><Icon name="close"/></button></div>{query.trim() && <div className="search-results">{filtered.length ? filtered.slice(0, 12).map(p => <button key={p.id} className="search-result" onClick={() => openProduct(p)}><span className="search-result-image"><ManagedProductImage src={p.image} alt="" settings={mediaConfig[p.id]?.card}/></span><span className="search-result-copy"><strong>{p.name}</strong><small>{p.category}{p.size ? ` • ${p.size}` : ''}</small></span><b>{money(p.price)}</b></button>) : <div className="search-empty">Nenhum produto encontrado.</div>}</div>}</div></>}
 
