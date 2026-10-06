@@ -448,6 +448,68 @@ function ReportSummary({ title, orders }: { title: string; orders: StoredOrder[]
   </section>
 }
 
+function ReportDetails({ orders, title }: { orders: StoredOrder[]; title: string }) {
+  const finalized = orders.filter(order => order.status === 'finalized')
+  const pending = orders.filter(order => order.status === 'pending')
+  const revenue = finalized.reduce((sum, order) => sum + Number(order.total || 0), 0)
+  const averageTicket = finalized.length ? revenue / finalized.length : 0
+  const deliveryCount = orders.filter(order => order.fulfillment === 'delivery').length
+  const pickupCount = orders.filter(order => order.fulfillment === 'pickup').length
+
+  const payments = (['pix', 'credit', 'debit', 'cash'] as const).map(payment => {
+    const paymentOrders = finalized.filter(order => order.payment === payment)
+    return {
+      payment,
+      count: paymentOrders.length,
+      total: paymentOrders.reduce((sum, order) => sum + Number(order.total || 0), 0),
+    }
+  })
+
+  return <section className="report-detail-shell">
+    <div className="report-detail-heading">
+      <div>
+        <small>DETALHAMENTO</small>
+        <h3>{title}</h3>
+      </div>
+      <strong>{money(revenue)}</strong>
+    </div>
+
+    <div className="report-detail-metrics">
+      <div><span>Total de pedidos</span><b>{orders.length}</b></div>
+      <div><span>Finalizados</span><b>{finalized.length}</b></div>
+      <div><span>Pendentes</span><b>{pending.length}</b></div>
+      <div><span>Ticket médio</span><b>{money(averageTicket)}</b></div>
+      <div><span>Entregas</span><b>{deliveryCount}</b></div>
+      <div><span>Retiradas</span><b>{pickupCount}</b></div>
+    </div>
+
+    <div className="report-payment-section">
+      <h4>Pagamentos</h4>
+      <div className="report-payment-grid">
+        {payments.map(item => <div key={item.payment}>
+          <span>{paymentLabel(item.payment)}</span>
+          <b>{item.count} pedido{item.count === 1 ? '' : 's'}</b>
+          <strong>{money(item.total)}</strong>
+        </div>)}
+      </div>
+    </div>
+
+    <div className="report-orders-section">
+      <h4>Pedidos do período</h4>
+      {orders.length ? orders.map(order => <div className="report-order-row" key={order.id}>
+        <div>
+          <strong>{order.customerName}</strong>
+          <span>{dateLabel(order)} · {order.fulfillment === 'delivery' ? 'Entrega' : 'Retirada'} · {paymentLabel(order.payment)}</span>
+        </div>
+        <span className={order.status === 'finalized' ? 'order-status finalized' : 'order-status pending'}>
+          {order.status === 'finalized' ? 'Finalizado' : 'Pendente'}
+        </span>
+        <b>{money(order.total)}</b>
+      </div>) : <p className="orders-empty">Nenhum pedido neste período.</p>}
+    </div>
+  </section>
+}
+
 export function AdminDashboard({
   onClose,
   onOpenCatalog,
@@ -458,6 +520,7 @@ export function AdminDashboard({
   const { isAdmin, profile } = useAccount()
   const [view, setView] = useState<'pending' | 'finalized'>('pending')
   const [showReports, setShowReports] = useState(false)
+  const [reportMode, setReportMode] = useState<'daily' | 'monthly'>('daily')
   const [orders, setOrders] = useState<StoredOrder[]>([])
   const [loading, setLoading] = useState(true)
   const [finalizedDate, setFinalizedDate] = useState(() => dateInputValue(new Date()))
@@ -525,16 +588,25 @@ export function AdminDashboard({
 
       {showReports ? <>
         <div className="admin-section-heading">
-          <div><h2>Relatórios</h2><p>O faturamento considera apenas pedidos finalizados.</p></div>
+          <div><h2>Relatórios</h2><p>Veja o movimento da loja e os pagamentos recebidos.</p></div>
         </div>
-        <div className="report-grid">
-          <ReportSummary title="Hoje" orders={todayOrders} />
-          <ReportSummary title={now.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })} orders={monthOrders} />
-        </div>
-        <section className="report-detail">
-          <h3>Pedidos de hoje</h3>
-          {todayOrders.length ? todayOrders.map(order => <div key={order.id}><span>{order.customerName}</span><span>{order.status === 'finalized' ? 'Finalizado' : 'Pendente'}</span><b>{money(order.total)}</b></div>) : <p>Nenhum pedido hoje.</p>}
+
+        <section className="report-type-selector">
+          <button className={reportMode === 'daily' ? 'active' : ''} onClick={() => setReportMode('daily')}>
+            <span>Relatório diário</span>
+            <strong>{todayOrders.length}</strong>
+            <small>Hoje · {now.toLocaleDateString('pt-BR')}</small>
+          </button>
+          <button className={reportMode === 'monthly' ? 'active' : ''} onClick={() => setReportMode('monthly')}>
+            <span>Relatório mensal</span>
+            <strong>{monthOrders.length}</strong>
+            <small>{now.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}</small>
+          </button>
         </section>
+
+        {reportMode === 'daily'
+          ? <ReportDetails orders={todayOrders} title={`Relatório de ${now.toLocaleDateString('pt-BR')}`} />
+          : <ReportDetails orders={monthOrders} title={now.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })} />}
       </> : <>
         <section className="order-status-selector" aria-label="Filtrar pedidos">
           <button className={view === 'pending' ? 'active pending-card' : 'pending-card'} onClick={() => setView('pending')}>
