@@ -512,10 +512,8 @@ function ReportDetails({ orders, title }: { orders: StoredOrder[]; title: string
 
 export function AdminDashboard({
   onClose,
-  onOpenCatalog,
 }: {
   onClose: () => void
-  onOpenCatalog: () => void
 }) {
   const { isAdmin, profile } = useAccount()
   const [view, setView] = useState<'pending' | 'finalized'>('pending')
@@ -583,7 +581,6 @@ export function AdminDashboard({
         <button className={showReports ? 'active' : ''} onClick={() => setShowReports(value => !value)}>
           {showReports ? 'Voltar aos pedidos' : 'Relatórios'}
         </button>
-        <button onClick={onOpenCatalog}>Editar catálogo</button>
       </div>
 
       {showReports ? <>
