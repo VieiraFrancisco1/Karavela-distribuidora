@@ -1,3 +1,5 @@
+import MediaImage from './MediaImage'
+import { resolvePhotoUrl, saveMediaPatches, uploadPhoto } from './firebaseStore'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react'
 import type { CatalogBrand, CatalogCategory, CatalogConfig, Product } from './types'
@@ -144,7 +146,7 @@ function EditableImage({ src, settings, slot, onChange, frameClassName, imageCla
     onPointerUp={endPointer}
     onPointerCancel={endPointer}
   >
-    {backdropClassName && <img className={backdropClassName} src={src} alt="" aria-hidden="true" draggable={false}/>}
+    {backdropClassName && <MediaImage className={backdropClassName} src={src} alt="" aria-hidden="true" draggable={false}/>}
     <img
       className={imageClass || undefined}
       src={src}
@@ -351,22 +353,6 @@ function LiveDetailPreview({ product, src, settings, onChange }: { product: Prod
   </div>
 }
 
-const readError = async (response: Response) => {
-  const fallback = `Não foi possível concluir a operação (erro ${response.status}).`
-  try {
-    const raw = await response.text()
-    if (!raw) return fallback
-    try {
-      const data = JSON.parse(raw) as { error?: string; message?: string }
-      return data.message || data.error || fallback
-    } catch {
-      const clean = raw.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
-      return clean ? `${fallback} ${clean.slice(0, 180)}` : fallback
-    }
-  } catch {
-    return fallback
-  }
-}
 
 async function prepareImage(file: File): Promise<{ blob: Blob; name: string }> {
   const accepted = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
@@ -509,21 +495,14 @@ export function AdminMedia({ products, brands, categories, catalogConfig, config
       setLocalPreview({ productId, slot: targetSlot, url: localUrl })
       setMessage('Enviando a nova foto sem perder qualidade...', 'info')
 
-      const form = new FormData()
-      form.append('file', prepared.blob, prepared.name)
-      form.append('productId', productId)
-      form.append('slot', targetSlot)
-
-      const response = await fetch('/api/upload-product-image', { method: 'POST', body: form })
-      if (!response.ok) throw new Error(await readError(response))
-      const data = await response.json() as { url?: string }
-      if (!data.url) throw new Error('O upload terminou, mas a nova foto não retornou uma URL válida.')
+      const data = { url: await uploadPhoto(prepared.blob) }
+      const previewUrl = await resolvePhotoUrl(data.url)
 
       await new Promise<void>((resolve, reject) => {
         const image = new Image()
         image.onload = () => resolve()
         image.onerror = () => reject(new Error('A foto foi enviada, mas não foi possível carregá-la para a prévia.'))
-        image.src = data.url!
+        image.src = previewUrl
       })
 
       setDraft(previous => {
@@ -597,38 +576,13 @@ export function AdminMedia({ products, brands, categories, catalogConfig, config
     setSaving(true)
     setMessage('Salvando somente as fotos que você alterou...', 'info')
     try {
-      const form = new FormData()
-      form.append('action', 'save-media-patches-v50')
-      const patchFile = new File(
-        [JSON.stringify({ version: 1, createdAt: Date.now(), operations })],
-        `media-patch-${Date.now()}.json`,
-        { type: 'application/json' },
-      )
-      form.append('file', patchFile)
-
-      const response = await fetch('/api/upload-product-image', { method: 'POST', body: form })
-      if (!response.ok) throw new Error(await readError(response))
-
-      const saved = await response.json() as { ok?: boolean; patched?: number }
-      if (!saved.ok) throw new Error('O servidor não confirmou o salvamento protegido.')
-
-      let canonical = draft
-      try {
-        const latestResponse = await fetch(`/api/media-config?v=${Date.now()}`, { cache: 'no-store' })
-        if (latestResponse.ok) {
-          const latest = await latestResponse.json() as MediaConfig
-          if (latest && typeof latest === 'object' && !Array.isArray(latest)) canonical = latest
-        }
-      } catch {
-        // A alteração já foi gravada como patch imutável. Se a releitura falhar,
-        // mantemos a prévia local e a próxima abertura carregará o estado do servidor.
-      }
+      const canonical = await saveMediaPatches(operations)
 
       setDraft(canonical)
       onSaved(canonical)
       setTouched({})
       setDirty(false)
-      setMessage(`Salvo com proteção. ${saved.patched ?? operations.length} ajuste(s) registrado(s) sem substituir as outras fotos.`, 'success')
+      setMessage(`Salvo com proteção. ${operations.length} ajuste(s) registrado(s) sem substituir as outras fotos.`, 'success')
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Não foi possível salvar.', 'error')
     } finally {
@@ -655,7 +609,7 @@ export function AdminMedia({ products, brands, categories, catalogConfig, config
           <div className="admin-search"><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Buscar produto..."/></div>
           <div className="admin-product-list">
             {filtered.map(product => <button key={product.id} className={selected?.id === product.id ? 'active' : ''} onClick={() => { setSelectedId(product.id); setStatus('') }}>
-              <img src={draft[product.id]?.card?.url || product.image} alt=""/>
+              <MediaImage src={draft[product.id]?.card?.url || product.image} alt=""/>
               <span><strong>{product.name}</strong><small>{product.category}{product.size ? ` • ${product.size}` : ''}</small></span>
             </button>)}
           </div>

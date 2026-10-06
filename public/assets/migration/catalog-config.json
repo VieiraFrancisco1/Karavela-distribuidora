@@ -1,0 +1,143 @@
+{
+  "revision": 1,
+  "hiddenProductIds": [
+    "cachacas-bananazinha"
+  ],
+  "categories": [
+    {
+      "id": "cervejas-lata",
+      "label": "Cervejas Lata",
+      "icon": "beer-can",
+      "image": null,
+      "imageScale": 1,
+      "imageX": 0,
+      "imageY": 0
+    },
+    {
+      "id": "cervejas-300-unidades",
+      "label": "Cervejas 300ml",
+      "icon": "beer-bottle",
+      "image": null,
+      "imageScale": 1,
+      "imageX": 0,
+      "imageY": 0
+    },
+    {
+      "id": "cervejas-300-caixa",
+      "label": "Cervejas 300 ml — Caixa",
+      "icon": "crate",
+      "image": null,
+      "imageScale": 1,
+      "imageX": 0,
+      "imageY": 0
+    },
+    {
+      "id": "long-necks",
+      "label": "Cervejas Long Neck",
+      "icon": "beer-bottle",
+      "image": null,
+      "imageScale": 1,
+      "imageX": 0,
+      "imageY": 0
+    },
+    {
+      "id": "zero-alcool",
+      "label": "Cervejas Zero Álcool",
+      "icon": "zero-beer",
+      "image": "https://res.cloudinary.com/tstplevv/image/upload/v1791287398/karavela-distribuidora/categories/zero-alcool.png?cb=1791287398",
+      "imageScale": 1,
+      "imageX": -0.3944788223657853,
+      "imageY": -7
+    },
+    {
+      "id": "energeticos",
+      "label": "Energéticos",
+      "icon": "bolt",
+      "image": "https://res.cloudinary.com/tstplevv/image/upload/v1791287294/karavela-distribuidora/categories/energeticos.png?cb=1791287294",
+      "imageScale": 0.89,
+      "imageX": 0,
+      "imageY": -7
+    },
+    {
+      "id": "refrigerantes",
+      "label": "Refrigerantes",
+      "icon": "soda",
+      "image": null,
+      "imageScale": 1,
+      "imageX": 0,
+      "imageY": 0
+    },
+    {
+      "id": "whiskys",
+      "label": "Whiskys",
+      "icon": "whisky",
+      "image": null,
+      "imageScale": 1,
+      "imageX": 0,
+      "imageY": 0
+    },
+    {
+      "id": "vodkas",
+      "label": "Vodkas",
+      "icon": "bottle",
+      "image": null,
+      "imageScale": 1,
+      "imageX": 0,
+      "imageY": 0
+    },
+    {
+      "id": "gins",
+      "label": "Gins",
+      "icon": "cocktail",
+      "image": "https://res.cloudinary.com/tstplevv/image/upload/v1791286505/karavela-distribuidora/categories/gins.png?cb=1791286505",
+      "imageScale": 1.77,
+      "imageX": 2,
+      "imageY": -7.871264080668605
+    },
+    {
+      "id": "cachacas",
+      "label": "Cachaças",
+      "icon": "bottle",
+      "image": "https://res.cloudinary.com/tstplevv/image/upload/v1791286399/karavela-distribuidora/categories/cachacas.png?cb=1791286399",
+      "imageScale": 1,
+      "imageX": 0,
+      "imageY": -5.008892680323401
+    },
+    {
+      "id": "vinhos",
+      "label": "Vinhos",
+      "icon": "wine",
+      "image": "https://res.cloudinary.com/tstplevv/image/upload/v1791257565/karavela-distribuidora/categories/vinhos.png?cb=1791257565",
+      "imageScale": 1.12,
+      "imageX": 0.801216647638444,
+      "imageY": -6.831024055195989
+    },
+    {
+      "id": "espumantes",
+      "label": "Espumantes",
+      "icon": "sparkling",
+      "image": null,
+      "imageScale": 1,
+      "imageX": 0,
+      "imageY": 0
+    },
+    {
+      "id": "licores",
+      "label": "Licores",
+      "icon": "liqueur",
+      "image": "https://res.cloudinary.com/tstplevv/image/upload/v1791244173/karavela-distribuidora/categories/licores.png?cb=1791244173",
+      "imageScale": 1.62,
+      "imageX": 0.7735858062570136,
+      "imageY": -9.88271629471496
+    },
+    {
+      "id": "bomboniere",
+      "label": "Bomboniere",
+      "icon": "candy",
+      "image": "https://res.cloudinary.com/tstplevv/image/upload/v1791286376/karavela-distribuidora/categories/bomboniere.png?cb=1791286376",
+      "imageScale": 1,
+      "imageX": 0,
+      "imageY": -4.651162790697675
+    }
+  ]
+}
