@@ -1154,21 +1154,24 @@ export default function App({ initialMediaConfig = {}, initialCatalogConfig = {}
     if (navigationKey === previousNavigationKeyRef.current) return
 
     const previousDepth = previousNavigationDepthRef.current
-
-    if (navigationDepth < previousDepth && window.history.length > 1) {
-      window.history.back()
-      return
-    }
-
     const currentState = window.history.state && typeof window.history.state === 'object'
       ? window.history.state
       : {}
 
-    window.history.pushState(
-      { ...currentState, karavelaSnapshot: navigationSnapshot },
-      '',
-      window.location.href,
-    )
+    if (navigationDepth > previousDepth) {
+      window.history.pushState(
+        { ...currentState, karavelaSnapshot: navigationSnapshot },
+        '',
+        window.location.href,
+      )
+    } else {
+      window.history.replaceState(
+        { ...currentState, karavelaSnapshot: navigationSnapshot },
+        '',
+        window.location.href,
+      )
+    }
+
     previousNavigationKeyRef.current = navigationKey
     previousNavigationDepthRef.current = navigationDepth
   }, [navigationKey, navigationDepth, navigationSnapshot])
