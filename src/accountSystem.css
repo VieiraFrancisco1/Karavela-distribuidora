@@ -778,3 +778,114 @@
     max-width: 210px;
   }
 }
+
+
+.orders-panel-header {
+  display: grid !important;
+  grid-template-columns: auto 1fr auto;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.orders-panel-title {
+  min-width: 0;
+}
+
+.orders-panel-title h2,
+.orders-panel-title p {
+  text-align: left;
+}
+
+.orders-back-button,
+.orders-close-button,
+.admin-back-button,
+.admin-close-button {
+  border: 0;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.orders-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 36px;
+  padding: 0 9px;
+  border-radius: 10px;
+  background: #eef5fb;
+  color: #16456f;
+  font-size: 20px;
+}
+
+.orders-back-button span {
+  font-size: 11px;
+}
+
+.orders-close-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #eef5fb;
+  color: #17324a;
+  font-size: 22px;
+}
+
+.admin-dashboard-top {
+  grid-template-columns: auto 1fr auto;
+}
+
+.admin-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 38px;
+  padding: 0 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.1);
+  color: #fff;
+  font-size: 20px;
+}
+
+.admin-back-button span {
+  font-size: 11px;
+}
+
+.admin-dashboard-title {
+  min-width: 0;
+}
+
+.admin-close-button {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  font-size: 24px;
+}
+
+@media (max-width: 520px) {
+  .orders-panel-header {
+    gap: 6px !important;
+  }
+
+  .orders-back-button span,
+  .admin-back-button span {
+    display: none;
+  }
+
+  .orders-back-button,
+  .admin-back-button {
+    width: 36px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .admin-dashboard-top {
+    display: grid;
+    gap: 8px;
+  }
+
+  .admin-dashboard-title h1 {
+    font-size: 19px;
+  }
+}
