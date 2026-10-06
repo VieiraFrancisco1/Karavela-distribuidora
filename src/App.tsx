@@ -534,6 +534,8 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
   const [step, setStep] = useState<1 | 2>(1)
   const [name, setName] = useState(profile?.name || savedCustomer.name || '')
   const [phone, setPhone] = useState(profile?.phone || savedCustomer.phone || '')
+  const namePrefilledRef = useRef(Boolean(profile?.name || savedCustomer.name))
+  const phonePrefilledRef = useRef(Boolean(profile?.phone || savedCustomer.phone))
   const [fulfillment, setFulfillment] = useState<'delivery' | 'pickup' | ''>('')
   const [neighborhood, setNeighborhood] = useState('')
   const [otherNeighborhood, setOtherNeighborhood] = useState('')
@@ -560,9 +562,16 @@ function CheckoutScreen({ lines, onBack }: { lines: CartLine[]; onBack: () => vo
   const summaryRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (profile?.name && !name) setName(profile.name)
-    if (profile?.phone && !phone) setPhone(profile.phone)
-  }, [profile, name, phone])
+    if (!namePrefilledRef.current && profile?.name) {
+      setName(profile.name)
+      namePrefilledRef.current = true
+    }
+
+    if (!phonePrefilledRef.current && profile?.phone) {
+      setPhone(profile.phone)
+      phonePrefilledRef.current = true
+    }
+  }, [profile])
 
   const effectiveNeighborhood = neighborhood === 'Outras' ? otherNeighborhood.trim() : neighborhood
   const deliveryFee = fulfillment === 'delivery' ? deliveryFeeFor(effectiveNeighborhood) : 0
