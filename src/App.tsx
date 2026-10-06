@@ -989,6 +989,20 @@ function EnergyCategoryPage({ products: allProducts, filter, onFilter, onHome, o
   </section>
 }
 
+type AppNavigationSnapshot = {
+  activeCategoryId: string | null
+  selectedProductId: string | null
+  menuOpen: boolean
+  cartOpen: boolean
+  searchOpen: boolean
+  checkoutOpen: boolean
+  accountOpen: boolean
+  profileOpen: boolean
+  customerOrdersOpen: boolean
+  adminDashboardOpen: boolean
+  adminOpen: boolean
+}
+
 type AppProps = {
   initialMediaConfig?: MediaConfig
   initialCatalogConfig?: CatalogConfig
@@ -1027,6 +1041,137 @@ export default function App({ initialMediaConfig = {}, initialCatalogConfig = {}
   }, [savedMediaConfig])
   const [catalogConfig, setCatalogConfig] = useState<CatalogConfig>(initialCatalogConfig)
   const [catalogReady, setCatalogReady] = useState(true)
+
+  const navigationSnapshot = useMemo<AppNavigationSnapshot>(() => ({
+    activeCategoryId,
+    selectedProductId: selected?.id ?? null,
+    menuOpen,
+    cartOpen,
+    searchOpen,
+    checkoutOpen,
+    accountOpen,
+    profileOpen,
+    customerOrdersOpen,
+    adminDashboardOpen,
+    adminOpen,
+  }), [
+    activeCategoryId,
+    selected,
+    menuOpen,
+    cartOpen,
+    searchOpen,
+    checkoutOpen,
+    accountOpen,
+    profileOpen,
+    customerOrdersOpen,
+    adminDashboardOpen,
+    adminOpen,
+  ])
+
+  const navigationKey = JSON.stringify(navigationSnapshot)
+  const navigationDepth = [
+    navigationSnapshot.activeCategoryId,
+    navigationSnapshot.selectedProductId,
+    navigationSnapshot.menuOpen,
+    navigationSnapshot.cartOpen,
+    navigationSnapshot.searchOpen,
+    navigationSnapshot.checkoutOpen,
+    navigationSnapshot.accountOpen,
+    navigationSnapshot.profileOpen,
+    navigationSnapshot.customerOrdersOpen,
+    navigationSnapshot.adminDashboardOpen,
+    navigationSnapshot.adminOpen,
+  ].filter(Boolean).length
+
+  const historyReadyRef = useRef(false)
+  const applyingHistoryRef = useRef(false)
+  const previousNavigationKeyRef = useRef('')
+  const previousNavigationDepthRef = useRef(0)
+
+  useEffect(() => {
+    const applySnapshot = (snapshot: AppNavigationSnapshot) => {
+      applyingHistoryRef.current = true
+      setActiveCategoryId(snapshot.activeCategoryId ?? null)
+      setSelected(snapshot.selectedProductId ? baseProducts.find(product => product.id === snapshot.selectedProductId) ?? null : null)
+      setMenuOpen(Boolean(snapshot.menuOpen))
+      setCartOpen(Boolean(snapshot.cartOpen))
+      setSearchOpen(Boolean(snapshot.searchOpen))
+      setCheckoutOpen(Boolean(snapshot.checkoutOpen))
+      setAccountOpen(Boolean(snapshot.accountOpen))
+      setProfileOpen(Boolean(snapshot.profileOpen))
+      setCustomerOrdersOpen(Boolean(snapshot.customerOrdersOpen))
+      setAdminDashboardOpen(Boolean(snapshot.adminDashboardOpen))
+      setAdminOpen(Boolean(snapshot.adminOpen))
+    }
+
+    const initialState = window.history.state && typeof window.history.state === 'object'
+      ? window.history.state
+      : {}
+
+    window.history.replaceState(
+      { ...initialState, karavelaSnapshot: navigationSnapshot },
+      '',
+      window.location.href,
+    )
+    historyReadyRef.current = true
+    previousNavigationKeyRef.current = navigationKey
+    previousNavigationDepthRef.current = navigationDepth
+
+    const onPopState = (event: PopStateEvent) => {
+      const snapshot = event.state?.karavelaSnapshot as AppNavigationSnapshot | undefined
+      if (!snapshot) return
+      applySnapshot(snapshot)
+      previousNavigationKeyRef.current = JSON.stringify(snapshot)
+      previousNavigationDepthRef.current = [
+        snapshot.activeCategoryId,
+        snapshot.selectedProductId,
+        snapshot.menuOpen,
+        snapshot.cartOpen,
+        snapshot.searchOpen,
+        snapshot.checkoutOpen,
+        snapshot.accountOpen,
+        snapshot.profileOpen,
+        snapshot.customerOrdersOpen,
+        snapshot.adminDashboardOpen,
+        snapshot.adminOpen,
+      ].filter(Boolean).length
+    }
+
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [])
+
+  useEffect(() => {
+    if (!historyReadyRef.current) return
+
+    if (applyingHistoryRef.current) {
+      applyingHistoryRef.current = false
+      previousNavigationKeyRef.current = navigationKey
+      previousNavigationDepthRef.current = navigationDepth
+      return
+    }
+
+    if (navigationKey === previousNavigationKeyRef.current) return
+
+    const previousDepth = previousNavigationDepthRef.current
+
+    if (navigationDepth < previousDepth && window.history.length > 1) {
+      window.history.back()
+      return
+    }
+
+    const currentState = window.history.state && typeof window.history.state === 'object'
+      ? window.history.state
+      : {}
+
+    window.history.pushState(
+      { ...currentState, karavelaSnapshot: navigationSnapshot },
+      '',
+      window.location.href,
+    )
+    previousNavigationKeyRef.current = navigationKey
+    previousNavigationDepthRef.current = navigationDepth
+  }, [navigationKey, navigationDepth, navigationSnapshot])
 
   useEffect(() => {
     if (!user || !pendingCheckout) return
